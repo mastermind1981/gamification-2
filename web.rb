@@ -8,30 +8,16 @@ require 'aws/s3'
 require 'securerandom'
 require 'logger'
 require 'bcrypt'
-#require 'carrierwave'
-#require 'mini_magick'
 
 
-class Iobserve < Sinatra::Application
+class Gamification < Sinatra::Application
   include BCrypt
-  #$log = Logger.new('./logs/output.log')
 
-  #set :environment, :development
   set :environment, :production
-
-  #enable :sessions
-  #set :sessions, true
-  #set :session_secret, 'super secret'
-
-  # Enable sinatra sessions
-  #use Rack::Session::Cookie, :key => '_rack_session',
-  #  :expire_after => 60 * 60 * 24,  #expire after 1 day
-  #  :secret => 'asadbb2342923222f1adc05c834fa234230e3494b93824b10e930bb0fb89b'
 
   configure do
     set :app_file, __FILE__
-    Mongoid.load! "#{File.dirname(__FILE__)}/config/mongoid.yml"
-    #$log.level = Logger::DEBUG
+    #Mongoid.load! "#{File.dirname(__FILE__)}/config/mongoid.yml"
   end
 
   configure :development do
@@ -59,37 +45,13 @@ class Iobserve < Sinatra::Application
   end
 
   get '/' do
-    send_file File.join('public', 'index.html')
-  end
-
-  get '/api' do
-    if login?
-      send_file File.join('public/api', 'index.html')
-    end
+    #send_file File.join('public', 'index.html')
+    "Hello, world"
   end
 end
 
-
-#CarrierWave.configure do |config|
-#  config.fog_credentials = {
-#      :provider               => 'AWS',                        # required
-#      :aws_access_key_id      => ENV['AWS_ACCESS_KEY_ID'],                        # required
-#      :aws_secret_access_key  => ENV['AWS_SECRET_ACCESS_KEY'],                        # required
-#      :region                 => 'us-west-2'
-#  }
-#  config.fog_directory  = 'net.engagelab.iobserveservice'                     # required
-#  config.fog_public     = :public_read
-#end
-#
-#class AvatarUploader < CarrierWave::Uploader::Base
-#  include CarrierWave::MiniMagick
-#
-#  process :resize_to_fit => [1024, 723]
-#  storage :fog
-#end
-
-require_relative 'routes/init'
-require_relative 'models/init'
+#require_relative 'routes/init'
+#require_relative 'models/init'
 
 
 

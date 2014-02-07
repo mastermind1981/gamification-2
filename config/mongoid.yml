@@ -1,7 +1,7 @@
 development:
   sessions:
     default:
-      database: iObserveService
+      database: gamification
       hosts:
         - localhost
       options:
