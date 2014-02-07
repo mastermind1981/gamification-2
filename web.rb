@@ -17,7 +17,7 @@ class Gamification < Sinatra::Application
 
   configure do
     set :app_file, __FILE__
-    #Mongoid.load! "#{File.dirname(__FILE__)}/config/mongoid.yml"
+    Mongoid.load! "#{File.dirname(__FILE__)}/config/mongoid.yml"
   end
 
   configure :development do
