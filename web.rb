@@ -4,7 +4,7 @@ require 'digest'
 require 'uri'
 require 'json'
 require 'fileutils'
-require 'aws/s3'
+#require 'aws/s3'
 require 'securerandom'
 require 'logger'
 require 'bcrypt'
@@ -33,16 +33,16 @@ class Gamification < Sinatra::Application
     set :show_exceptions, false #true will ignore raise_errors and display backtrace in browser
   end
 
-  helpers do
-    def authorized?
-      thetoken = params[:token]
-      token = Token.find_by(token: thetoken)
-      if token and token.expires_on > Time.now.to_i
-        return true
-      end
-      return false
-    end
-  end
+  #helpers do
+  #  def authorized?
+  #    thetoken = params[:token]
+  #    token = Token.find_by(token: thetoken)
+  #    if token and token.expires_on > Time.now.to_i
+  #      return true
+  #    end
+  #    return false
+  #  end
+  #end
 
   get '/' do
     #send_file File.join('public', 'index.html')
