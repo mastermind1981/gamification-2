@@ -1,0 +1,1 @@
+var gamififcationApp = angular.module('gamififcationApp', ['ui.bootstrap', 'ngResource', 'ngSanitize'], null);

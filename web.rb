@@ -45,8 +45,7 @@ class Gamification < Sinatra::Application
   #end
 
   get '/' do
-    #send_file File.join('public', 'index.html')
-    "Hello, world"
+    send_file File.join('public', 'index.html')
   end
 end
 
