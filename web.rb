@@ -49,8 +49,8 @@ class Gamification < Sinatra::Application
   end
 end
 
-#require_relative 'routes/init'
-#require_relative 'models/init'
+require_relative 'routes/init'
+require_relative 'models/init'
 
 
 
