@@ -24,25 +24,10 @@ class Gamification < Sinatra::Application
     enable :logging, :dump_errors, :raise_errors
   end
 
-  configure :qa do
-    enable :logging, :dump_errors, :raise_errors
-  end
-
   configure :production do
     set :raise_errors, false #false will show nicer error page
     set :show_exceptions, false #true will ignore raise_errors and display backtrace in browser
   end
-
-  #helpers do
-  #  def authorized?
-  #    thetoken = params[:token]
-  #    token = Token.find_by(token: thetoken)
-  #    if token and token.expires_on > Time.now.to_i
-  #      return true
-  #    end
-  #    return false
-  #  end
-  #end
 
   get '/' do
     send_file File.join('public', 'index.html')
