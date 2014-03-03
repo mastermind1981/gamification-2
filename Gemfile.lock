@@ -7,12 +7,19 @@ GEM
     activesupport (3.2.16)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
+    addressable (2.3.5)
     bcrypt-ruby (3.0.1)
     bson (1.9.2)
     bson_ext (1.9.2)
       bson (~> 1.9.2)
     builder (3.0.4)
+    faraday (0.9.0)
+      multipart-post (>= 1.2, < 3)
     i18n (0.6.9)
+    koala (1.9.0)
+      addressable
+      faraday
+      multi_json
     mini_magick (3.5.0)
       subexec (~> 0.2.1)
     mongoid (3.1.6)
@@ -22,6 +29,7 @@ GEM
       tzinfo (~> 0.3.29)
     moped (1.5.2)
     multi_json (1.8.4)
+    multipart-post (2.0.0)
     origin (1.1.0)
     rack (1.5.2)
     rack-protection (1.5.2)
@@ -41,6 +49,7 @@ PLATFORMS
 DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
   bson_ext
+  koala
   mini_magick (~> 3.5.0)
   mongoid (~> 3.1)
   rake
