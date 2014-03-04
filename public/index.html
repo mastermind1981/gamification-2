@@ -21,14 +21,14 @@
 
     <!-- Local scripts -->
     <script src="js/init.js"></script>
+    <script src="js/factories.js"></script>
     <script src="js/index.js"></script>
 
 </head>
 <body ng-app="gamififcationApp">
     <div ng-controller="navigationCtrl">
-        <button ng-click="getData('/testobj')">Fetch</button>
-
-        {{ testVar }}
+       Welcome {{first_name}} {{last_name}} ({{facebookId}})
+        <footer>You are logged in! <button ng-click="logout()">Sign out</button></footer>
     </div>
 </body>
 </html>
