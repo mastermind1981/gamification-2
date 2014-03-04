@@ -40,7 +40,7 @@ class Gamification < Sinatra::Application
       # @graph = Koala::Facebook::GraphAPI.new(session["access_token"])
       redirect '/index.html?at='+session["access_token"]
     else
-      '<a href="/login">Login</a>'
+      redirect '/login.html'
     end
   end
 
