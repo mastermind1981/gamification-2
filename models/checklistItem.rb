@@ -5,5 +5,5 @@ class ChecklistItem
 
   field :description, :type => String
   field :frequency, :type => String
-  field :completedUsers, :type => Array, :default => []
+  field :completed_users, :type => Array, :default => []
 end

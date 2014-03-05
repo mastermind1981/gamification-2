@@ -7,6 +7,6 @@ class Quest
   field :levels, :type => Array, :default => []
 
   field :label, :type => String
-  field :assignedGroups, :type => Array, :default => []
-  field :completedGroups, :type => Array, :default => []
+  field :assigned_groups, :type => Array, :default => []
+  field :completed_groups, :type => Array, :default => []
 end
