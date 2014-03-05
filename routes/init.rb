@@ -1,1 +1,1 @@
-require_relative 'testobj'
+require_relative 'classroom'

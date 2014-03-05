@@ -42,6 +42,9 @@ GEM
     subexec (0.2.3)
     tilt (1.4.1)
     tzinfo (0.3.38)
+    yard (0.8.7.3)
+    yard-sinatra (1.0.0)
+      yard (~> 0.7)
 
 PLATFORMS
   ruby
@@ -54,3 +57,4 @@ DEPENDENCIES
   mongoid (~> 3.1)
   rake
   sinatra
+  yard-sinatra
