@@ -45,36 +45,41 @@ class Gamification < Sinatra::Application
     end
   end
 
+
+  # Executes a login
   get '/login' do
-    # generate a new oauth object with your app data and your callback url
     session['oauth'] = Koala::Facebook::OAuth.new(ENV['APP_ID'], ENV['APP_SECRET'], "#{request.base_url}/callback")
-    # redirect to facebook to get your code
     redirect session['oauth'].url_for_oauth_code()
   end
 
+  # Executes a logout
   get '/logout' do
     session['oauth'] = nil
     session['access_token'] = nil
     redirect '/'
   end
 
-  #method to handle the redirect from facebook back to you
+  # Handle the redirect from facebook back to you
   get '/callback' do
-    #get the access token from facebook with your code
     session['access_token'] = session['oauth'].get_access_token(params[:code])
     redirect '/'
   end
 
+  # Get the index page if authenticated, else the login page
   get '/' do
     if authorized?
-      #@graph = Koala::Facebook::GraphAPI.new(session["access_token"])
-      #@user = @graph.get_object("me")
       redirect '/index.html?at='+session["access_token"]
     else
       redirect '/login.html'
     end
   end
 
+  # @private
+  get '/api' do
+    redirect '/api/index.html'
+  end
+
+  # Get the f.html page
   get '/f.html' do
     if authorized?
       send_file File.join('private', 'f.html')
@@ -87,3 +92,6 @@ end
 
 require_relative 'routes/init'
 require_relative 'models/init'
+
+## @graph = Koala::Facebook::GraphAPI.new(session["access_token"])
+## @user = @graph.get_object("me")
