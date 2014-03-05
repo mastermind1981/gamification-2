@@ -27,8 +27,20 @@
 </head>
 <body ng-app="gamififcationApp">
     <div ng-controller="navigationCtrl">
-       Welcome {{first_name}} {{last_name}} ({{facebookId}})
-        <footer>You are logged in! <button ng-click="logout()">Sign out</button></footer>
+        <img ng-src="{{avatar}}"/> Hello {{first_name}} {{last_name}} ({{facebookId}})
+
+        <div>
+            <accordion close-others="oneAtATime">
+                <accordion-group is-open="isopen">
+                    <accordion-heading>
+                        Click here to show background <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+                    </accordion-heading>
+                    <img ng-src="{{cover}}" width="800px"/>
+                </accordion-group>
+            </accordion>
+        </div>
+
+        <footer>You are logged in! <button class="btn btn-sm btn-danger" ng-click="logout()">Sign out</button></footer>
     </div>
 </body>
 </html>
