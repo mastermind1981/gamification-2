@@ -15,7 +15,8 @@ class Gamification < Sinatra::Application
   include BCrypt
 
   use Rack::Session::Cookie, secret: 'qwertyuiop123456asdfghjkl'
-  #  :expire_after => 60 * 60 * 24,  #expire after 1 day
+  # :expire_after => 60  #expire after 1 minute
+  # :expire_after => 60 * 60 * 24,  #expire after 1 day
   #  :secret => 'asadbb2342923222f1adc05c834fa234230e3494b93824b10e930bb0fb89b'
 
   set :environment, :production
@@ -35,12 +36,12 @@ class Gamification < Sinatra::Application
     set :show_exceptions, false #true will ignore raise_errors and display backtrace in browser
   end
 
-  get '/' do
-    if session['access_token']
-      # @graph = Koala::Facebook::GraphAPI.new(session["access_token"])
-      redirect '/index.html?at='+session["access_token"]
-    else
-      redirect '/login.html'
+  helpers do
+    def authorized?
+      if session['access_token']
+        return true
+      end
+        return false
     end
   end
 
@@ -62,6 +63,24 @@ class Gamification < Sinatra::Application
     #get the access token from facebook with your code
     session['access_token'] = session['oauth'].get_access_token(params[:code])
     redirect '/'
+  end
+
+  get '/' do
+    if authorized?
+      #@graph = Koala::Facebook::GraphAPI.new(session["access_token"])
+      #@user = @graph.get_object("me")
+      redirect '/index.html?at='+session["access_token"]
+    else
+      redirect '/login.html'
+    end
+  end
+
+  get '/f.html' do
+    if authorized?
+      send_file File.join('private', 'f.html')
+    else
+      redirect '/'
+    end
   end
 
 end
