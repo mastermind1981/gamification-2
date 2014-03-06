@@ -10,5 +10,5 @@ class Level
 
   field :label, :type => String
   field :introduction, :type => String
-  field :completedGroups, :type => Array, :default => []
+  field :completed_groups, :type => Array, :default => []
 end

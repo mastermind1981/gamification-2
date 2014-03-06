@@ -9,7 +9,7 @@ class Group
   field :students, :type => Array, :default => []
 
   field :label, :type => String
-  field :avatarUrl, :type => String
-  field :blogUrl, :type => String
+  field :avatar_url, :type => String
+  field :blog_url, :type => String
   field :score, :type => Integer, :default => 0
 end

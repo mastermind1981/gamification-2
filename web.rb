@@ -68,7 +68,15 @@ class Gamification < Sinatra::Application
   # Get the index page if authenticated, else the login page
   get '/' do
     if authorized?
-      redirect '/index.html?at='+session["access_token"]
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      @user = @graph.get_object("me")
+
+      student = Student.find_by(facebook_id: @user["id"])
+      unless student then
+        Student.create(:facebook_id => @user["id"])
+      end
+
+      send_file File.join('private', 'index.html')
     else
       redirect '/login.html'
     end
@@ -77,6 +85,16 @@ class Gamification < Sinatra::Application
   # @private
   get '/api' do
     redirect '/api/index.html'
+  end
+
+
+  # Get the index.html page
+  get '/index.html' do
+    if authorized?
+      send_file File.join('private', 'index.html')
+    else
+      redirect '/'
+    end
   end
 
   # Get the f.html page

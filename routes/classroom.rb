@@ -50,7 +50,7 @@ class Gamification < Sinatra::Application
   #
   # param [String] the classroom id
   #
-  # body [Object] in JSON. ex: {"label":"LABEL", "group_id":"GROUPID" }
+  # body [Object] in JSON. ex: {"label":"<String>" }
   #
   # return [Object] classroom
   put '/classroom/:id' do
@@ -68,17 +68,80 @@ class Gamification < Sinatra::Application
           classroom.save
         end
 
-        unless data['group_id'].nil? then
-          begin
-            group = Group.find(data['group_id'])
-          end
+        status 200
 
-          if group
-            classroom.groups << group
-          else
-            status 500
-            return {"error" => "Group "+data['group_id']+" not found"}.to_json
-          end
+        return  classroom.to_json
+      else
+        return {"error" => "Classroom "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Add a group to a classroom by id
+  #
+  # param [String] the classroom id
+  #
+  # param [String] the group id
+  #
+  # return [Object] classroom
+  put '/classroom/:id/addgroup/:groupid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      classroom = Classroom.find(params[:id])
+
+      if classroom then
+
+        begin
+          group = Group.find(params[:groupid])
+        end
+
+        if group
+          classroom.groups << group
+        else
+          status 500
+          return {"error" => "Group "+data['group_id']+" not found"}.to_json
+        end
+
+        status 200
+
+        return  classroom.to_json
+      else
+        return {"error" => "Classroom "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Remove a group from a classroom by id
+  #
+  # param [String] the classroom id
+  #
+  # param [String] the group id
+  #
+  # return [Object] classroom
+  put '/classroom/:id/removegroup/:groupid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      classroom = Classroom.find(params[:id])
+
+      if classroom then
+
+        begin
+          group = Group.find(params[:groupid])
+        end
+
+        if group
+          classroom.groups.delete(group)
+        else
+          status 500
+          return {"error" => "Group "+data['group_id']+" not found"}.to_json
         end
 
         status 200
