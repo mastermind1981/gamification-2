@@ -30,15 +30,20 @@ class Gamification < Sinatra::Application
     end
   end
 
-  # Create a new student
+  # Create a new student by his/her facebookid
   #
   # return [Object] student
-  post '/student' do
+  post '/student/:facebookid' do
     if authorized?
       request.body.rewind  # in case someone already read it
       content_type :json
 
-      student = Student.create()
+      student = Student.find_by(facebook_id: params[:facebookid])
+
+      unless student then
+        student = Student.create(:facebook_id => params[:facebookid])
+      end
+
       status 200
       return  student.to_json
     else
@@ -62,11 +67,6 @@ class Gamification < Sinatra::Application
 
       if student then
         data = JSON.parse request.body.read
-
-        unless data['facebook_id'].nil?
-          student.update_attributes(:facebook_id => data['facebook_id'])
-          student.save
-        end
 
         unless data['expert_level'].nil?
           student.update_attributes(:expert_level => data['expert_level'])
