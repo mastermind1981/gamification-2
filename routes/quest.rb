@@ -101,6 +101,7 @@ class Gamification < Sinatra::Application
 
         if level
           quest.levels << level
+          quest.save
         else
           status 500
           return {"error" => "Level "+params[:levelid]+" not found"}.to_json
@@ -139,6 +140,7 @@ class Gamification < Sinatra::Application
 
         if level
           quest.levels.delete(level)
+          quest.save
         else
           status 500
           return {"error" => "Level "+params[:levelid]+" not found"}.to_json
@@ -177,6 +179,7 @@ class Gamification < Sinatra::Application
 
         if group
           quest.assigned_groups << params[:groupid]
+          quest.save
         else
           status 500
           return {"error" => "Group "+params[:groupid]+" not found"}.to_json
@@ -215,6 +218,7 @@ class Gamification < Sinatra::Application
 
         if group
           quest.assigned_groups.delete(params[:groupid])
+          quest.save
         else
           status 500
           return {"error" => "Group "+params[:groupid]+" not found"}.to_json
@@ -231,7 +235,7 @@ class Gamification < Sinatra::Application
     end
   end
 
-  # Add an completed group to a quest by id
+  # Add a completed group to a quest by id
   #
   # param [String] the quest id
   #
@@ -249,12 +253,10 @@ class Gamification < Sinatra::Application
         data = JSON.parse request.body.read
 
         unless data.nil? or data['group_id'].nil? then
-          begin
-            group = Group.find(data['group_id'])
-          end
 
-          if group
-            quest.completed_groups << data
+          if quest.assigned_groups.include?(data['group_id']) then
+            quest.completed_groups << data['group_id']
+            quest.save
             status 200
             return  quest.to_json
           else
@@ -274,7 +276,7 @@ class Gamification < Sinatra::Application
     end
   end
 
-  # Remove an completed group from a quest by id
+  # Remove a completed group from a quest by id
   #
   # param [String] the quest id
   #
@@ -292,12 +294,10 @@ class Gamification < Sinatra::Application
         data = JSON.parse request.body.read
 
         unless data.nil? or data['group_id'].nil? then
-          begin
-            group = Group.find(data['group_id'])
-          end
 
-          if group
-            quest.completed_groups.delete(data)
+          if quest.assigned_groups.include?(data['group_id']) then
+            quest.completed_groups.delete(data['group_id'])
+            quest.save
             status 200
             return  quest.to_json
           else
