@@ -1,8 +1,8 @@
 class Gamification < Sinatra::Application
 
-  # Get all classrooms
+  # Get facebook user details: name, id, avatar
   #
-  # return [Array] classroom objects
+  # return [Object] user in JSON
   get '/facebookUser' do
     if authorized?
       content_type :json

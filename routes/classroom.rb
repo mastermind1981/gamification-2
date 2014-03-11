@@ -103,7 +103,7 @@ class Gamification < Sinatra::Application
           classroom.groups << group
         else
           status 500
-          return {"error" => "Group "+data['group_id']+" not found"}.to_json
+          return {"error" => "Group "+params[:groupid]+" not found"}.to_json
         end
 
         status 200
@@ -141,7 +141,7 @@ class Gamification < Sinatra::Application
           classroom.groups.delete(group)
         else
           status 500
-          return {"error" => "Group "+data['group_id']+" not found"}.to_json
+          return {"error" => "Group "+params[:groupid]+" not found"}.to_json
         end
 
         status 200

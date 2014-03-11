@@ -82,7 +82,7 @@ class Gamification < Sinatra::Application
     end
   end
 
-  # @private
+  # Get the index page for the api documentation
   get '/api' do
     redirect '/api/index.html'
   end
