@@ -183,12 +183,17 @@ class Gamification < Sinatra::Application
 
       group = Group.find(params[:id])
 
-      if group.destroy then
-        status 200
-        return {"message" => "Group "+params[:id]+" deleted"}.to_json
+      if group.students.empty? then
+        if group.destroy then
+          status 200
+          return {"message" => "Group "+params[:id]+" deleted"}.to_json
+        else
+          status 500
+          return {"error" => "Group "+params[:id]+" not deleted"}.to_json
+        end
       else
-        status 500
-        return {"error" => "Group "+params[:id]+" not deleted"}.to_json
+        status 401
+        return {"error" => "This group has students. Delete those first before deleting this group."}.to_json
       end
     else
       status 401

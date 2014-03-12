@@ -290,12 +290,17 @@ class Gamification < Sinatra::Application
 
       quest = Quest.find(params[:id])
 
-      if quest.destroy then
-        status 200
-        return {"message" => "Quest "+params[:id]+" deleted"}.to_json
+      if quest.levels.empty? then
+        if quest.destroy then
+          status 200
+          return {"message" => "Quest "+params[:id]+" deleted"}.to_json
+        else
+          status 500
+          return {"error" => "Quest "+params[:id]+" not deleted"}.to_json
+        end
       else
-        status 500
-        return {"error" => "Quest "+params[:id]+" not deleted"}.to_json
+        status 401
+        return {"error" => "This quest has completed levels. Delete those first before deleting this quest."}.to_json
       end
     else
       status 401

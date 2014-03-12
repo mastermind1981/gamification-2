@@ -107,7 +107,8 @@ class Gamification < Sinatra::Application
           end
 
           if group
-            task.completed_groups << data
+            completedobject = Completedobject.create(:text => data['text'], :user_id => data['user_id'], :group_id => data['group_id'], :finished_on => data['finished_on']);
+            task.completedobjects << completedobject
             task.save
             status 200
             return  task.to_json
@@ -127,51 +128,6 @@ class Gamification < Sinatra::Application
       status 401
     end
   end
-
-  # Remove a completed group from a task by id
-  #
-  # param [String] the task id
-  #
-  # body [Object] in JSON. ex: {"group_id":"<String>", "user_id":"<String>", "text":"<String>", "finished_on":"<String>" }
-  #
-  # return [Object] task
-  put '/task/:id/removecompletedgroup' do
-    if authorized?
-      request.body.rewind  # in case someone already read it
-      content_type :json
-
-      task = Task.find(params[:id])
-
-      if task then
-        data = JSON.parse request.body.read
-
-        unless data.nil? or data['group_id'].nil? then
-          begin
-            group = Group.find(data['group_id'])
-          end
-
-          if group
-            task.completed_groups.delete(data)
-            task.save
-            status 200
-            return  task.to_json
-          else
-            status 500
-            return {"error" => "Group "+data['group_id']+" not found"}.to_json
-          end
-
-        else
-          status 500
-          return {"error" => "Group id missing"}.to_json
-        end
-      else
-        return {"error" => "Task "+params[:id]+" not found"}.to_json
-      end
-    else
-      status 401
-    end
-  end
-
 
   # Delete a task by id
   #

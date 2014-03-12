@@ -168,12 +168,17 @@ class Gamification < Sinatra::Application
 
       classroom = Classroom.find(params[:id])
 
-      if classroom.destroy then
-        status 200
-        return {"message" => "Classroom "+params[:id]+" deleted"}.to_json
+      if classroom.groups.empty? then
+        if classroom.destroy then
+          status 200
+          return {"message" => "Classroom "+params[:id]+" deleted"}.to_json
+        else
+          status 500
+          return {"error" => "Classroom "+params[:id]+" not deleted"}.to_json
+        end
       else
-        status 500
-        return {"error" => "Classroom "+params[:id]+" not deleted"}.to_json
+        status 401
+        return {"error" => "This classroom has groups. Delete those first before deleting this classroom."}.to_json
       end
     else
       status 401

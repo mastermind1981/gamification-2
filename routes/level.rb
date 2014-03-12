@@ -185,51 +185,8 @@ class Gamification < Sinatra::Application
           end
 
           if group
-            level.completed_groups << data
-            level.save
-            status 200
-            return  level.to_json
-          else
-            status 500
-            return {"error" => "Group "+data['group_id']+" not found"}.to_json
-          end
-
-        else
-          status 500
-          return {"error" => "Group id missing"}.to_json
-        end
-      else
-        return {"error" => "Level "+params[:id]+" not found"}.to_json
-      end
-    else
-      status 401
-    end
-  end
-
-  # Remove a completed group from a level by id
-  #
-  # param [String] the level id
-  #
-  # body [Object] in JSON. ex: {"group_id":"<String>", "user_id":"<String>", "text":"<String>", "finished_on":"<String>" }
-  #
-  # return [Object] level
-  put '/level/:id/removecompletedgroup' do
-    if authorized?
-      request.body.rewind  # in case someone already read it
-      content_type :json
-
-      level = Level.find(params[:id])
-
-      if level then
-        data = JSON.parse request.body.read
-
-        unless data.nil? or data['group_id'].nil? then
-          begin
-            group = Group.find(data['group_id'])
-          end
-
-          if group
-            level.completed_groups.delete(data)
+            completedobject = Completedobject.create(:text => data['text'], :user_id => data['user_id'], :group_id => data['group_id'], :finished_on => data['finished_on']);
+            level.completedobjects << completedobject
             level.save
             status 200
             return  level.to_json
@@ -263,12 +220,17 @@ class Gamification < Sinatra::Application
 
       level = Level.find(params[:id])
 
-      if level.destroy then
-        status 200
-        return {"message" => "Level "+params[:id]+" deleted"}.to_json
+      if level.tasks.empty? then
+        if level.destroy then
+          status 200
+          return {"message" => "Level "+params[:id]+" deleted"}.to_json
+        else
+          status 500
+          return {"error" => "Level "+params[:id]+" not deleted"}.to_json
+        end
       else
-        status 500
-        return {"error" => "Level "+params[:id]+" not deleted"}.to_json
+        status 401
+        return {"error" => "This level has tasks. Delete those first before deleting this level."}.to_json
       end
     else
       status 401
