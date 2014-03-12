@@ -178,7 +178,7 @@ class Gamification < Sinatra::Application
         end
 
         if group
-          quest.assigned_groups << params[:groupid]
+          quest.assignedgroups << params[:groupid]
           quest.save
         else
           status 500
@@ -217,7 +217,7 @@ class Gamification < Sinatra::Application
         end
 
         if group
-          quest.assigned_groups.delete(params[:groupid])
+          quest.assignedgroups.delete(params[:groupid])
           quest.save
         else
           status 500
@@ -254,8 +254,10 @@ class Gamification < Sinatra::Application
 
         unless data.nil? or data['group_id'].nil? then
 
-          if quest.assigned_groups.include?(data['group_id']) then
-            quest.completed_groups << data['group_id']
+          if quest.assignedgroups.include?(data['group_id']) then
+
+            completedobject = Completedobject.create(:text => data['text'], :user_id => data['user_id'], :group_id => data['group_id'], :finished_on => data['finished_on']);
+            quest.completedobjects << completedobject
             quest.save
             status 200
             return  quest.to_json
@@ -275,48 +277,6 @@ class Gamification < Sinatra::Application
       status 401
     end
   end
-
-  # Remove a completed group from a quest by id
-  #
-  # param [String] the quest id
-  #
-  # body [Object] in JSON. ex: {"group_id":"<String>", "user_id":"<String>", "text":"<String>", "finished_on":"<String>" }
-  #
-  # return [Object] quest
-  put '/quest/:id/removecompletedgroup' do
-    if authorized?
-      request.body.rewind  # in case someone already read it
-      content_type :json
-
-      quest = Quest.find(params[:id])
-
-      if quest then
-        data = JSON.parse request.body.read
-
-        unless data.nil? or data['group_id'].nil? then
-
-          if quest.assigned_groups.include?(data['group_id']) then
-            quest.completed_groups.delete(data['group_id'])
-            quest.save
-            status 200
-            return  quest.to_json
-          else
-            status 500
-            return {"error" => "Group "+data['group_id']+" not found"}.to_json
-          end
-
-        else
-          status 500
-          return {"error" => "Group id missing"}.to_json
-        end
-      else
-        return {"error" => "Quest "+params[:id]+" not found"}.to_json
-      end
-    else
-      status 401
-    end
-  end
-
 
   # Delete a quest by id
   #

@@ -6,7 +6,9 @@ class Quest
   has_many :levels
   field :levels, :type => Array, :default => []
 
+  has_many :completedobjects
+  field :completedobjects, :type => Array, :default => []
+
   field :label, :type => String
-  field :assigned_groups, :type => Array, :default => []
-  field :completed_groups, :type => Array, :default => []
+  field :assignedgroups, :type => Array, :default => []
 end

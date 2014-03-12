@@ -78,7 +78,7 @@ class Gamification < Sinatra::Application
 
       send_file File.join('private', 'index.html')
     else
-      redirect '/login.html'
+      redirect '/login'
     end
   end
 
