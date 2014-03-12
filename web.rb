@@ -78,7 +78,7 @@ class Gamification < Sinatra::Application
 
       send_file File.join('private', 'index.html')
     else
-      redirect '/login'
+      redirect '/login.html'
     end
   end
 
@@ -105,7 +105,6 @@ class Gamification < Sinatra::Application
       redirect '/'
     end
   end
-
 end
 
 require_relative 'routes/init'
