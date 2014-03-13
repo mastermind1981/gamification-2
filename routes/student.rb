@@ -100,7 +100,7 @@ class Gamification < Sinatra::Application
       if student.destroy then
         status 200
 
-        response = open('http://'+ENV['XMPP_SERVER']+':9090/plugins/userService/userservice?type=delete&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+userid);
+        response = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=delete&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+userid);
 
 
         return {"message" => "Student "+params[:id]+" deleted (messaging account deleted: "+response.status[1]+")"}.to_json
