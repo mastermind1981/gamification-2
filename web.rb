@@ -56,7 +56,7 @@ class Gamification < Sinatra::Application
   get '/logout' do
     session['oauth'] = nil
     session['access_token'] = nil
-    redirect '/'
+    redirect '/loginsso.html'
   end
 
   # Handle the redirect from facebook back to you
@@ -78,7 +78,7 @@ class Gamification < Sinatra::Application
 
       send_file File.join('private', 'index.html')
     else
-      redirect '/login.html'
+      redirect '/loginsso.html'
     end
   end
 
