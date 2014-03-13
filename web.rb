@@ -76,7 +76,7 @@ class Gamification < Sinatra::Application
       unless student then
         Student.create(:facebook_id => @user["id"])
 
-        response = open('http://imediamac19.uio.no:9090/plugins/userService/userservice?type=add&secret=qwertyuiop123456asdfghjkl&username='+@user["id"]+'&password=gami&name='+@user["first_name"]+'_'+@user["last_name"]+'&email='+@user["id"]+'@uio.im');
+        response = open('http://'+ENV['XMPP_SERVER']+':9090/plugins/userService/userservice?type=add&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+@user["id"]+'&password=gami&name=GAMI:_'+@user["first_name"]+'_'+@user["last_name"]+'&email='+@user["id"]+'@uio.im');
       end
 
       send_file File.join('private', 'index.html')
