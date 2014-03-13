@@ -95,10 +95,15 @@ class Gamification < Sinatra::Application
       content_type :json
 
       student = Student.find(params[:id])
+      userid = student.facebook_id;
 
       if student.destroy then
         status 200
-        return {"message" => "Student "+params[:id]+" deleted"}.to_json
+
+        response = open('http://imediamac19.uio.no:9090/plugins/userService/userservice?type=delete&secret=qwertyuiop123456asdfghjkl&username='+userid);
+
+
+        return {"message" => "Student "+params[:id]+" deleted (messaging account deleted: "+response.status[1]+")"}.to_json
       else
         status 500
         return {"error" => "Student "+params[:id]+" not deleted"}.to_json
