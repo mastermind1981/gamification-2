@@ -278,6 +278,60 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Lock a quest by id
+  #
+  # param [String] the quest id
+  #
+  # return [Object] quest
+  put '/quest/:id/lock' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      quest = Quest.find(params[:id])
+
+      if quest then
+        quest.update_attributes(:locked => true)
+        quest.save
+
+        status 200
+
+        return  quest.to_json
+      else
+        return {"error" => "Quest "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Unlock a quest by id
+  #
+  # param [String] the quest id
+  #
+  # return [Object] quest
+  put '/quest/:id/unlock' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      quest = Quest.find(params[:id])
+
+      if quest then
+        quest.update_attributes(:locked => false)
+        quest.save
+
+        status 200
+
+        return  quest.to_json
+      else
+        return {"error" => "Quest "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
   # Delete a quest by id
   #
   # param [String] the quest id

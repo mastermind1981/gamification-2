@@ -207,6 +207,64 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Lock a level by id
+  #
+  # param [String] the level id
+  #
+  # body [Object] in JSON. ex: {"label":"<String>" }
+  #
+  # return [Object] level
+  put '/level/:id' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      level = Level.find(params[:id])
+
+      if level then
+       level.update_attributes(:locked => true)
+       level.save
+
+       status 200
+
+        return  level.to_json
+      else
+        return {"error" => "Level "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Unlock a level by id
+  #
+  # param [String] the level id
+  #
+  # body [Object] in JSON. ex: {"label":"<String>" }
+  #
+  # return [Object] level
+  put '/level/:id' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      level = Level.find(params[:id])
+
+      if level then
+        level.update_attributes(:locked => false)
+        level.save
+
+        status 200
+
+        return  level.to_json
+      else
+        return {"error" => "Level "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
 
   # Delete a level by id
   #

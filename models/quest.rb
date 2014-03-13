@@ -10,5 +10,6 @@ class Quest
   field :completedobjects, :type => Array, :default => []
 
   field :label, :type => String
+  field :locked, :type => Boolean, :default => true
   field :assignedgroups, :type => Array, :default => []
 end
