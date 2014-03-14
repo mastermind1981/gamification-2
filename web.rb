@@ -44,6 +44,17 @@ class Gamification < Sinatra::Application
       end
         return false
     end
+
+    def daysec
+      # Return the timestamp of 00:00 (day number) of the current day
+      return Time.local(Time.now.year, Time.now.month, Time.now.day, 0,0,0).to_i
+    end
+
+    def weeksec
+      # Return the timestamp of the monday 00:00 (day number) of the current week
+      dow = Time.now.strftime("%e").to_i - Time.now.strftime("%u").to_i + 1
+      return Time.local(Time.now.year, Time.now.month, dow, 0,0,0).to_i
+    end
   end
 
 

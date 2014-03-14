@@ -6,6 +6,7 @@ class Completedobject
   belongs_to :quest
   belongs_to :level
   belongs_to :task
+  belongs_to :checklistitem
 
   field :text, :type => String
   field :user_id, :type => String
