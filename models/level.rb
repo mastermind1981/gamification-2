@@ -14,4 +14,5 @@ class Level
   field :label, :type => String
   field :locked, :type => Boolean, :default => true
   field :introduction, :type => String
+  field :idstounlock, :type => Array, :default => []
 end

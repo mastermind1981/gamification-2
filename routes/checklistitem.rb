@@ -88,18 +88,18 @@ class Gamification < Sinatra::Application
         if checklistitem.completedobjects.empty? then
           @weekly << checklistitem
         else
-          olderthanaday = false;
+          olderthanaweek = false;
 
           @completedobject = Completedobject.where(:user_id => params[:id], :checklistitem_id => checklistitem._id)
           @completedobject.each do |completedobject|
             diffsec = completedobject.finished_on.to_i - weeksec
             if diffsec < 604800 and diffsec > 0 then
-              olderthanaday = true;
+              olderthanaweek = true;
               break;
             end
           end
 
-          unless olderthanaday
+          unless olderthanaweek
             @weekly << checklistitem
           end
         end
