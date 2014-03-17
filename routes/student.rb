@@ -38,10 +38,10 @@ class Gamification < Sinatra::Application
       request.body.rewind  # in case someone already read it
       content_type :json
 
-      student = Student.find_by(facebook_id: params[:facebookid])
+      student = Student.find_by(facebookId: params[:facebookid])
 
       unless student then
-        student = Student.create(:facebook_id => params[:facebookid])
+        student = Student.create(:facebookId => params[:facebookid])
       end
 
       status 200
@@ -68,8 +68,8 @@ class Gamification < Sinatra::Application
       if student then
         data = JSON.parse request.body.read
 
-        unless data['expert_level'].nil?
-          student.update_attributes(:expert_level => data['expert_level'])
+        unless data['expertLevel'].nil?
+          student.update_attributes(:expertLevel => data['expertLevel'])
           student.save
         end
 
@@ -95,15 +95,16 @@ class Gamification < Sinatra::Application
       content_type :json
 
       student = Student.find(params[:id])
-      userid = student.facebook_id;
+
+      userid = student.facebookId;
 
       if student.destroy then
         status 200
 
-        response = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=delete&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+userid);
+        #response = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=delete&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+userid);
+        #return {"message" => "Student "+params[:id]+" deleted (messaging account deleted: "+response.status[1]+")"}.to_json
 
-
-        return {"message" => "Student "+params[:id]+" deleted (messaging account deleted: "+response.status[1]+")"}.to_json
+        return {"message" => "Student "+params[:id]+" deleted"}.to_json
       else
         status 500
         return {"error" => "Student "+params[:id]+" not deleted"}.to_json

@@ -12,7 +12,7 @@ class Gamification < Sinatra::Application
       avatar = @graph.get_picture("me")
 
       status 200
-      return {"username" => user["name"], "id" => user["id"], "avatar" => avatar}.to_json
+      return {"userName" => user["name"], "userId" => user["id"], "avatar" => avatar}.to_json
     else
       status 401
     end

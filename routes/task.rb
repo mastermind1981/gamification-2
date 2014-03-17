@@ -88,7 +88,7 @@ class Gamification < Sinatra::Application
   #
   # param [String] the task id
   #
-  # body [Object] in JSON. ex: {"group_id":"<String>", "user_id":"<String>", "text":"<String>", "finished_on":"<String>" }
+  # body [Object] in JSON. ex: {"groupId":"<String>", "userId":"<String>", "text":"<String>", "finishedOn":"<String>" }
   #
   # return [Object] task
   put '/task/:id/addcompletedgroup' do
@@ -101,20 +101,20 @@ class Gamification < Sinatra::Application
       if task then
         data = JSON.parse request.body.read
 
-        unless data.nil? or data['group_id'].nil? then
+        unless data.nil? or data['groupId'].nil? then
           begin
-            group = Group.find(data['group_id'])
+            group = Group.find(data['groupId'])
           end
 
           if group
-            completedobject = Completedobject.create(:text => data['text'], :user_id => data['user_id'], :group_id => data['group_id'], :finished_on => data['finished_on']);
+            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => data['finishedOn']);
             task.completedobjects << completedobject
             task.save
             status 200
             return  task.to_json
           else
             status 500
-            return {"error" => "Group "+data['group_id']+" not found"}.to_json
+            return {"error" => "Group "+data['groupId']+" not found"}.to_json
           end
 
         else

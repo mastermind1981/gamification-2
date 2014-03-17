@@ -239,7 +239,7 @@ class Gamification < Sinatra::Application
   #
   # param [String] the quest id
   #
-  # body [Object] in JSON. ex: {"group_id":"<String>", "user_id":"<String>", "text":"<String>", "finished_on":"<String>" }
+  # body [Object] in JSON. ex: {"groupId":"<String>", "userId":"<String>", "text":"<String>", "finishedOn":"<String>" }
   #
   # return [Object] quest
   put '/quest/:id/addcompletedgroup' do
@@ -252,18 +252,18 @@ class Gamification < Sinatra::Application
       if quest then
         data = JSON.parse request.body.read
 
-        unless data.nil? or data['group_id'].nil? then
+        unless data.nil? or data['groupId'].nil? then
 
-          if quest.assignedgroups.include?(data['group_id']) then
+          if quest.assignedgroups.include?(data['groupId']) then
 
-            completedobject = Completedobject.create(:text => data['text'], :user_id => data['user_id'], :group_id => data['group_id'], :finished_on => data['finished_on']);
+            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => data['finishedOn']);
             quest.completedobjects << completedobject
             quest.save
             status 200
             return  quest.to_json
           else
             status 500
-            return {"error" => "Group "+data['group_id']+" not found"}.to_json
+            return {"error" => "Group "+data['groupId']+" not found"}.to_json
           end
 
         else

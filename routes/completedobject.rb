@@ -50,7 +50,7 @@ class Gamification < Sinatra::Application
   #
   # param [String] the completedobject id
   #
-  # body [Object] in JSON. ex: {"group_id":"<String>", "user_id":"<String>", "text":"<String>", "finished_on":"<Integer>" }
+  # body [Object] in JSON. ex: {"groupId":"<String>", "userId":"<String>", "text":"<String>", "finishedOn":"<Integer>" }
   #
   # return [Object] completedobject
   put '/completedobject/:id' do
@@ -63,23 +63,23 @@ class Gamification < Sinatra::Application
       if completedobject then
         data = JSON.parse request.body.read
 
-        unless data['group_id'].nil?
-          completedobject.update_attributes(:label => data['group_id'])
-          completedobject.save
-        end
-
-        unless data['user_id'].nil?
-          completedobject.update_attributes(:introduction => data['user_id'])
-          completedobject.save
-        end
-
         unless data['text'].nil?
-          completedobject.update_attributes(:introduction => data['text'])
+          completedobject.update_attributes(:text => data['text'])
           completedobject.save
         end
 
-        unless data['finished_on'].nil?
-          completedobject.update_attributes(:introduction => data['finished_on'])
+        unless data['userId'].nil?
+          completedobject.update_attributes(:userId => data['userId'])
+          completedobject.save
+        end
+
+        unless data['groupId'].nil?
+          completedobject.update_attributes(:groupId => data['groupId'])
+          completedobject.save
+        end
+
+        unless data['finishedOn'].nil?
+          completedobject.update_attributes(:finishedOn => data['finishedOn'])
           completedobject.save
         end
 

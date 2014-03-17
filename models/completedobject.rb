@@ -9,7 +9,7 @@ class Completedobject
   belongs_to :checklistitem
 
   field :text, :type => String
-  field :user_id, :type => String
-  field :group_id, :type => String
-  field :finished_on, :type => Integer, :default => 0
+  field :userId, :type => String
+  field :groupId, :type => String
+  field :finishedOn, :type => Integer, :default => 0
 end

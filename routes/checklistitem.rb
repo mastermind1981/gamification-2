@@ -49,9 +49,9 @@ class Gamification < Sinatra::Application
         else
           olderthanaday = false;
 
-          @completedobject = Completedobject.where(:user_id => params[:id], :checklistitem_id => checklistitem._id)
+          @completedobject = Completedobject.where(:userId => params[:id], :checklistitemId => checklistitem._id)
           @completedobject.each do |completedobject|
-            diffsec = completedobject.finished_on.to_i - daysec
+            diffsec = completedobject.finishedOn.to_i - daysec
             if diffsec < 86400 and diffsec > 0 then
               olderthanaday = true;
               break;
@@ -90,9 +90,9 @@ class Gamification < Sinatra::Application
         else
           olderthanaweek = false;
 
-          @completedobject = Completedobject.where(:user_id => params[:id], :checklistitem_id => checklistitem._id)
+          @completedobject = Completedobject.where(:userId => params[:id], :checklistitemId => checklistitem._id)
           @completedobject.each do |completedobject|
-            diffsec = completedobject.finished_on.to_i - weeksec
+            diffsec = completedobject.finishedOn.to_i - weeksec
             if diffsec < 604800 and diffsec > 0 then
               olderthanaweek = true;
               break;
@@ -174,7 +174,7 @@ class Gamification < Sinatra::Application
   #
   # param [String] the checklistitem id
   #
-  # body [Object] in JSON. ex: {"user_id":"<String>", "text":"<String>" }
+  # body [Object] in JSON. ex: {"userId":"<String>", "text":"<String>" }
   #
   # return [Object] checklistitem
   put '/checklistitem/:id/addcompletedstudent' do
@@ -187,20 +187,20 @@ class Gamification < Sinatra::Application
       if checklistitem then
         data = JSON.parse request.body.read
 
-        unless data.nil? or data['user_id'].nil? then
+        unless data.nil? or data['userId'].nil? then
           begin
-            student = Student.find(data['user_id'])
+            student = Student.find(data['userId'])
           end
 
           if student
-            completedobject = Completedobject.create(:text => data['text'], :user_id => data['user_id'], :group_id => student.group_id, :finished_on => Time.now);
+            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => student.groupId, :finishedOn => Time.now);
             checklistitem.completedobjects << completedobject
             checklistitem.save
             status 200
             return  checklistitem.to_json
           else
             status 500
-            return {"error" => "Group "+data['group_id']+" not found"}.to_json
+            return {"error" => "Group "+data['groupId']+" not found"}.to_json
           end
 
         else

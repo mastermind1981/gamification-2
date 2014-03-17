@@ -34,6 +34,8 @@ GEM
     rack (1.5.2)
     rack-protection (1.5.2)
       rack
+    rack-test (0.6.2)
+      rack (>= 1.0)
     rake (10.1.0)
     sinatra (1.4.4)
       rack (~> 1.4)
@@ -55,6 +57,7 @@ DEPENDENCIES
   koala
   mini_magick (~> 3.5.0)
   mongoid (~> 3.1)
+  rack-test
   rake
   sinatra
   yard-sinatra

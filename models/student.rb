@@ -5,6 +5,6 @@ class Student
 
   belongs_to :group
 
-  field :facebook_id, :type => String
-  field :expert_level, :type => Integer, :default => 0
+  field :facebookId, :type => String
+  field :expertLevel, :type => Integer, :default => 0
 end

@@ -69,12 +69,12 @@ class Gamification < Sinatra::Application
         end
 
         unless data['avatarUrl'].nil?
-          group.update_attributes(:avatar_url => data['avatar_url'])
+          group.update_attributes(:avatarUrl => data['avatarUrl'])
           group.save
         end
 
         unless data['blogUrl'].nil?
-          group.update_attributes(:blog_url => data['blog_url'])
+          group.update_attributes(:blogUrl => data['blogUrl'])
           group.save
         end
 
@@ -118,7 +118,7 @@ class Gamification < Sinatra::Application
           group.students << student
         else
           status 500
-          return {"error" => "Student "+data['student_id']+" not found"}.to_json
+          return {"error" => "Student "+params[:studentid]+" not found"}.to_json
         end
 
         status 200
