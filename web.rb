@@ -43,12 +43,14 @@ class Gamification < Sinatra::Application
 
   helpers do
     def authorized?
-      #if session['access_token']
-      #  return true
-      #end
-      #  return false
-
-      return true
+      if ENV['XMPP_SERVER'].nil? then
+        return true
+      else
+        if session['access_token']
+          return true
+        end
+          return false
+      end
     end
 
     def daysec
@@ -129,6 +131,3 @@ end
 
 require_relative 'routes/init'
 require_relative 'models/init'
-
-## @graph = Koala::Facebook::GraphAPI.new(session["access_token"])
-## @user = @graph.get_object("me")

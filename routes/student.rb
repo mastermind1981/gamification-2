@@ -95,16 +95,17 @@ class Gamification < Sinatra::Application
       content_type :json
 
       student = Student.find(params[:id])
-
       userid = student.facebookId;
 
       if student.destroy then
         status 200
 
-        #response = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=delete&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+userid);
-        #return {"message" => "Student "+params[:id]+" deleted (messaging account deleted: "+response.status[1]+")"}.to_json
-
-        return {"message" => "Student "+params[:id]+" deleted"}.to_json
+        if ENV['XMPP_SERVER'].nil? then
+          return {"message" => "Student "+params[:id]+" deleted"}.to_json
+        else
+          xmppresponse = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=delete&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+userid);
+          return {"message" => "Student "+params[:id]+" deleted (messaging account deleted: "+xmppresponse.status[1]+")"}.to_json
+        end
       else
         status 500
         return {"error" => "Student "+params[:id]+" not deleted"}.to_json

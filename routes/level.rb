@@ -214,7 +214,7 @@ class Gamification < Sinatra::Application
   # body [Object] in JSON. ex: {"label":"<String>" }
   #
   # return [Object] level
-  put '/level/:id' do
+  put '/level/:id/lock' do
     if authorized?
       request.body.rewind  # in case someone already read it
       content_type :json
@@ -243,7 +243,7 @@ class Gamification < Sinatra::Application
   # body [Object] in JSON. ex: {"label":"<String>" }
   #
   # return [Object] level
-  put '/level/:id' do
+  put '/level/:id/unlock' do
     if authorized?
       request.body.rewind  # in case someone already read it
       content_type :json
