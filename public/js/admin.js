@@ -29,8 +29,12 @@ gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificatio
     $scope.changeClassroom = function(ind) {
         if(ind == $scope.lastKnownIndex) {
             $scope.classrooms[ind].active = true;
-            $scope.selectedClassGroups = ($scope.classrooms[ind].groups).sort(sortByProperty('label'));
-            $scope.students = ($scope.classrooms[ind].students).sort(sortByProperty('lastName'));
+
+            gamificationFactory.doGetURL('/classroom/'+$scope.classrooms[ind]._id).then(function (response) {
+                $scope.selectedClassGroups = (response[0].groups).sort(sortByProperty('label'));
+                $scope.students = (response[0].students).sort(sortByProperty('lastName'));
+            });
+
         }
         else {
             $scope.lastKnownIndex = ind;

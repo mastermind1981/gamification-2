@@ -8,7 +8,7 @@ class Gamification < Sinatra::Application
       content_type :json
       @classroom = Classroom.all()
       status 200
-      return @classroom.to_json
+      return @classroom.to_json(:only => [ :_id, :label ])
     else
       status 401
     end
