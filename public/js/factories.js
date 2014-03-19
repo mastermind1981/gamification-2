@@ -35,12 +35,17 @@ gamififcationApp.factory('gamificationFactory', function ($http, $q) {
         return getData(url);
     };
 
+    var putURLObject = function(url, data) {
+        return putData(url, data);
+    };
+
     var logout = function() {
         return window.location.href = '/logout';
     };
 
     return {
         doLogOut: logout,
-        doGetURL: getURLObject
+        doGetURL: getURLObject,
+        doPutURL: putURLObject
     }
 });

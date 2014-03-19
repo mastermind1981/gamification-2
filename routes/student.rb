@@ -7,8 +7,24 @@ class Gamification < Sinatra::Application
     if authorized?
       content_type :json
       @student = Student.all()
+
+      @updatedStudents = []
+
+      # fetch the latest fullname and avatar from facebook for each student
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      @student.each do |student|
+        user = @graph.get_object(student.facebookId)
+        avatar = @graph.get_picture(student.facebookId)
+
+        student['firstName'] = user["first_name"];
+        student['lastName'] = user["last_name"];
+        student['avatar'] = avatar;
+
+        @updatedStudents.push(student);
+      end
+
       status 200
-      return @student.to_json
+      return @updatedStudents.to_json
     else
       status 401
     end
@@ -23,6 +39,15 @@ class Gamification < Sinatra::Application
     if authorized?
       content_type :json
       student = Student.find(params[:id])
+
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      user = @graph.get_object(student.facebookId)
+      avatar = @graph.get_picture(student.facebookId)
+
+      student['firstName'] = user["first_name"];
+      student['lastName'] = user["last_name"];
+      student['avatar'] = avatar;
+
       status 200
       return student.to_json
     else

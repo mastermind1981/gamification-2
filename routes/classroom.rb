@@ -155,6 +155,82 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Add a student to a classroom by id
+  #
+  # param [String] the classroom id
+  #
+  # param [String] the student id
+  #
+  # return [Object] classroom
+  put '/classroom/:id/addstudent/:studentid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      classroom = Classroom.find(params[:id])
+
+      if classroom then
+
+        begin
+          student = Student.find(params[:studentid])
+        end
+
+        if student
+          classroom.students << student
+        else
+          status 500
+          return {"error" => "Student "+params[:studentid]+" not found"}.to_json
+        end
+
+        status 200
+
+        return  classroom.to_json
+      else
+        return {"error" => "Classroom "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Remove a student from a classroom by id
+  #
+  # param [String] the classroom id
+  #
+  # param [String] the student id
+  #
+  # return [Object] classroom
+  put '/classroom/:id/removestudent/:studentid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      classroom = Classroom.find(params[:id])
+
+      if classroom then
+
+        begin
+          student = Student.find(params[:studentid])
+        end
+
+        if student
+          classroom.students.delete(student)
+        else
+          status 500
+          return {"error" => "Student "+params[:studentid]+" not found"}.to_json
+        end
+
+        status 200
+
+        return  classroom.to_json
+      else
+        return {"error" => "Classroom "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
 
   # Delete a classroom by id
   #

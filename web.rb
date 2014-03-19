@@ -91,9 +91,9 @@ class Gamification < Sinatra::Application
       @graph = Koala::Facebook::API.new(session["access_token"])
       @user = @graph.get_object("me")
 
-      student = Student.find_by(facebook_id: @user["id"])
+      student = Student.find_by(facebookId: @user["id"])
       unless student then
-        Student.create(:facebook_id => @user["id"])
+        Student.create(:facebookId => @user["id"])
 
         response = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=add&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+@user["id"]+'&password=gami&name=GAMI:_'+@user["first_name"]+'_'+@user["last_name"]+'&email='+@user["id"]+'@uio.im');
       end
@@ -123,6 +123,15 @@ class Gamification < Sinatra::Application
   get '/f.html' do
     if authorized?
       send_file File.join('private', 'f.html')
+    else
+      redirect '/'
+    end
+  end
+
+  # Get the f.html page
+  get '/admin.html' do
+    if authorized?
+      send_file File.join('private', 'admin.html')
     else
       redirect '/'
     end

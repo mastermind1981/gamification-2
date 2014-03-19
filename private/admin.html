@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Gamification admin</title>
+    <!-- Local StyleSheets -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+    <!-- External live-loaded dependencies-->
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-sanitize.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- Local scripts -->
+    <script src="js/init.js"></script>
+    <script src="js/factories.js"></script>
+    <script src="js/admin.js"></script>
+</head>
+<body ng-app="gamififcationApp">
+    <div ng-controller="adminCtrl" id="adminWrapper">
+        <tabset>
+            <tab ng-repeat="classroom in classrooms" heading="{{classroom.label}}" active="classroom.active" select="checkSelectedTab($index)" disabled="classroom.disabled"></tab>
+        </tabset>
+
+        <pre class="alert alert-info">List of students:</pre>
+
+        <ul>
+            <li class="studentListItem" ng-repeat="student in students">
+                <img ng-src="{{student.avatar}}"/>
+                <select ng-model="selectedIndex" ng-change="selectChange(student, selectedIndex)">
+                    <option value="{{$index}}" ng-selected="getGroupSelectedStatus(student, group)" ng-repeat="group in selectedClassGroups">{{group.label}}</option>
+                </select>
+
+                <span><b>{{student.firstName}} {{student.lastName}} ({{student.facebookId}})</b></span>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

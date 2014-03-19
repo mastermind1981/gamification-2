@@ -8,3 +8,14 @@
     bottom: 0;
     right: 0;
 }
+
+#adminWrapper {
+    padding-right: 30px;
+    padding-left: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.studentListItem {
+    list-style: none;
+}
