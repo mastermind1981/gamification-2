@@ -39,6 +39,10 @@ gamififcationApp.factory('gamificationFactory', function ($http, $q) {
         return putData(url, data);
     };
 
+    var postURLObject = function(url, data) {
+        return postData(url, data);
+    };
+
     var logout = function() {
         return window.location.href = '/logout';
     };
@@ -46,6 +50,24 @@ gamififcationApp.factory('gamificationFactory', function ($http, $q) {
     return {
         doLogOut: logout,
         doGetURL: getURLObject,
-        doPutURL: putURLObject
+        doPutURL: putURLObject,
+        doPostURL: postURLObject
+    }
+});
+
+gamififcationApp.factory('gamificationUtilities', function ($http) {
+
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    };
+
+    var getRandomUUID = function() {
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
+
+    return {
+        getRandomUUID: getRandomUUID
     }
 });

@@ -1,10 +1,9 @@
-gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificationFactory, $location) {
+gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificationFactory, $location, gamificationUtilities) {
 
     $scope.classrooms = [];
     $scope.selectedClassGroups = [];
     $scope.students = [];
-
-    initView();
+    $scope.lastKnownIndex = 0
 
     function sortByProperty(property) {
         'use strict';
@@ -20,16 +19,23 @@ gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificatio
         };
     };
 
-    function initView() {
+    $scope.initView = function() {
         gamificationFactory.doGetURL('/classroom').then(function (response) {
             $scope.classrooms = response[0];
-            $scope.changeClassroom(0);
+            $scope.changeClassroom($scope.lastKnownIndex);
         });
     };
 
     $scope.changeClassroom = function(ind) {
-        $scope.selectedClassGroups = ($scope.classrooms[ind].groups).sort(sortByProperty('label'));
-        $scope.students = ($scope.classrooms[ind].students).sort(sortByProperty('lastName'));
+        if(ind == $scope.lastKnownIndex) {
+            $scope.classrooms[ind].active = true;
+            $scope.selectedClassGroups = ($scope.classrooms[ind].groups).sort(sortByProperty('label'));
+            $scope.students = ($scope.classrooms[ind].students).sort(sortByProperty('lastName'));
+        }
+        else {
+            $scope.lastKnownIndex = ind;
+            $scope.initView();
+        }
     };
 
     $scope.getGroupSelectedStatus = function(student, group) {
@@ -51,4 +57,24 @@ gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificatio
     $scope.checkSelectedTab = function(tabIndex) {
         $scope.changeClassroom(tabIndex);
     };
+
+    $scope.addNewClassroom = function() {
+        gamificationFactory.doPostURL('/classroom').then(function (response) {
+            if(response[1] == 200) {
+                gamificationFactory.doPutURL('/classroom/'+response[0]._id, {label: (gamificationUtilities.getRandomUUID()).substr(0, 10)}).then(function (response) {
+                    if(response[1] == 200) {
+                        $scope.initView();
+                    }
+                    else {
+                        //something wrong happened when updating the label of a classroom. Do what?
+                    }
+                });
+            }
+            else {
+                //something wrong happened when creating a classroom. Do what?
+            }
+        });
+    };
+
+    $scope.initView();
 });

@@ -27,6 +27,7 @@
     <div ng-controller="adminCtrl" id="adminWrapper">
         <tabset>
             <tab ng-repeat="classroom in classrooms" heading="{{classroom.label}}" active="classroom.active" select="checkSelectedTab($index)" disabled="classroom.disabled"></tab>
+            <button ng-click="addNewClassroom()"><i class="icon-plus-sign"></i></button>
         </tabset>
 
         <pre class="alert alert-info">List of students:</pre>
