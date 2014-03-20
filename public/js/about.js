@@ -1,4 +1,4 @@
-gamififcationApp.controller('fCtrl', function($scope, $http, $q, gamificationFactory, $location) {
+gamififcationApp.controller('aboutCtrl', function($scope, $http, $q, gamificationFactory, $location) {
 
     initView();
 

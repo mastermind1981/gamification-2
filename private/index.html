@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <title>Gamification</title>
 
+    <meta name="description" content="Gamification project between Caroline Cruaud (UiO) and Engagelab (UiO)">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="author" content="Jeremy Toussaint, UiO" />
 
     <!-- Local StyleSheets -->
     <link rel="stylesheet" href="css/normalize.css">
@@ -30,20 +32,30 @@
 </head>
 <body ng-app="gamififcationApp">
     <div ng-controller="navigationCtrl">
-        <img ng-src="{{avatarUrl}}"/> Hello {{username}} ({{facebookId}})
+        <header>
+            <div class="wrap">
+                <!-- logo -->
+                <div id="logo">
+                    <a href="#"> <img ng-src="{{avatarUrl}}"/></a>
+                    {{username}} ({{facebookId}})
+                </div>
 
-        <div>
-            <accordion close-others="oneAtATime">
-                <accordion-group is-open="isopen">
-                    <accordion-heading>
-                        Click here to some text <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
-                    </accordion-heading>
+                <a href="" ng-click="gotoAbout()">click</a>
+            </div>
+        </header>
+
+        <!-- main content -->
+        <div class="contentwrap">
+            <div style="position:relative">
+                <div style="width:100%" ng-view ng-animate="{enter: 'view-enter', leave: 'view-leave'}">
                     <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                </accordion-group>
-            </accordion>
+                </div>
+            </div>
         </div>
 
-        <footer>You are logged in! <button class="btn btn-sm btn-danger" ng-click="logout()">Sign out</button></footer>
+        <footer>
+            You are logged in! <button class="btn btn-sm btn-danger" ng-click="logout()">Sign out</button>
+        </footer>
     </div>
 </body>
 </html>

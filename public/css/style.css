@@ -1,3 +1,24 @@
+html {
+    min-height:100%;
+    overflow-x:hidden;
+    overflow-y:scroll;
+    position:relative;
+    width:100%;
+}
+body {
+    background-color:#333333;
+    color:#FFFFFF;
+    margin:0;
+    min-height:100%;
+    width:100%;
+}
+a {
+    text-decoration:none;
+}
+a img {
+    border:none;
+}
+
 #logoutButtonDiv {
     width: 300px;
     height: 70px;
@@ -18,4 +39,53 @@
 
 .studentListItem {
     list-style: none;
+}
+
+@media (max-width: 1200px) {
+    body {
+
+    }
+
+    .wrap {
+        padding:0 30px;
+    }
+
+    .contentwrap {
+        padding: 10px 10px 10px 10px;
+    }
+}
+
+@media (max-width: 900px) {
+
+}
+
+@media (max-width: 768px) {
+    body {
+
+        margin:0;
+    }
+
+    .wrap {
+        padding:0 15px;
+    }
+
+    .contentwrap {
+        padding: 5px 5px 5px 5px;
+    }
+
+}
+
+@media (max-width: 480px) {
+    body {
+
+        margin:0;
+    }
+
+    .wrap {
+        padding:0 10px;
+    }
+
+    .contentwrap {
+        padding: 3px 3px 3px 3px;
+    }
 }
