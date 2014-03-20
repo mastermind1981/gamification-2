@@ -7,8 +7,25 @@ class Gamification < Sinatra::Application
     if authorized?
       content_type :json
       @student = Student.all()
+
+      @updatedStudents = []
+      # fetch the latest fullname and avatar from facebook for each student
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      @student.each do |student|
+        unless student.facebookId == "0000" then
+          user = @graph.get_object(student.facebookId)
+          avatar = @graph.get_picture(student.facebookId)
+
+          student['firstName'] = user["first_name"];
+          student['lastName'] = user["last_name"];
+          student['avatar'] = avatar;
+        end
+        @updatedStudents.push(student);
+      end
+
       status 200
-      return @student.to_json
+      return @updatedStudents.to_json
+
     else
       status 401
     end
@@ -22,7 +39,19 @@ class Gamification < Sinatra::Application
   get '/student/:id' do
     if authorized?
       content_type :json
+
       student = Student.find(params[:id])
+
+      unless student.facebookId == "0000" then
+        @graph = Koala::Facebook::API.new(session["access_token"])
+        user = @graph.get_object(student.facebookId)
+        avatar = @graph.get_picture(student.facebookId)
+
+        student['firstName'] = user["first_name"];
+        student['lastName'] = user["last_name"];
+        student['avatar'] = avatar;
+      end
+
       status 200
       return student.to_json
     else
@@ -38,10 +67,10 @@ class Gamification < Sinatra::Application
       request.body.rewind  # in case someone already read it
       content_type :json
 
-      student = Student.find_by(facebook_id: params[:facebookid])
+      student = Student.find_by(facebookId: params[:facebookid])
 
       unless student then
-        student = Student.create(:facebook_id => params[:facebookid])
+        student = Student.create(:facebookId => params[:facebookid])
       end
 
       status 200
@@ -68,8 +97,8 @@ class Gamification < Sinatra::Application
       if student then
         data = JSON.parse request.body.read
 
-        unless data['expert_level'].nil?
-          student.update_attributes(:expert_level => data['expert_level'])
+        unless data['expertLevel'].nil?
+          student.update_attributes(:expertLevel => data['expertLevel'])
           student.save
         end
 
@@ -95,10 +124,17 @@ class Gamification < Sinatra::Application
       content_type :json
 
       student = Student.find(params[:id])
+      userid = student.facebookId;
 
       if student.destroy then
         status 200
-        return {"message" => "Student "+params[:id]+" deleted"}.to_json
+
+        if ENV['XMPP_SERVER'].nil? then
+          return {"message" => "Student "+params[:id]+" deleted"}.to_json
+        else
+          xmppresponse = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=delete&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+userid);
+          return {"message" => "Student "+params[:id]+" deleted (messaging account deleted: "+xmppresponse.status[1]+")"}.to_json
+        end
       else
         status 500
         return {"error" => "Student "+params[:id]+" not deleted"}.to_json

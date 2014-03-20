@@ -8,7 +8,11 @@ class Level
   has_many :tasks
   field :tasks, :type => Array, :default => []
 
+  has_many :completedobjects
+  field :completedobjects, :type => Array, :default => []
+
   field :label, :type => String
+  field :locked, :type => Boolean, :default => true
   field :introduction, :type => String
-  field :completed_groups, :type => Array, :default => []
+  field :idstounlock, :type => Array, :default => []
 end

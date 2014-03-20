@@ -35,12 +35,39 @@ gamififcationApp.factory('gamificationFactory', function ($http, $q) {
         return getData(url);
     };
 
+    var putURLObject = function(url, data) {
+        return putData(url, data);
+    };
+
+    var postURLObject = function(url, data) {
+        return postData(url, data);
+    };
+
     var logout = function() {
         return window.location.href = '/logout';
     };
 
     return {
         doLogOut: logout,
-        doGetURL: getURLObject
+        doGetURL: getURLObject,
+        doPutURL: putURLObject,
+        doPostURL: postURLObject
+    }
+});
+
+gamififcationApp.factory('gamificationUtilities', function ($http) {
+
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+    };
+
+    var getRandomUUID = function() {
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
+
+    return {
+        getRandomUUID: getRandomUUID
     }
 });

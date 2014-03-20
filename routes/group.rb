@@ -69,12 +69,12 @@ class Gamification < Sinatra::Application
         end
 
         unless data['avatarUrl'].nil?
-          group.update_attributes(:avatar_url => data['avatar_url'])
+          group.update_attributes(:avatarUrl => data['avatarUrl'])
           group.save
         end
 
         unless data['blogUrl'].nil?
-          group.update_attributes(:blog_url => data['blog_url'])
+          group.update_attributes(:blogUrl => data['blogUrl'])
           group.save
         end
 
@@ -114,11 +114,11 @@ class Gamification < Sinatra::Application
           student = Student.find(params[:studentid])
         end
 
-        if student
+        if student and group.classroom_id == student.classroom_id then
           group.students << student
         else
           status 500
-          return {"error" => "Student "+data['student_id']+" not found"}.to_json
+          return {"error" => "Student "+params[:studentid]+" not found"}.to_json
         end
 
         status 200
@@ -183,12 +183,17 @@ class Gamification < Sinatra::Application
 
       group = Group.find(params[:id])
 
-      if group.destroy then
-        status 200
-        return {"message" => "Group "+params[:id]+" deleted"}.to_json
+      if group.students.empty? then
+        if group.destroy then
+          status 200
+          return {"message" => "Group "+params[:id]+" deleted"}.to_json
+        else
+          status 500
+          return {"error" => "Group "+params[:id]+" not deleted"}.to_json
+        end
       else
-        status 500
-        return {"error" => "Group "+params[:id]+" not deleted"}.to_json
+        status 401
+        return {"error" => "This group has students. Delete those first before deleting this group."}.to_json
       end
     else
       status 401

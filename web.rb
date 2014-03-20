@@ -9,6 +9,7 @@ require 'securerandom'
 require 'logger'
 require 'bcrypt'
 require 'koala'
+require 'open-uri'
 
 
 class Gamification < Sinatra::Application
@@ -38,10 +39,25 @@ class Gamification < Sinatra::Application
 
   helpers do
     def authorized?
-      if session['access_token']
+      if ENV['XMPP_SERVER'].nil? then
         return true
+      else
+        if session['access_token']
+          return true
+        end
+          return false
       end
-        return false
+    end
+
+    def daysec
+      # Return the timestamp of 00:00 (day number) of the current day
+      return Time.local(Time.now.year, Time.now.month, Time.now.day, 0,0,0).to_i
+    end
+
+    def weeksec
+      # Return the timestamp of the monday 00:00 (day number) of the current week
+      dow = Time.now.strftime("%e").to_i - Time.now.strftime("%u").to_i + 1
+      return Time.local(Time.now.year, Time.now.month, dow, 0,0,0).to_i
     end
   end
 
@@ -56,7 +72,7 @@ class Gamification < Sinatra::Application
   get '/logout' do
     session['oauth'] = nil
     session['access_token'] = nil
-    redirect '/'
+    redirect '/loginsso.html'
   end
 
   # Handle the redirect from facebook back to you
@@ -71,18 +87,20 @@ class Gamification < Sinatra::Application
       @graph = Koala::Facebook::API.new(session["access_token"])
       @user = @graph.get_object("me")
 
-      student = Student.find_by(facebook_id: @user["id"])
+      student = Student.find_by(facebookId: @user["id"])
       unless student then
-        Student.create(:facebook_id => @user["id"])
+        Student.create(:facebookId => @user["id"])
+
+        resp = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=add&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+@user["id"]+'&password=gami&name=GAMI:_'+@user["first_name"]+'_'+@user["last_name"]+'&email='+@user["id"]+'@uio.im');
       end
 
       send_file File.join('private', 'index.html')
     else
-      redirect '/login.html'
+      redirect '/loginsso.html'
     end
   end
 
-  # @private
+  # Get the index page for the api documentation
   get '/api' do
     redirect '/api/index.html'
   end
@@ -106,10 +124,15 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get the f.html page
+  get '/admin.html' do
+    if authorized?
+      send_file File.join('private', 'admin.html')
+    else
+      redirect '/'
+    end
+  end
 end
 
 require_relative 'routes/init'
 require_relative 'models/init'
-
-## @graph = Koala::Facebook::GraphAPI.new(session["access_token"])
-## @user = @graph.get_object("me")

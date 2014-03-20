@@ -8,7 +8,7 @@ class Gamification < Sinatra::Application
       content_type :json
       @classroom = Classroom.all()
       status 200
-      return @classroom.to_json
+      return @classroom.to_json(:only => [ :_id, :label ])
     else
       status 401
     end
@@ -103,7 +103,7 @@ class Gamification < Sinatra::Application
           classroom.groups << group
         else
           status 500
-          return {"error" => "Group "+data['group_id']+" not found"}.to_json
+          return {"error" => "Group "+params[:groupid]+" not found"}.to_json
         end
 
         status 200
@@ -141,7 +141,83 @@ class Gamification < Sinatra::Application
           classroom.groups.delete(group)
         else
           status 500
-          return {"error" => "Group "+data['group_id']+" not found"}.to_json
+          return {"error" => "Group "+params[:groupid]+" not found"}.to_json
+        end
+
+        status 200
+
+        return  classroom.to_json
+      else
+        return {"error" => "Classroom "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Add a student to a classroom by id
+  #
+  # param [String] the classroom id
+  #
+  # param [String] the student id
+  #
+  # return [Object] classroom
+  put '/classroom/:id/addstudent/:studentid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      classroom = Classroom.find(params[:id])
+
+      if classroom then
+
+        begin
+          student = Student.find(params[:studentid])
+        end
+
+        if student
+          classroom.students << student
+        else
+          status 500
+          return {"error" => "Student "+params[:studentid]+" not found"}.to_json
+        end
+
+        status 200
+
+        return  classroom.to_json
+      else
+        return {"error" => "Classroom "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Remove a student from a classroom by id
+  #
+  # param [String] the classroom id
+  #
+  # param [String] the student id
+  #
+  # return [Object] classroom
+  put '/classroom/:id/removestudent/:studentid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      classroom = Classroom.find(params[:id])
+
+      if classroom then
+
+        begin
+          student = Student.find(params[:studentid])
+        end
+
+        if student
+          classroom.students.delete(student)
+        else
+          status 500
+          return {"error" => "Student "+params[:studentid]+" not found"}.to_json
         end
 
         status 200
@@ -168,12 +244,17 @@ class Gamification < Sinatra::Application
 
       classroom = Classroom.find(params[:id])
 
-      if classroom.destroy then
-        status 200
-        return {"message" => "Classroom "+params[:id]+" deleted"}.to_json
+      if classroom.groups.empty? then
+        if classroom.destroy then
+          status 200
+          return {"message" => "Classroom "+params[:id]+" deleted"}.to_json
+        else
+          status 500
+          return {"error" => "Classroom "+params[:id]+" not deleted"}.to_json
+        end
       else
-        status 500
-        return {"error" => "Classroom "+params[:id]+" not deleted"}.to_json
+        status 401
+        return {"error" => "This classroom has groups. Delete those first before deleting this classroom."}.to_json
       end
     else
       status 401

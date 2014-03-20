@@ -1,8 +1,8 @@
 class Gamification < Sinatra::Application
 
-  # Get all classrooms
+  # Get facebook user details: name, id, avatar
   #
-  # return [Array] classroom objects
+  # return [Object] user in JSON
   get '/facebookUser' do
     if authorized?
       content_type :json
@@ -12,7 +12,7 @@ class Gamification < Sinatra::Application
       avatar = @graph.get_picture("me")
 
       status 200
-      return {"username" => user["name"], "id" => user["id"], "avatar" => avatar}.to_json
+      return {"userName" => user["name"], "userId" => user["id"], "avatar" => avatar}.to_json
     else
       status 401
     end

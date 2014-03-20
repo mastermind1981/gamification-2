@@ -4,7 +4,8 @@ class Student
   include Mongoid::Document
 
   belongs_to :group
+  belongs_to :classroom
 
-  field :facebook_id, :type => String
-  field :expert_level, :type => Integer, :default => 0
+  field :facebookId, :type => String
+  field :expertLevel, :type => Integer, :default => 0
 end

@@ -8,9 +8,9 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
     function initView() {
         gamificationFactory.doGetURL('/facebookUser').then(function (response) {
-            $scope.username = response[0].username;
+            $scope.username = response[0].userName;
             $scope.avatarUrl = response[0].avatar;
-            $scope.facebookId = response[0].id;
+            $scope.facebookId = response[0].userId;
         });
     };
 
