@@ -8,4 +8,5 @@ class Checklistitem
 
   field :description, :type => String
   field :frequency, :type => String
+  field :badges, :type => Array, :default => []
 end
