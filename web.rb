@@ -20,16 +20,12 @@ class Gamification < Sinatra::Application
   # :expire_after => 60 * 60 * 24,  #expire after 1 day
   #  :secret => 'asadbb2342923222f1adc05c834fa234230e3494b93824b10e930bb0fb89b'
 
-  set :test, :environment, :production
+  set :environment, :production
   set :public_folder, 'public'
 
   configure do
     set :app_file, __FILE__
     Mongoid.load! "#{File.dirname(__FILE__)}/config/mongoid.yml"
-  end
-
-  configure :test do
-    enable :logging, :dump_errors, :raise_errors
   end
 
   configure :development do
@@ -95,7 +91,7 @@ class Gamification < Sinatra::Application
       unless student then
         Student.create(:facebookId => @user["id"])
 
-        response = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=add&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+@user["id"]+'&password=gami&name=GAMI:_'+@user["first_name"]+'_'+@user["last_name"]+'&email='+@user["id"]+'@uio.im');
+        resp = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=add&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+@user["id"]+'&password=gami&name=GAMI:_'+@user["first_name"]+'_'+@user["last_name"]+'&email='+@user["id"]+'@uio.im');
       end
 
       send_file File.join('private', 'index.html')

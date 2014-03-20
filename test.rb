@@ -25,6 +25,27 @@ class GamificationTest < Test::Unit::TestCase
     @groupId = nil
     @classId = nil
 
+    post '/classroom' do
+      assert_equal 200, last_response.status
+      assert_includes last_response.content_type, 'application/json'
+
+      json = JSON.parse(last_response.body)
+      assert_kind_of Hash, json
+      assert json['_id']
+      @classId = json.fetch('_id')
+      p "POST classroom: "+@classId
+    end
+
+    put '/classroom/'+@classId, {:label => 'test'}.to_json do
+      assert_equal 200, last_response.status
+      assert_includes last_response.content_type, 'application/json'
+
+      json = JSON.parse(last_response.body)
+      assert_kind_of Hash, json
+      assert_equal 'test', json.fetch('label')
+      p "PUT classroom: "+json.fetch('_id')+" ("+json.fetch('label').to_s+")"
+    end
+
     post '/student/0000' do
       assert_equal 200, last_response.status
       assert_includes last_response.content_type, 'application/json'
@@ -45,6 +66,15 @@ class GamificationTest < Test::Unit::TestCase
       assert_kind_of Hash, json
       assert_equal 2, json.fetch('expertLevel')
       p "PUT student: "+json.fetch('_id')+" ("+json.fetch('expertLevel').to_s+")"
+    end
+
+    put '/classroom/'+@classId+'/addstudent/'+@studentId do
+      assert_equal 200, last_response.status
+      assert_includes last_response.content_type, 'application/json'
+
+      json = JSON.parse(last_response.body)
+      assert_kind_of Hash, json
+      p "PUT student to classroom: "+json.fetch('_id')+" ("+json.fetch('students').to_s+")"
     end
 
     post '/group' do
@@ -71,6 +101,16 @@ class GamificationTest < Test::Unit::TestCase
       p "PUT group: "+json.fetch('_id')+" ("+json.fetch('label').to_s+", "+json.fetch('avatarUrl').to_s+", "+json.fetch('blogUrl').to_s+", "+json.fetch('score').to_s+")"
     end
 
+    put '/classroom/'+@classId+'/addgroup/'+@groupId do
+      assert_equal 200, last_response.status
+      assert_includes last_response.content_type, 'application/json'
+
+      json = JSON.parse(last_response.body)
+      assert_kind_of Hash, json
+
+      p "PUT add group to classroom: "+json.fetch('_id')+" ("+json.fetch('groups').to_s+")"
+    end
+
     put '/group/'+@groupId+'/addstudent/'+@studentId do
       assert_equal 200, last_response.status
       assert_includes last_response.content_type, 'application/json'
@@ -90,6 +130,7 @@ class GamificationTest < Test::Unit::TestCase
       assert json['_id']
       assert_equal '0000', json.fetch('facebookId')
       assert_equal @groupId, json.fetch('group_id')
+      assert_equal @classId, json.fetch('classroom_id')
       p "GET student: "+json.fetch('_id')
     end
 
@@ -101,37 +142,6 @@ class GamificationTest < Test::Unit::TestCase
       assert_kind_of Hash, json
 
       p "PUT remove student from group: "+json.fetch('_id')+" ("+json.fetch('students').to_s+")"
-    end
-
-    post '/classroom' do
-      assert_equal 200, last_response.status
-      assert_includes last_response.content_type, 'application/json'
-
-      json = JSON.parse(last_response.body)
-      assert_kind_of Hash, json
-      assert json['_id']
-      @classId = json.fetch('_id')
-      p "POST classroom: "+@classId
-    end
-
-    put '/classroom/'+@classId, {:label => 'test'}.to_json do
-      assert_equal 200, last_response.status
-      assert_includes last_response.content_type, 'application/json'
-
-      json = JSON.parse(last_response.body)
-      assert_kind_of Hash, json
-      assert_equal 'test', json.fetch('label')
-      p "PUT classroom: "+json.fetch('_id')+" ("+json.fetch('label').to_s+")"
-    end
-
-    put '/classroom/'+@classId+'/addgroup/'+@groupId do
-      assert_equal 200, last_response.status
-      assert_includes last_response.content_type, 'application/json'
-
-      json = JSON.parse(last_response.body)
-      assert_kind_of Hash, json
-
-      p "PUT add group to classroom: "+json.fetch('_id')+" ("+json.fetch('groups').to_s+")"
     end
 
     get '/group/'+@groupId do

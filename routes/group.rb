@@ -114,7 +114,7 @@ class Gamification < Sinatra::Application
           student = Student.find(params[:studentid])
         end
 
-        if student
+        if student and group.classroom_id == student.classroom_id then
           group.students << student
         else
           status 500

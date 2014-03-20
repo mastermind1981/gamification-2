@@ -22,11 +22,15 @@ gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificatio
     $scope.initView = function() {
         gamificationFactory.doGetURL('/classroom').then(function (response) {
             $scope.classrooms = response[0];
-            $scope.changeClassroom($scope.lastKnownIndex);
+
+            if($scope.classrooms.length > 0) {
+                $scope.changeClassroom($scope.lastKnownIndex);
+            }
         });
     };
 
     $scope.changeClassroom = function(ind) {
+
         if(ind == $scope.lastKnownIndex) {
             $scope.classrooms[ind].active = true;
 
