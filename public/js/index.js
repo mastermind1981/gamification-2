@@ -17,4 +17,8 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.logout = function() {
         gamificationFactory.doLogOut();
     };
+
+    $scope.gotoAbout = function() {
+        window.location.href = '/about.html';
+    };
 });

@@ -116,9 +116,9 @@ class Gamification < Sinatra::Application
   end
 
   # Get the f.html page
-  get '/f.html' do
+  get '/about.html' do
     if authorized?
-      send_file File.join('private', 'f.html')
+      send_file File.join('private', 'about.html')
     else
       redirect '/'
     end
