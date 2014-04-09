@@ -132,6 +132,33 @@ class Gamification < Sinatra::Application
       redirect '/'
     end
   end
+
+  # Get the blank.html page
+  get '/blank.html' do
+    if authorized?
+      send_file File.join('private', 'blank.html')
+    else
+      redirect '/'
+    end
+  end
+
+  # Get the activities.html page
+  get '/activities.html' do
+    if authorized?
+      send_file File.join('private', 'activities.html')
+    else
+      redirect '/'
+    end
+  end
+
+  # Get the quests.html page
+  get '/quests.html' do
+    if authorized?
+      send_file File.join('private', 'quests.html')
+    else
+      redirect '/'
+    end
+  end
 end
 
 require_relative 'routes/init'

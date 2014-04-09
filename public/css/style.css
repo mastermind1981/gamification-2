@@ -9,7 +9,7 @@ body {
     background-color:#333333;
     color:#FFFFFF;
     margin:0;
-    min-height:100%;
+    height:100%;
     width:100%;
 }
 a {
@@ -19,7 +19,23 @@ a img {
     border:none;
 }
 
-#logoutButtonDiv {
+header a {
+    color: #C5060B;
+    text-decoration: underline;
+}
+
+.header {
+    text-align: center;
+    width: 100%;
+    background-color: #318495;
+    color: #222222;
+    height: 70px;
+    vertical-align: middle;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+#logoutButtonDivWrapper {
     width: 300px;
     height: 70px;
     margin: auto;
@@ -28,6 +44,39 @@ a img {
     left: 0;
     bottom: 0;
     right: 0;
+}
+
+#logoutButtonDiv {
+    width: 300px;
+    height: 65px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    padding: 0;
+}
+
+#waiterWrapper  {
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#waiter  {
+    width: 30px;
+    height: 30px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    padding: 0;
+}
+
+#logoutButtonDiv img {
+    border:none;
 }
 
 #adminWrapper {
@@ -41,51 +90,81 @@ a img {
     list-style: none;
 }
 
-@media (max-width: 1200px) {
-    body {
+.wrap {
+    background-color: #318495;
+}
 
+@media {
+    body {
+        height: 100%;
+        width: 100%;
     }
 
     .wrap {
-        padding:0 30px;
+        padding:10px 10px 10px 10px;
+        min-height: 70px;
     }
 
     .contentwrap {
-        padding: 10px 10px 10px 10px;
+        padding: 0px 0px 0px 0px;
+        height: 100%;
+        width: 100%;
     }
-}
-
-@media (max-width: 900px) {
-
 }
 
 @media (max-width: 768px) {
     body {
-
+        height: 100%;
+        width: 100%;
         margin:0;
     }
 
     .wrap {
-        padding:0 15px;
+        padding:5px 5px 5px 5px;
+        min-height: 60px;
     }
 
     .contentwrap {
-        padding: 5px 5px 5px 5px;
+        padding: 0px 0px 0px 0px;
+        height: 100%;
     }
 
 }
 
 @media (max-width: 480px) {
     body {
-
+        height: 100%;
+        width: 100%;
         margin:0;
     }
 
     .wrap {
-        padding:0 10px;
+        padding:3px 3px 3px 3px;
+        height: 56px;
     }
 
     .contentwrap {
-        padding: 3px 3px 3px 3px;
+        padding: 0px 0px 0px 0px;
+        height: 100%;
     }
+}
+
+.alert-error {
+    background-color: #CB3D39;
+}
+
+.classroom {
+    background-color: #666666;
+    color: #FFFFFF;
+    min-height: 50px;
+    min-width: 100%;
+    margin: 5px 0 5px 0;
+}
+
+.classroomJoin {
+    background-color: #036A07;
+    color: #FFFFFF;
+    min-height: 50px;
+    min-width: 100%;
+    margin: 5px 0 5px 0;
 }

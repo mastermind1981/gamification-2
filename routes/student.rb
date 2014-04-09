@@ -59,6 +59,28 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get a student by id
+  #
+  # param [String] the student id
+  #
+  # return [Object] student
+  get '/student/facebookId/:id' do
+    if authorized?
+      content_type :json
+
+      student = Student.where(:facebookId => params[:id]).first()
+
+      if student then
+        redirect '/student/'+student.id;
+      else
+        status 401
+      end
+
+    else
+      status 401
+    end
+  end
+
   # Create a new student by his/her facebookid
   #
   # return [Object] student
