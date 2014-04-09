@@ -8,14 +8,24 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.classrooms = [];
     $scope.classModel = "";
     $scope.selectedClass = null;
+    $scope.currentNavigationTab = 0;
+    $scope.navModel = 1;
 
     $scope.activePages =
         [   { name: 'blank.html', url: 'blank.html'},
             { name: 'activities.html', url: 'activities.html'},
-            { name: 'quests.html', url: 'quests.html'} ];
-    $scope.activePage = $scope.activePages[0];
+            { name: 'quests.html', url: 'quests.html'},
+            { name: 'checkins.html', url: 'checkins.html'},
+            { name: 'badges.html', url: 'badges.html'},
+            { name: 'blogs.html', url: 'blogs.html'} ];
+    navigateToTab($scope.currentNavigationTab);
 
     initView();
+
+    function navigateToTab(num) {
+        $scope.currentNavigationTab = num;
+        $scope.activePage = $scope.activePages[num];
+    };
 
     $scope.retrieveClassrooms = function() {
         gamificationFactory.doGetURL('/classroom').then(function (response) {
@@ -36,7 +46,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             }
             else {
                 $scope.isStudentAssigned = false;
-                $scope.activePage = $scope.activePages[1];
+                navigateToTab(1);
             }
         });
     };
@@ -67,12 +77,18 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         if($scope.selectedClass != null) {
             gamificationFactory.doPutURL('/classroom/'+$scope.selectedClass+'/addstudent/'+$scope.userId).then(function (response) {
                 $scope.isStudentAssigned = false;
-                $scope.activePage = $scope.activePages[1];
+                navigateToTab(1);
             });
         }
     };
 
     $scope.pickClassroom = function(croom) {
         $scope.selectedClass = croom._id;
+    };
+
+    $scope.changeNavigationMenu = function(num) {
+        if(num != null && num != $scope.currentNavigationTab) {
+            navigateToTab(num);
+        }
     };
 });

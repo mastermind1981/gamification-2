@@ -1,8 +1,9 @@
-<div ng-controller="activitiesCtrl">
-    {{testAct}}
-    <div class="btn-group">
-        <button type="button" class="btn btn-primary" ng-model="radioModel" btn-radio="'Left'">Left</button>
-        <button type="button" class="btn btn-primary" ng-model="radioModel" btn-radio="'Middle'">Middle</button>
-        <button type="button" class="btn btn-primary" ng-model="radioModel" btn-radio="'Right'">Right</button>
+<div ng-controller="activitiesCtrl" style="max-width: 100%">
+    <div id="activitiesButtongroup">
+        <button type="button" class="btn btn-primary" ng-model="radioModel" btn-radio="'0'" style="margin-right: -2px">All</button>
+        <button type="button" class="btn btn-primary" ng-model="radioModel" btn-radio="'1'" style="margin-right: -2px; margin-left: -2px">Group</button>
+        <button type="button" class="btn btn-primary" ng-model="radioModel" btn-radio="'2'" style="margin-right: -2px; margin-left: -2px">My</button>
+        <button type="button" class="btn btn-primary" ng-model="radioModel" btn-radio="'3'" style="margin-right: -2px; margin-left: -2px">Stats</button>
+        <button type="button" class="btn btn-primary" ng-model="radioModel" btn-radio="'4'" style="margin-left: -2px">Comm</button>
     </div>
 </div>

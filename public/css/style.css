@@ -94,6 +94,13 @@ header a {
     background-color: #318495;
 }
 
+.contentwrap {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 50px;
+    padding: 0px 0px 0px 0px;
+}
+
 @media {
     body {
         height: 100%;
@@ -103,12 +110,6 @@ header a {
     .wrap {
         padding:10px 10px 10px 10px;
         min-height: 70px;
-    }
-
-    .contentwrap {
-        padding: 0px 0px 0px 0px;
-        height: 100%;
-        width: 100%;
     }
 }
 
@@ -123,12 +124,6 @@ header a {
         padding:5px 5px 5px 5px;
         min-height: 60px;
     }
-
-    .contentwrap {
-        padding: 0px 0px 0px 0px;
-        height: 100%;
-    }
-
 }
 
 @media (max-width: 480px) {
@@ -141,11 +136,6 @@ header a {
     .wrap {
         padding:3px 3px 3px 3px;
         height: 56px;
-    }
-
-    .contentwrap {
-        padding: 0px 0px 0px 0px;
-        height: 100%;
     }
 }
 
@@ -167,4 +157,50 @@ header a {
     min-height: 50px;
     min-width: 100%;
     margin: 5px 0 5px 0;
+}
+
+#activitiesButtongroup {
+    width: 100%;
+    max-width: 100%;
+    border: none;
+}
+
+#activitiesButtongroup button {
+    width: 20%;
+    border-radius: 0;
+}
+
+#footer {
+    position:fixed;
+    height:50px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    margin-bottom:0px;
+}
+
+#footerButtongroup {
+    width: 100%;
+    max-width: 100%;
+    border: none;
+    color: darkolivegreen;
+}
+
+#footerButtongroup button {
+    width: 20%;
+    border-radius: 0;
+    height: 50px;
+    background-color: olive;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 1px 1px rgba(0, 0, 0, 0.075);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+    background-image: linear-gradient(to bottom, olive 0px, darkolivegreen 100%);
+    background-repeat: repeat-x;
+    border-color: olive;
+    color: #FFFFFF;
+}
+
+#footerButtongroup button:active {
+    background-color: olive;
+    border-color: olivedrab;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.125) inset;
 }
