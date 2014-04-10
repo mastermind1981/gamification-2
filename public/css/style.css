@@ -183,24 +183,10 @@ header a {
     width: 100%;
     max-width: 100%;
     border: none;
-    color: darkolivegreen;
 }
 
 #footerButtongroup button {
     width: 20%;
     border-radius: 0;
     height: 50px;
-    background-color: olive;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 1px 1px rgba(0, 0, 0, 0.075);
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
-    background-image: linear-gradient(to bottom, olive 0px, darkolivegreen 100%);
-    background-repeat: repeat-x;
-    border-color: olive;
-    color: #FFFFFF;
-}
-
-#footerButtongroup button:active {
-    background-color: olive;
-    border-color: olivedrab;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.125) inset;
 }

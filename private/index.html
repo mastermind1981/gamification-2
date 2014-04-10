@@ -26,6 +26,8 @@
     <script src="http://fgnass.github.io/spin.js/spin.min.js"></script>
 
     <!-- Local scripts -->
+    <script src="js/strophe.js"></script>
+    <script src="js/strophe.muc.js"></script>
     <script src="js/init.js"></script>
     <script src="js/factories.js"></script>
     <script src="js/index.js"></script>
@@ -73,11 +75,11 @@
 
         <div id="footer">
             <div id="footerButtongroup">
-                <button type="button" class="btn" ng-model="navModel" btn-radio="'1'" ng-click="changeNavigationMenu(1)" style="margin-right: -2px">Activities</button>
-                <button type="button" class="btn" ng-model="navModel" btn-radio="'2'" ng-click="changeNavigationMenu(2)" style="margin-right: -2px; margin-left: -2px">Quests</button>
-                <button type="button" class="btn" ng-model="navModel" btn-radio="'3'" ng-click="changeNavigationMenu(3)" style="margin-right: -2px; margin-left: -2px">Checkins</button>
-                <button type="button" class="btn" ng-model="navModel" btn-radio="'4'" ng-click="changeNavigationMenu(4)" style="margin-right: -2px; margin-left: -2px">Badges</button>
-                <button type="button" class="btn" ng-model="navModel" btn-radio="'5'" ng-click="changeNavigationMenu(5)" style="margin-left: -2px">Blogs</button>
+                <button type="button" class="btn btn-primary" ng-model="navModel" btn-radio="1" ng-click="changeNavigationMenu(1)" style="margin-right: -2px">Activities</button>
+                <button type="button" class="btn btn-primary" ng-model="navModel" btn-radio="2" ng-click="changeNavigationMenu(2)" style="margin-right: -2px; margin-left: -2px">Quests</button>
+                <button type="button" class="btn btn-primary" ng-model="navModel" btn-radio="3" ng-click="changeNavigationMenu(3)" style="margin-right: -2px; margin-left: -2px">Checkins</button>
+                <button type="button" class="btn btn-primary" ng-model="navModel" btn-radio="4" ng-click="changeNavigationMenu(4)" style="margin-right: -2px; margin-left: -2px">Badges</button>
+                <button type="button" class="btn btn-primary" ng-model="navModel" btn-radio="5" ng-click="changeNavigationMenu(5)" style="margin-left: -2px">Blogs</button>
             </div>
         </div>
     </div>
