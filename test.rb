@@ -427,9 +427,55 @@ class GamificationTest < Test::Unit::TestCase
       assert json.fetch('message')
       p "DELETE quest: "+json['message']
     end
+  end
 
 
+  def test_activity
+    @activityId = nil
 
+    post '/activity' do
+      assert_equal 200, last_response.status
+      assert_includes last_response.content_type, 'application/json'
+
+      json = JSON.parse(last_response.body)
+      assert_kind_of Hash, json
+      assert json['_id']
+      p "POST activity: "+json.fetch('_id')
+      @activityId = json.fetch('_id')
+    end
+
+    put '/activity/'+@activityId, {:type => 'type', :label => 'label', :studentId => 'studentId', :groupId => 'groupId'}.to_json do
+      assert_equal 200, last_response.status
+      assert_includes last_response.content_type, 'application/json'
+
+      json = JSON.parse(last_response.body)
+      assert_kind_of Hash, json
+      assert_equal 'label', json.fetch('label')
+      assert_equal 'type', json.fetch('type')
+      assert_equal 'studentId', json.fetch('studentId')
+      assert_equal 'groupId', json.fetch('groupId')
+      p "PUT activity: "+json.fetch('_id')+" ("+json.fetch('type').to_s+", "+json.fetch('label')+", "+json.fetch('studentId')+", "+json.fetch('groupId').to_s+")"
+    end
+
+    get '/activity/'+@activityId do
+      assert_equal 200, last_response.status
+      assert_includes last_response.content_type, 'application/json'
+
+      json = JSON.parse(last_response.body)
+      assert_kind_of Hash, json
+      assert json['_id']
+      p "GET activity: "+json.fetch('_id')
+    end
+
+    delete '/activity/'+@activityId do
+      assert_equal 200, last_response.status
+      assert_includes last_response.content_type, 'application/json'
+
+      json = JSON.parse(last_response.body)
+      assert_kind_of Hash, json
+      assert json.fetch('message')
+      p "DELETE activity: "+json.fetch('message')
+    end
   end
 
 end

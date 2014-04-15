@@ -1,3 +1,68 @@
-var gamififcationApp = angular.module('gamififcationApp', ['ui.bootstrap', 'ngResource', 'ngSanitize'], function($locationProvider) {
-    $locationProvider.html5Mode(true);
-});
+var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'gamififcationApp.controllers', 'gamififcationApp.services'])
+
+   .config(function($stateProvider, $urlRouterProvider) {
+
+            $stateProvider
+
+                // setup an abstract state for the tabs directive
+                .state('tab', {
+                    url: "/tab",
+                    abstract: true,
+                    templateUrl: "templates/tabs.html"
+                })
+
+                // Each tab has its own nav history stack:
+
+                .state('tab.activities', {
+                    url: '/activities',
+                    views: {
+                        'tab-activities': {
+                            templateUrl: 'templates/tab-activities.html',
+                            controller: 'ActivitiesCtrl'
+                        }
+                    }
+                })
+
+                .state('tab.quests', {
+                    url: '/quests',
+                    views: {
+                        'tab-quests': {
+                            templateUrl: 'templates/tab-quests.html',
+                            controller: 'QuestsCtrl'
+                        }
+                    }
+                })
+                .state('tab.checkins', {
+                    url: '/checkins',
+                    views: {
+                        'tab-checkins': {
+                            templateUrl: 'templates/tab-checkins.html',
+                            controller: 'CheckinsCtrl'
+                        }
+                    }
+                })
+
+                .state('tab.badges', {
+                    url: '/badges',
+                    views: {
+                        'tab-badges': {
+                            templateUrl: 'templates/tab-badges.html',
+                            controller: 'BadgesCtrl'
+                        }
+                    }
+                })
+
+                .state('tab.blogs', {
+                    url: '/blogs',
+                    views: {
+                        'tab-blogs': {
+                            templateUrl: 'templates/tab-blogs.html',
+                            controller: 'BlogsCtrl'
+                        }
+                    }
+                })
+
+            // if none of the above states are matched, use this as the fallback
+            $urlRouterProvider.otherwise('/tab/activities');
+
+        });

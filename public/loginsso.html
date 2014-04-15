@@ -5,21 +5,25 @@
 <title>Gamification</title>
 
     <!-- Local StyleSheets -->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
+    <script src="js/ionic.bundle.js"></script>
+
+    <script src="js/login.js"></script>
 </head>
-<body ng-app="gamififcationApp">
-    <div class="header">
-        GAMIFICATION
-    </div>
+<body ng-app="gamififcationAppLogin">
+    <ion-pane>
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">GAMIFICATION</h1>
+        </ion-header-bar>
+        <ion-content>
+            <!--
+            This solution provides serverside only login. If no facebook session active, a facebook page is displayed with login form, and callback to the initial URL
+            -->
+            <div id="logoutButtonDivWrapper"><button class="button icon-left ion-social-facebook" onclick="location.href='/login'">Login via Facebook</button></div>
+        </ion-content>
+    </ion-pane>
 
-    <!--
-    This solution provides serverside only login. If no facebook session active, a facebook page is displayed with login form, and callback to the initial URL
-    -->
-    <div id="logoutButtonDivWrapper"><button id="logoutButtonDiv" onclick="location.href='/login'"><img src="img/fblogin.png"></button></div>
 </body>
 </html>

@@ -39,6 +39,7 @@ class Gamification < Sinatra::Application
 
   helpers do
     def authorized?
+=begin
       if ENV['XMPP_SERVER'].nil? then
         return true
       else
@@ -46,6 +47,19 @@ class Gamification < Sinatra::Application
           return true
         end
           return false
+      end
+=end
+      return true
+    end
+
+    def HTTPauthorized?
+      if ENV['XMPP_SERVER'].nil? then
+        return true
+      else
+        if session['access_token']
+          return true
+        end
+        return false
       end
     end
 
@@ -83,7 +97,7 @@ class Gamification < Sinatra::Application
 
   # Get the index page if authenticated, else the login page
   get '/' do
-    if authorized?
+    if HTTPauthorized?
       @graph = Koala::Facebook::API.new(session["access_token"])
       @user = @graph.get_object("me")
 
@@ -108,7 +122,7 @@ class Gamification < Sinatra::Application
 
   # Get the index.html page
   get '/index.html' do
-    if authorized?
+    if HTTPauthorized?
       send_file File.join('private', 'index.html')
     else
       redirect '/'
@@ -117,7 +131,7 @@ class Gamification < Sinatra::Application
 
   # Get the f.html page
   get '/about.html' do
-    if authorized?
+    if HTTPauthorized?
       send_file File.join('private', 'about.html')
     else
       redirect '/'
@@ -126,7 +140,7 @@ class Gamification < Sinatra::Application
 
   # Get the f.html page
   get '/admin.html' do
-    if authorized?
+    if HTTPauthorized?
       send_file File.join('private', 'admin.html')
     else
       redirect '/'
@@ -135,57 +149,22 @@ class Gamification < Sinatra::Application
 
   # Get the blank.html page
   get '/blank.html' do
-    if authorized?
+    if HTTPauthorized?
       send_file File.join('private', 'blank.html')
     else
       redirect '/'
     end
   end
 
-  # Get the activities.html page
-  get '/activities.html' do
-    if authorized?
-      send_file File.join('private', 'activities.html')
+  # Get the blank.html page
+  get '/modal.html' do
+    if HTTPauthorized?
+      send_file File.join('private', 'modal.html')
     else
       redirect '/'
     end
   end
 
-  # Get the quests.html page
-  get '/quests.html' do
-    if authorized?
-      send_file File.join('private', 'quests.html')
-    else
-      redirect '/'
-    end
-  end
-
-  # Get the checkins.html page
-  get '/checkins.html' do
-    if authorized?
-      send_file File.join('private', 'checkins.html')
-    else
-      redirect '/'
-    end
-  end
-
-  # Get the badges.html page
-  get '/badges.html' do
-    if authorized?
-      send_file File.join('private', 'badges.html')
-    else
-      redirect '/'
-    end
-  end
-
-  # Get the blogs.html page
-  get '/blogs.html' do
-    if authorized?
-      send_file File.join('private', 'blogs.html')
-    else
-      redirect '/'
-    end
-  end
 end
 
 require_relative 'routes/init'

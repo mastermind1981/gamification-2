@@ -6,8 +6,6 @@ html {
     width:100%;
 }
 body {
-    background-color:#333333;
-    color:#FFFFFF;
     margin:0;
     height:100%;
     width:100%;
@@ -19,25 +17,14 @@ a img {
     border:none;
 }
 
-header a {
+#logo a {
     color: #C5060B;
     text-decoration: underline;
 }
 
-.header {
-    text-align: center;
-    width: 100%;
-    background-color: #318495;
-    color: #222222;
-    height: 70px;
-    vertical-align: middle;
-    font-size: 40px;
-    font-weight: bold;
-}
-
 #logoutButtonDivWrapper {
-    width: 300px;
-    height: 70px;
+    width: 208px;
+    height: 57px;
     margin: auto;
     position: absolute;
     top: 0;
@@ -47,146 +34,51 @@ header a {
 }
 
 #logoutButtonDiv {
-    width: 300px;
-    height: 65px;
+    width: 208px;
+    height: 57px;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
     border-radius: 0px;
     padding: 0;
 }
 
-#waiterWrapper  {
-    width: 30px;
-    height: 30px;
-    margin: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+.bar-stable {
+    height: 60px;
 }
 
-#waiter  {
-    width: 30px;
-    height: 30px;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-    padding: 0;
+ion-view {
+    margin-top: 15px;
 }
 
-#logoutButtonDiv img {
-    border:none;
-}
-
-#adminWrapper {
-    padding-right: 30px;
-    padding-left: 30px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-}
-
-.studentListItem {
-    list-style: none;
-}
-
-.wrap {
-    background-color: #318495;
-}
-
-.contentwrap {
-    width: 100%;
+.allActivitiesFeedBlocksDivider {
+    background-color: #000000;
+    width: 2px;
     height: 100%;
-    margin-bottom: 50px;
-    padding: 0px 0px 0px 0px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    top: 0px;
 }
 
-@media {
-    body {
-        height: 100%;
-        width: 100%;
-    }
-
-    .wrap {
-        padding:10px 10px 10px 10px;
-        min-height: 70px;
-    }
-}
-
-@media (max-width: 768px) {
-    body {
-        height: 100%;
-        width: 100%;
-        margin:0;
-    }
-
-    .wrap {
-        padding:5px 5px 5px 5px;
-        min-height: 60px;
-    }
-}
-
-@media (max-width: 480px) {
-    body {
-        height: 100%;
-        width: 100%;
-        margin:0;
-    }
-
-    .wrap {
-        padding:3px 3px 3px 3px;
-        height: 56px;
-    }
-}
-
-.alert-error {
-    background-color: #CB3D39;
-}
-
-.classroom {
-    background-color: #666666;
-    color: #FFFFFF;
-    min-height: 50px;
-    min-width: 100%;
-    margin: 5px 0 5px 0;
-}
-
-.classroomJoin {
-    background-color: #036A07;
-    color: #FFFFFF;
-    min-height: 50px;
-    min-width: 100%;
-    margin: 5px 0 5px 0;
-}
-
-#activitiesButtongroup {
-    width: 100%;
-    max-width: 100%;
-    border: none;
-}
-
-#activitiesButtongroup button {
-    width: 20%;
-    border-radius: 0;
-}
-
-#footer {
-    position:fixed;
-    height:50px;
-    bottom:0px;
-    left:0px;
-    right:0px;
-    margin-bottom:0px;
-}
-
-#footerButtongroup {
-    width: 100%;
-    max-width: 100%;
-    border: none;
-}
-
-#footerButtongroup button {
-    width: 20%;
-    border-radius: 0;
+.activityFilterBar {
+    margin: 0;
+    padding: 0;
     height: 50px;
+}
+
+.item-gamiavatar, .item-gamiavatar .item-content {
+    padding-left: 70px;
+    min-height: 70px;
+}
+.item-gamiavatar > img:first-child, .item-avatar .item-image, .item-avatar .item-content > img:first-child, .item-avatar .item-content .item-image {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    max-width: 40px;
+    max-height: 40px;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.tabs {
+    color: #000000;
 }

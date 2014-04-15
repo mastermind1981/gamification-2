@@ -3,7 +3,7 @@ gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificatio
     $scope.classrooms = [];
     $scope.selectedClassGroups = [];
     $scope.students = [];
-    $scope.lastKnownIndex = 0
+    $scope.lastKnownIndex = 0;
 
     function sortByProperty(property) {
         'use strict';
@@ -82,6 +82,15 @@ gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificatio
                 //something wrong happened when creating a classroom. Do what?
             }
         });
+    };
+
+    $scope.whatClassIsIt = function(cls, ind) {
+        if(ind == $scope.lastKnownIndex) {
+            return "button active";
+        }
+        else {
+            return "button";
+        }
     };
 
     $scope.initView();

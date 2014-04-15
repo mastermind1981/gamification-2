@@ -1,32 +1,29 @@
-gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, $location) {
+gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, gamificationUtilities, $location) {
 
     $scope.username = "";
-    $scope.userId = "";
+    $scope.groupId = null;
+    $scope.userId = null;
     $scope.facebookId = "";
     $scope.avatarUrl = "";
     $scope.isStudentAssigned = false;
+    $scope.hasJustJoinedClassroom = false;
+
     $scope.classrooms = [];
     $scope.classModel = "";
     $scope.selectedClass = null;
-    $scope.currentNavigationTab = 0;
-    $scope.navModel = 1;
 
-    $scope.activities_all = [];
+    $scope.activityBadgeValue = 0;
+
+    $scope.latestActivities = [];
+    $scope.activities_all = {};
+    $scope.activities_group = [];
+    $scope.activities_my = [];
 
     $scope.domain = "intermedia-prod03.uio.no";
     $scope.connection = null;
     $scope.password = "gami";
     $scope.participants = null;
     $scope.room = "gamification";
-
-    $scope.activePages =
-        [   { name: 'blank.html', url: 'blank.html'},
-            { name: 'activities.html', url: 'activities.html'},
-            { name: 'quests.html', url: 'quests.html'},
-            { name: 'checkins.html', url: 'checkins.html'},
-            { name: 'badges.html', url: 'badges.html'},
-            { name: 'blogs.html', url: 'blogs.html'} ];
-    navigateToTab($scope.currentNavigationTab);
 
     /* ** All the XMPP business ** */
     function enableMessaging() {
@@ -46,7 +43,10 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             }
         });
 
-        navigateToTab(1);
+        //navigateToTab(1);
+
+        //$urlRouterProvider.otherwise('/tab/activities');
+        getAllActivities();
     };
 
     $scope.$on('gamififcationApp.connected', function() {
@@ -68,38 +68,90 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
     $scope.$on('gamififcationApp.disconnected', function() {
         console.log("disconnected");
+        enableMessaging();
     });
 
     $scope.on_presence = function(presence) {
         console.log(presence);
         $scope.joined = true;
+
+        if($scope.hasJustJoinedClassroom) {
+            $scope.hasJustJoinedClassroom = false;
+
+        }
+
         return true;
     };
+
+    $scope.postActivity = function() {
+        gamificationFactory.doPostURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function(response) {
+
+            var data = {};
+            data.studentId = $scope.facebookId;
+            data.label = "JOINED GAMIFICATION";
+            data.type = "STUDENT";
+            data.groupId = $scope.groupId;
+
+            gamificationFactory.doPutURL('/activity/'+response[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+                $scope.notifyMessaging();
+            });
+
+
+        });
+    }
 
     $scope.on_public_message = function(message) {
-        console.log(message);
 
-        $scope.$apply(function() {
-            $scope.activities_all.push(message);
-        });
+        if(message.firstElementChild.innerHTML == "GAMIFICATION UPDATE") {
+            console.log("updating activities");
+            updateAllActivities();
+
+            if($location.$$path != '/tab/activities') {
+                console.log(true)
+                $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
+            }
+        }
 
         return true;
     };
 
-    $scope.sendMessage = function() {
+    $scope.notifyMessaging = function() {
+        $scope.connection.send($msg({to: $scope.room+ "@conference."+$scope.domain, type: "groupchat"}).c('body').t('GAMIFICATION UPDATE'));
+    };
 
-        if($scope.chatText != null) {
-            $scope.connection.send($msg({to: $scope.room+ "@conference."+$scope.domain, type: "groupchat"}).c('body').t($scope.chatText));
+    function getAllActivities() {
+        gamificationFactory.doGetURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            response[0].forEach(function(activity) {
+                $scope.activities_all[activity.time] = activity
+            });
+            filterActivities();
+        });
+    };
+
+    function filterActivities() {
+        $scope.activities_my = [];
+        $scope.activities_group = [];
+
+        for(var i in $scope.activities_all) {
+            if(($scope.activities_all[i]).studentId == $scope.facebookId) {
+                $scope.activities_my.push($scope.activities_all[i]);
+            }
+
+            if(($scope.activities_all[i]).groupId == $scope.groupId) {
+                $scope.activities_group.push($scope.activities_all[i]);
+            }
         }
     };
-    /* ** end XMPP business ** */
 
-    initView();
-
-    function navigateToTab(num) {
-        $scope.currentNavigationTab = num;
-        $scope.activePage = $scope.activePages[num];
+    function updateAllActivities() {
+        gamificationFactory.doGetURL('/newactivities?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            response[0].forEach(function(activity) {
+                $scope.activities_all[activity.time] = activity
+            });
+            filterActivities();
+        });
     };
+    /* ** end XMPP business ** */
 
     $scope.retrieveClassrooms = function() {
         gamificationFactory.doGetURL('/classroom').then(function (response) {
@@ -113,6 +165,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             $scope.facebookId = response[0].facebookId;
             $scope.avatarUrl = response[0].avatar;
             $scope.userId = response[0]._id;
+            $scope.groupId = response[0].group_id;
 
             if(response[0].classroom_id == null) {
                 $scope.isStudentAssigned = true;
@@ -123,20 +176,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 enableMessaging();
             }
         });
-    };
-
-    function initView() {
-        /* little hack to remove extra characters returned from facebook login '_=_' */
-        var v = window.location.href;
-        if(v.substring(v.length-3, v.length) == '_=_') {
-            window.location.href = v.substr(0, v.length-3);
-        }
-        else {
-            gamificationFactory.doGetURL('/facebookUser').then(function (response) {
-                $scope.retrieveUser(response[0].userId);
-            });
-        }
-
     };
 
     $scope.logout = function() {
@@ -151,6 +190,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         if($scope.selectedClass != null) {
             gamificationFactory.doPutURL('/classroom/'+$scope.selectedClass+'/addstudent/'+$scope.userId).then(function (response) {
                 $scope.isStudentAssigned = false;
+                $scope.hasJustJoinedClassroom = true;
                 enableMessaging();
             });
         }
@@ -160,9 +200,38 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         $scope.selectedClass = croom._id;
     };
 
-    $scope.changeNavigationMenu = function(num) {
-        if(num != null && num != $scope.currentNavigationTab) {
-            navigateToTab(num);
+    $scope.initIndexView = function() {
+        /* little hack to remove extra characters returned from facebook login '_=_' */
+        var v = window.location.href;
+        if(v.substring(v.length-3, v.length) == '_=_') {
+            window.location.href = v.substr(0, v.length-3);
         }
+        else {
+            gamificationFactory.doGetURL('/facebookUser').then(function (response) {
+                $scope.retrieveUser(response[0].userId);
+            });
+        }
+
     };
+
+    $scope.changeMainTab = function(ind) {
+        switch(ind) {
+            case 0:
+                $scope.activityBadgeValue = 0;
+                window.location.href = '#/tab/activities';
+                break;
+            case 1:
+                window.location.href = '#/tab/quests';
+                break;
+            case 2:
+                window.location.href = '#/tab/checkins';
+                break;
+            case 3:
+                window.location.href = '#/tab/badges';
+                break;
+            case 4:
+                window.location.href = '#/tab/blogs';
+                break;
+        }
+    }
 });
