@@ -1,0 +1,107 @@
+<ion-view onload="doit()">
+
+    <div class="bar bar-subheader activityFilterBar">
+        <div class="tabs tabs-icon-top">
+            <a class="tab-item" ng-click="activityMenuModel=0">
+                <i ng-if="activityMenuModel == 0" class="icon ion-ios7-albums"></i>
+                <i ng-if="activityMenuModel != 0" class="icon ion-ios7-albums-outline"></i>
+                All
+            </a>
+            <a ng-show="groupId != null" class="tab-item" ng-click="activityMenuModel=1">
+                <i ng-if="activityMenuModel == 1" class="icon ion-ios7-people"></i>
+                <i ng-if="activityMenuModel != 1" class="icon ion-ios7-people-outline"></i>
+                Groups
+            </a>
+            <a class="tab-item" ng-click="activityMenuModel=2">
+                <i ng-if="activityMenuModel == 2" class="icon ion-ios7-person"></i>
+                <i ng-if="activityMenuModel != 2" class="icon ion-ios7-person-outline"></i>
+                My
+            </a>
+            <a class="tab-item" ng-click="activityMenuModel=3">
+                <i ng-if="activityMenuModel == 3" class="icon ion-ios7-pie"></i>
+                <i ng-if="activityMenuModel != 3" class="icon ion-ios7-pie-outline"></i>
+                Stats
+            </a>
+            <a class="tab-item" ng-click="activityMenuModel=4">
+                <i ng-if="activityMenuModel == 4" class="icon ion-ios7-compose"></i>
+                <i ng-if="activityMenuModel != 4" class="icon ion-ios7-compose-outline"></i>
+                Comm
+            </a>
+        </div>
+    </div>
+    <ion-content class="has-header padding" ng-show="activityMenuModel==0">
+        <div class="list" style="margin-top: 50px">
+            <div class="item item-divider">All Activities</div>
+            <a ng-repeat="message in activities_all" class="item item-avatar item-icon-right" ng-click="navigateToActivity(message)">
+                <img ng-src="{{message.ownerAvatar}}">
+
+                <h2>{{message.ownerName}}</h2>
+                <span>{{message.label}}</span>
+                <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
+                <i ng-if="(message.label != 'JOINED GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
+            </a>
+        </div>
+    </ion-content>
+
+    <ion-content class="has-header padding" ng-show="activityMenuModel==1">
+        <div style="margin-top: 50px">
+            <div class="item item-divider">Group Activities</div>
+            <a ng-repeat="message in activities_group" class="item item-avatar item-icon-right">
+                <img ng-src="{{message.ownerAvatar}}">
+
+                <h2>{{message.ownerName}}</h2>
+                <span>{{message.label}}</span>
+                <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
+                <i ng-if="message.label != 'JOINED GAMIFICATION'" class="icon ion-ios7-arrow-right"></i>
+            </a>
+        </div>
+    </ion-content>
+
+    <ion-content class="has-header padding" ng-show="activityMenuModel==2">
+        <div style="margin-top: 50px">
+            <div class="item item-divider">My Activities</div>
+            <a ng-repeat="message in activities_my" class="item item-avatar item-icon-right">
+                <img ng-src="{{message.ownerAvatar}}">
+
+                <h2>{{message.ownerName}}</h2>
+                <span>{{message.label}}</span>
+                <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
+                <i ng-if="message.label != 'JOINED GAMIFICATION'" class="icon ion-ios7-arrow-right"></i>
+            </a>
+        </div>
+    </ion-content>
+
+    <ion-content class="has-header padding" ng-show="activityMenuModel==3">
+        <div style="margin-top: 50px">
+            <div class="item item-divider">Stats</div>
+        </div>
+    </ion-content>
+
+    <ion-content class="has-header padding" ng-show="activityMenuModel==4">
+        <div style="margin-top: 50px">
+            <div class="item item-divider">Commmunication</div>
+            <p style="margin-top: 10px; margin-bottom: 10px">Here you can write a message to your class:</p>
+            <div class="item item-input-inset">
+                <textarea id="commActivitiesFeedTextarea" style="height: 200px; width: 100%; color: #222222; resize: vertical"></textarea>
+
+            </div>
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper">
+                    <input id="commActivitiesFeedTextinput" placeholder="url" name="input" type="url" style="width: 100%; height: 35px; color: #222222">
+                </label>
+                <button class="button button-small" ng-click="postMessage()">
+                    POST
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
+
+<script id="my-modal.html" type="text/ng-template">
+    <div class="modal">
+        <ion-header-bar title="My Modal Title"></ion-header-bar>
+        <ion-content>
+            Hello!
+        </ion-content>
+    </div>
+</script>

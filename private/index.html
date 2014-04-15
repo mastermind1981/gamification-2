@@ -9,67 +9,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <meta name="author" content="Jeremy Toussaint, UiO" />
 
-    <!-- Local StyleSheets -->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
-    <!-- External live-loaded dependencies-->
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-sanitize.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.5.1/moment.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
-    <script src="http://fgnass.github.io/spin.js/spin.min.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 
     <!-- Local scripts -->
+    <script src="js/ionic.bundle.js"></script>
+    <script src="js/strophe.js"></script>
+    <script src="js/strophe.muc.js"></script>
     <script src="js/init.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/services.js"></script>
     <script src="js/factories.js"></script>
     <script src="js/index.js"></script>
     <script src="js/activities.js"></script>
 
 </head>
-<body ng-app="gamififcationApp">
-    <div ng-controller="navigationCtrl" style="width: 100%; height: 100%; min-height: 200px;">
-        <header>
-            <div class="wrap">
-                <!-- logo -->
-                <div id="logo">
-                    <div style="float: left">
-                        <a href="#"><img ng-src="{{avatarUrl}}"/></a>
-                    </div>
-                    <div style="float: left; margin-left: 10px">
-                        {{username}} ({{facebookId}})<br />
-                        <a href="" ng-click="logout()">LOGOUT</a>
-                    </div>
+<body ng-app="gamififcationApp" animation="slide-left-right-ios7" ng-controller="navigationCtrl">
 
-                </div>
-
-                <!-- a href="" ng-click="gotoAbout()">click</a -->
+    <div class="bar bar-header" style="height: 60px; background-color: #f8f8f8" ng-show="userId != null">
+        <div>
+            <div style="float: left">
+                <a href="#"><img ng-src="{{avatarUrl}}"/></a>
             </div>
-        </header>
-
-        <!-- main content -->
-        <div class="contentwrap">
-            <div style="width: 100%; height: 100%">
-                <div ng-show="isStudentAssigned">
-                    <div ng-show="classrooms.length == 0">
-                        <div class="alert alert-error">There are no classrooms available yet.</div>
-                    </div>
-                    <div style="width: 300px; margin: auto;">
-                        <button ng-repeat="classroom in classrooms" class="btn classroom" ng-model="classModel" btn-checkbox ng-click="pickClassroom(classroom)">{{classroom.label}}</button>
-                        <button class="btn classroomJoin" ng-click="joinClassroom()">JOIN</button>
-                    </div>
-                </div>
-
-                <div ng-show="!isStudentAssigned" style="width: 100%; height: 100%">
-                    <div ng-include="activePage.url" style="width: 100%; height: 100%"></div>
-                </div>
+            <div style="float: left; margin-left: 10px">
+                {{username}} ({{facebookId}}) <br />
+                <a href="" ng-click="logout()">LOGOUT</a>
             </div>
         </div>
+
+        <div ng-if="groupId != null" style="position: absolute; top: 5px; right: 5px; bottom: 5px">
+            <button style="height: 100%; width: 60px" class="button icon ion-ios7-world"></button>
+            <button style="height: 100%; width: 60px" class="button icon ion-android-friends"></button>
+
+        </div>
     </div>
+
+    <ion-nav-view></ion-nav-view>
 </body>
 </html>
