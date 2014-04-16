@@ -5,11 +5,11 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.userId = null;
     $scope.facebookId = "";
     $scope.avatarUrl = "";
-    $scope.isStudentAssigned = false;
-    $scope.hasJustJoinedClassroom = false;
+
+    $scope.notReadyToNavigate = true;
 
     $scope.classrooms = [];
-    $scope.classModel = "";
+    $scope.classModel = null;
     $scope.selectedClass = null;
 
     $scope.activityBadgeValue = 0;
@@ -74,11 +74,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.on_presence = function(presence) {
         console.log(presence);
         $scope.joined = true;
-
-        if($scope.hasJustJoinedClassroom) {
-            $scope.hasJustJoinedClassroom = false;
-
-        }
 
         return true;
     };
@@ -168,11 +163,13 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             $scope.groupId = response[0].group_id;
 
             if(response[0].classroom_id == null) {
-                $scope.isStudentAssigned = true;
                 $scope.retrieveClassrooms();
+                window.location.href = '#/tab/userjoin';
+                $scope.notReadyToNavigate = true;
             }
             else {
-                $scope.isStudentAssigned = false;
+                $scope.notReadyToNavigate = false;
+                $scope.changeMainTab(0);
                 enableMessaging();
             }
         });
@@ -189,9 +186,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.joinClassroom = function() {
         if($scope.selectedClass != null) {
             gamificationFactory.doPutURL('/classroom/'+$scope.selectedClass+'/addstudent/'+$scope.userId).then(function (response) {
-                $scope.isStudentAssigned = false;
-                $scope.hasJustJoinedClassroom = true;
-                enableMessaging();
+                $scope.retrieveUser($scope.facebookId);
             });
         }
     };

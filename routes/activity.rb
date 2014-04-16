@@ -98,9 +98,12 @@ class Gamification < Sinatra::Application
         end
 
         if data['type'] == 'STUDENT' then
-          student = Student.where(:facebookId => data['studentId']).first()
-          activity.update_attributes(:ownerName => student.firstName + ' ' +student.lastName)
-          activity.update_attributes(:ownerAvatar => student.avatar)
+          @graph = Koala::Facebook::API.new(session["access_token"])
+          user = @graph.get_object(data['studentId'])
+          avatar = @graph.get_picture(data['studentId'])
+
+          activity.update_attributes(:ownerName => user["first_name"] + ' ' +user["last_name"])
+          activity.update_attributes(:ownerAvatar => avatar)
           activity.save
         end
 

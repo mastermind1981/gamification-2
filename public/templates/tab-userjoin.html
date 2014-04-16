@@ -1,0 +1,25 @@
+<ion-view>
+
+    <ion-content class="has-header padding">
+        <div class="list" style="margin-top: 50px">
+            <div ng-show="classrooms.length == 0">
+                <div class="card" style="max-width: 300px; margin: 0 auto">
+                    <div class="item item-text-wrap">
+                        There are no classroom available yet
+                    </div>
+                </div>
+            </div>
+            <div ng-show="classrooms.length != 0" class="list" style="max-width: 300px; margin: 0 auto">
+                <label class="item item-radio" ng-repeat="classroom in classrooms" ng-model="classModel">
+                    <input type="radio" name="group" ng-click="pickClassroom(classroom)">
+                    <div class="item-content">
+                        {{classroom.label}}
+                    </div>
+                    <i class="radio-icon ion-checkmark"></i>
+                </label>
+
+                <button class="button button-block button-positive" ng-click="joinClassroom()">JOIN</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
