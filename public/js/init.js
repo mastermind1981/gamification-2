@@ -12,6 +12,15 @@ var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'gamififcati
                 })
 
                 // Each tab has its own nav history stack:
+                .state('tab.blank', {
+                    url: '/blank',
+                    views: {
+                        'tab-blogs': {
+                            templateUrl: 'templates/tab-blank.html',
+                            controller: 'BlankCtrl'
+                        }
+                    }
+                })
 
                 .state('tab.activities', {
                     url: '/activities',
@@ -62,7 +71,18 @@ var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'gamififcati
                     }
                 })
 
+                .state('tab.userjoin', {
+                    url: '/userjoin',
+                    views: {
+                        'tab-blogs': {
+                            templateUrl: 'templates/tab-userjoin.html'
+                        }
+                    }
+                })
+
+
+
             // if none of the above states are matched, use this as the fallback
-            $urlRouterProvider.otherwise('/tab/activities');
+            $urlRouterProvider.otherwise('/tab/blank');
 
         });
