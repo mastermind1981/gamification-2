@@ -107,3 +107,7 @@ ion-view {
 .taskDiv ion-checkbox {
     padding-top: 20px;
 }
+
+.classroomList h3 {
+    text-align: center;
+}
