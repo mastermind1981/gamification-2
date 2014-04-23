@@ -19,6 +19,11 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.activities_group = [];
     $scope.activities_my = [];
 
+    $scope.quests = [];
+    $scope.activeQuest = null;
+    $scope.activeTask = null;
+    $scope.sortedlevels = [];
+
     $scope.domain = "intermedia-prod03.uio.no";
     $scope.connection = null;
     $scope.password = "gami";
@@ -209,6 +214,35 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
     };
 
+    $scope.navigateToQuest = function(quest) {
+        if(quest.locked == false) {
+            gamificationFactory.doGetURL('/quest/'+quest._id+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                $scope.activeQuest = response[0];
+                $scope.sortedlevels = gamificationUtilities.sortArrayByKey($scope.activeQuest.levels, 'order');
+                window.location.href = '#/tab/quests1';
+            });
+        }
+    };
+
+    $scope.navigateToTask = function(task, b) {
+        if(b) {
+            gamificationFactory.doGetURL('/task/'+task._id+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                $scope.activeTask = response[0];
+                window.location.href = '#/tab/quests2';
+            });
+        }
+    };
+
+    $scope.validateTask = function() {
+
+        var data = {};
+        data.groupId = $scope.groupId;
+
+        gamificationFactory.doPutURL('/task/'+$scope.activeTask._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+            window.location.href = '#/tab/quests1';
+        });
+    };
+
     $scope.changeMainTab = function(ind) {
         switch(ind) {
             case 0:
@@ -228,5 +262,5 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 window.location.href = '#/tab/blogs';
                 break;
         }
-    }
+    };
 });

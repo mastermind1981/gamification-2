@@ -60,7 +60,7 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
         }else{
             return true;
         }
-    }
+    };
 
     // An alert dialog
     $scope.showMessageOKAlert = function() {

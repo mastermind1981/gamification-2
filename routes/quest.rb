@@ -14,6 +14,20 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get all quests
+  #
+  # return [Array] quest objects
+  get '/questlight' do
+    if authorized?
+      content_type :json
+      @quest = Quest.all()
+      status 200
+      return @quest.to_json(:except=> [ :tasks, :completedobjects ])
+    else
+      status 401
+    end
+  end
+
   # Get a quest by id
   #
   # param [String] the quest id
@@ -25,6 +39,30 @@ class Gamification < Sinatra::Application
       quest = Quest.find(params[:id])
       status 200
       return quest.to_json
+    else
+      status 401
+    end
+  end
+
+  # Get a quest by a group id
+  #
+  # param [String] the group id
+  #
+  # return [Object] quest
+  get '/quest/bygroupid/:id' do
+    if authorized?
+      content_type :json
+      @quest = Quest.order_by(:order.asc).all()
+
+      @assignedQuests = []
+      @quest.each do |quest|
+        if quest.assignedgroups.include?(params[:id]) then
+          @assignedQuests.push(quest);
+        end
+      end
+
+      status 200
+      return @assignedQuests.to_json(:except=> [ :levels, :tasks, :completedobjects ])
     else
       status 401
     end
@@ -65,6 +103,11 @@ class Gamification < Sinatra::Application
 
         unless data['label'].nil?
           quest.update_attributes(:label => data['label'])
+          quest.save
+        end
+
+        unless data['order'].nil?
+          quest.update_attributes(:order => data['order'])
           quest.save
         end
 

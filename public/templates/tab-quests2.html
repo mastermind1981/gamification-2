@@ -1,0 +1,25 @@
+<ion-view>
+    <div class="bar bar-subheader">
+        <button class="button button-icon icon ion-ios7-arrow-back" ng-click="backToLevel()"></button>
+        <h1 class="title">{{ activeTask.label }}</h1>
+    </div>
+    <ion-content class="has-header">
+        <div class="list padding taskDiv" style="margin-top: 45px">
+            <h2>{{ activeTask.introduction }}</h2>
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper">
+                    <input id="urlTextInput" type="text" placeholder="Url" ng-model="urltext" ng-change="showUpdateButton()">
+                </label>
+                <button class="button button-small" ng-show="editing" ng-click="updateCurrentTask()">
+                    Update
+                </button>
+            </div>
+            <li class="item item-checkbox" ng-click="submitTaskIfComplete()">
+                <label class="checkbox">
+                    <input id="taskCompletedInput" type="checkbox">
+                </label>
+                Completed
+            </li>
+        </div>
+    </ion-content>
+</ion-view>

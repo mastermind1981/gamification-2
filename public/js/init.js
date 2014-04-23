@@ -1,4 +1,4 @@
-var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'gamififcationApp.controllers', 'gamififcationApp.services'])
+var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'gamififcationApp.services'])
 
    .config(function($stateProvider, $urlRouterProvider) {
 
@@ -41,6 +41,27 @@ var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'gamififcati
                         }
                     }
                 })
+
+                .state('tab.quests1', {
+                    url: '/quests1',
+                    views: {
+                        'tab-quests': {
+                            templateUrl: 'templates/tab-quests1.html',
+                            controller: 'Quests1Ctrl'
+                        }
+                    }
+                })
+
+                .state('tab.quests2', {
+                    url: '/quests2',
+                    views: {
+                        'tab-quests': {
+                            templateUrl: 'templates/tab-quests2.html',
+                            controller: 'Quests2Ctrl'
+                        }
+                    }
+                })
+
                 .state('tab.checkins', {
                     url: '/checkins',
                     views: {

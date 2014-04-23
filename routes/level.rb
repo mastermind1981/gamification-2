@@ -73,6 +73,11 @@ class Gamification < Sinatra::Application
           level.save
         end
 
+        unless data['order'].nil?
+          level.update_attributes(:order => data['order'])
+          level.save
+        end
+
         status 200
 
         return  level.to_json
