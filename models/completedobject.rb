@@ -11,5 +11,5 @@ class Completedobject
   field :text, :type => String
   field :userId, :type => String
   field :groupId, :type => String
-  field :finishedOn, :type => Integer, :default => 0
+  field :finishedOn, :type => Integer
 end

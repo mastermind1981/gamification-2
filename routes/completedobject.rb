@@ -79,7 +79,7 @@ class Gamification < Sinatra::Application
         end
 
         unless data['finishedOn'].nil?
-          completedobject.update_attributes(:finishedOn => data['finishedOn'])
+          completedobject.update_attributes(:finishedOn => Time.new().to_i)
           completedobject.save
         end
 

@@ -25,20 +25,20 @@ a img {
 #mainContent {
     width: 30px;
     height: 30px;
-    margin: auto;
+    margin: 0 auto;
     position: absolute;
-    top: 0;
+    top: 200px;
     left: 0;
     bottom: 0;
     right: 0;
 }
 
-#logoutButtonDivWrapper {
-    width: 208px;
+#loginButtonDivWrapper {
+    width: 200px;
     height: 57px;
-    margin: auto;
+    margin: 0 auto;
     position: absolute;
-    top: 0;
+    top: 200px;
     left: 0;
     bottom: 0;
     right: 0;
@@ -92,4 +92,18 @@ ion-view {
 
 .tabs {
     color: #000000;
+}
+
+.taskDiv {
+    margin-top: 10px;
+    margin-left: 40px;
+    margin-right: 40px;
+}
+
+.taskDiv h2 {
+    text-align: center;
+}
+
+.taskDiv ion-checkbox {
+    padding-top: 20px;
 }

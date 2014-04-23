@@ -1,5 +1,18 @@
 <ion-view>
-  <ion-content class="has-header">
-
-  </ion-content>
+    <ion-content class="padding" ng-show="groupId == null">
+        <div class="list" style="margin-top: 50px">
+            No group assigned to you yet
+        </div>
+    </ion-content>
+    <ion-content class="padding" ng-show="groupId != null">
+        <div class="list" style="margin-top: 50px">
+            <div class="item item-divider">Quests</div>
+            <a ng-repeat="quest in quests" class="item item-icon-right" ng-click="navigateToQuest(quest)">
+                <div style="width: 50px;height: 50px; background-color: #4A87EE; display: table-cell; text-align:center; vertical-align: middle;">{{quest.order}}</div>
+                <div style="padding-left: 20px; height: 50px; display: table-cell; vertical-align: middle;">{{quest.label}}</div>
+                <i ng-if="quest.locked == true" class="icon ion-ios7-locked"></i>
+                <i ng-if="quest.locked == false" class="icon ion-ios7-arrow-right"></i>
+            </a>
+        </div>
+    </ion-content>
 </ion-view>

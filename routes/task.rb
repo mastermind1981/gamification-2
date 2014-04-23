@@ -73,6 +73,11 @@ class Gamification < Sinatra::Application
           task.save
         end
 
+        unless data['order'].nil?
+          task.update_attributes(:order => data['order'])
+          task.save
+        end
+
         status 200
 
         return  task.to_json
@@ -107,7 +112,7 @@ class Gamification < Sinatra::Application
           end
 
           if group
-            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => data['finishedOn']);
+            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => Time.new().to_i);
             task.completedobjects << completedobject
             task.save
             status 200

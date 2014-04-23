@@ -176,6 +176,14 @@ class Gamification < Sinatra::Application
         end
 
         if student
+          @graph = Koala::Facebook::API.new(session["access_token"])
+          user = @graph.get_object(student.facebookId)
+          avatar = @graph.get_picture(student.facebookId)
+
+          student['firstName'] = user["first_name"];
+          student['lastName'] = user["last_name"];
+          student['avatar'] = avatar;
+
           classroom.students << student
         else
           status 500

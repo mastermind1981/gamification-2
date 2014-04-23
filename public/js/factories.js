@@ -67,7 +67,15 @@ gamififcationApp.factory('gamificationUtilities', function ($http) {
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     };
 
+    var sortByKey = function(array, key) {
+        return array.sort(function(a, b) {
+            var x = a[key]; var y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+    }
+
     return {
-        getRandomUUID: getRandomUUID
+        getRandomUUID: getRandomUUID,
+        sortArrayByKey: sortByKey
     }
 });
