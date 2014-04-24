@@ -1,4 +1,4 @@
-var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'gamififcationApp.services'])
+var gamififcationApp = angular.module('gamififcationApp', ['ionic'])
 
    .config(function($stateProvider, $urlRouterProvider) {
 

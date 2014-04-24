@@ -14,6 +14,20 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get all quests stats
+  #
+  # return [Array] quest objects
+  get '/quest' do
+    if authorized?
+      content_type :json
+      @quest = Quest.all()
+      status 200
+      return @quest.to_json
+    else
+      status 401
+    end
+  end
+
   # Get all quests
   #
   # return [Array] quest objects

@@ -48,12 +48,12 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
         }
     };
 
-    $scope.getTaskVisibility = function(tsk) {
-        if(tsk.completedobjects.indexOf($scope.groupId) > -1) {
-            return false;
+    $scope.getTaskIconClass = function(tsk) {
+        if(tsk.complete) {
+            return "icon ion-ios7-checkmark-outline";
         }
         else {
-            return true;
+            return "icon ion-ios7-arrow-right";
         }
 
     };
@@ -67,6 +67,18 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
         console.log('yo');
     };
 
+    $scope.isTaskComplete = function(arr) {
+
+        for(var i=0; i<arr.length; i++) {
+            if(arr[i].groupId == $scope.groupId) {
+                return true;
+                break;
+            }
+        }
+
+        return false;
+    };
+
     function initQuestView() {
         var reversedLevelsArray = $scope.sortedlevels.slice(0);
         reversedLevelsArray.reverse();
@@ -75,12 +87,29 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
             if(reversedLevelsArray[i].locked == false) {
                 $scope.activeLevelIndex = reversedLevelsArray[i].order;
                 $scope.activeLevelId = reversedLevelsArray[i]._id;
-                break;
+
             }
         }
 
         gamificationFactory.doGetURL('/level/'+$scope.activeLevelId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             $scope.tasks = gamificationUtilities.sortArrayByKey(response[0].tasks, 'order');
+            $scope.setObjectsToUnlock(response[0].idstounlock);
+
+            var numberOfCompletedTasks = 0;
+            //find out which are completed by current group
+            for(var i=0; i < $scope.tasks.length; i++) {
+                if($scope.isTaskComplete($scope.tasks[i].completedobjects)) {
+                    $scope.tasks[i].complete = true;
+                    numberOfCompletedTasks++;
+                }
+                else {
+                    $scope.tasks[i].complete = false;
+                }
+            }
+
+            if(numberOfCompletedTasks == $scope.tasks.length-1) {
+                $scope.setOneTaskPending(true);
+            }
         });
 
         $scope.levels = $scope.sortedlevels.slice(0);
@@ -119,9 +148,18 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
         }
     };
 
+    $scope.validateTask = function() {
+
+        var data = {};
+        data.groupId = $scope.groupId;
+
+        gamificationFactory.doPutURL('/task/'+$scope.activeTask._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+            $scope.returnToLevels();
+        });
+    };
+
     $scope.updateCurrentTask = function() {
         var el = $('#urlTextInput')[0];
-
 
         if(el.value != "" && $scope.currentCompletedObjectId != null) {
             var data = {};

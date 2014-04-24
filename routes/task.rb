@@ -112,9 +112,16 @@ class Gamification < Sinatra::Application
           end
 
           if group
-            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => Time.new().to_i);
-            task.completedobjects << completedobject
-            task.save
+
+            #make group does not re-submit a task completion
+            retrievedCompletedobject = Completedobject.where(:task_id => params[:id], :groupId => data['groupId']).length
+
+            if retrievedCompletedobject == 0 then
+              completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => Time.new().to_i);
+              task.completedobjects << completedobject
+              task.save
+            end
+
             status 200
             return  task.to_json
           else

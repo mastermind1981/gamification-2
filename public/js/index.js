@@ -22,7 +22,9 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.quests = [];
     $scope.activeQuest = null;
     $scope.activeTask = null;
+    $scope.oneTaskPending = false;
     $scope.sortedlevels = [];
+    $scope.objectsToUnlock = [];
 
     $scope.domain = "intermedia-prod03.uio.no";
     $scope.connection = null;
@@ -184,10 +186,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         gamificationFactory.doLogOut();
     };
 
-    $scope.gotoAbout = function() {
-        window.location.href = '/about.html';
-    };
-
     $scope.joinClassroom = function() {
         if($scope.selectedClass != null) {
             gamificationFactory.doPutURL('/classroom/'+$scope.selectedClass+'/addstudent/'+$scope.userId).then(function (response) {
@@ -224,23 +222,53 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         }
     };
 
-    $scope.navigateToTask = function(task, b) {
-        if(b) {
-            gamificationFactory.doGetURL('/task/'+task._id+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
-                $scope.activeTask = response[0];
-                window.location.href = '#/tab/quests2';
-            });
+    $scope.navigateToTask = function(task) {
+        gamificationFactory.doGetURL('/task/'+task._id+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            $scope.activeTask = response[0];
+            window.location.href = '#/tab/quests2';
+        });
+    };
+
+    $scope.setOneTaskPending = function(b) {
+        $scope.oneTaskPending = b;
+    };
+
+    $scope.setObjectsToUnlock = function(arr) {
+        $scope.objectsToUnlock = arr;
+    };
+
+    $scope.readyToRefreshLevels = function(count) {
+        if(count == $scope.objectsToUnlock.length) {
+            $scope.navigateToQuest($scope.activeQuest);
         }
     };
 
-    $scope.validateTask = function() {
+    $scope.returnToLevels = function() {
+        if($scope.oneTaskPending) {
+            //unlock next level
 
-        var data = {};
-        data.groupId = $scope.groupId;
+            $scope.unlockingCounter = 0;
+            $scope.objectsToUnlock.forEach(function(obj) {
 
-        gamificationFactory.doPutURL('/task/'+$scope.activeTask._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
-            window.location.href = '#/tab/quests1';
-        });
+                switch(obj['type']) {
+                    case "LEVEL":
+                        gamificationFactory.doPutURL('/level/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                            $scope.unlockingCounter++;
+                            $scope.readyToRefreshLevels($scope.unlockingCounter);
+                        });
+                        break;
+                    case "QUEST":
+                        gamificationFactory.doPutURL('/quest/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                            $scope.unlockingCounter++;
+                            $scope.readyToRefreshLevels($scope.unlockingCounter);
+                        });
+                        break;
+                };
+            });
+        }
+        else {
+            $scope.readyToRefreshLevels($scope.objectsToUnlock.length);
+        }
     };
 
     $scope.changeMainTab = function(ind) {

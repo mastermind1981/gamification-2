@@ -278,7 +278,7 @@ class Gamification < Sinatra::Application
   # body [Object] in JSON. ex: {"label":"<String>" }
   #
   # return [Object] level
-  put '/level/:id/addidtounlock/:unid' do
+  put '/level/:id/addidtounlock' do
     if authorized?
       request.body.rewind  # in case someone already read it
       content_type :json
@@ -286,8 +286,20 @@ class Gamification < Sinatra::Application
       level = Level.find(params[:id])
 
       if level then
-        level.idstounlock << params[:unid]
-        level.save
+
+        doNotExists = true;
+        data = JSON.parse request.body.read
+
+        level.idstounlock.each do |idd|
+          if idd["unid"] == data['unid'] then
+            doNotExists = false;
+          end
+        end
+
+        if doNotExists then
+          level.idstounlock << {:unid => data['unid'], :type => data['type']}
+          level.save
+        end
 
         status 200
 
@@ -315,8 +327,16 @@ class Gamification < Sinatra::Application
       level = Level.find(params[:id])
 
       if level then
-        level.idstounlock.delete(params[:unid])
-        level.save
+
+        data = JSON.parse request.body.read
+
+        level.idstounlock.each do |idd|
+          if idd["unid"] == data['unid'] then
+            level.idstounlock.delete(idd)
+          end
+        end
+
+        level.save!
 
         status 200
 
