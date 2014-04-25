@@ -24,6 +24,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.activeTask = null;
     $scope.oneTaskPending = false;
     $scope.sortedlevels = [];
+    $scope.activeLevelId = null;
     $scope.objectsToUnlock = [];
 
     $scope.domain = "intermedia-prod03.uio.no";
@@ -246,29 +247,37 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.returnToLevels = function() {
         if($scope.oneTaskPending) {
             //unlock next level
+            var data = {};
+            data.groupId = $scope.groupId;
 
-            $scope.unlockingCounter = 0;
-            $scope.objectsToUnlock.forEach(function(obj) {
+            gamificationFactory.doPutURL('/level/'+$scope.activeLevelId+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+                $scope.unlockingCounter = 0;
+                $scope.objectsToUnlock.forEach(function(obj) {
 
-                switch(obj['type']) {
-                    case "LEVEL":
-                        gamificationFactory.doPutURL('/level/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
-                            $scope.unlockingCounter++;
-                            $scope.readyToRefreshLevels($scope.unlockingCounter);
-                        });
-                        break;
-                    case "QUEST":
-                        gamificationFactory.doPutURL('/quest/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
-                            $scope.unlockingCounter++;
-                            $scope.readyToRefreshLevels($scope.unlockingCounter);
-                        });
-                        break;
-                };
+                    switch(obj['type']) {
+                        case "LEVEL":
+                            gamificationFactory.doPutURL('/level/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                                $scope.unlockingCounter++;
+                                $scope.readyToRefreshLevels($scope.unlockingCounter);
+                            });
+                            break;
+                        case "QUEST":
+                            gamificationFactory.doPutURL('/quest/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                                $scope.unlockingCounter++;
+                                $scope.readyToRefreshLevels($scope.unlockingCounter);
+                            });
+                            break;
+                    };
+                });
             });
         }
         else {
             $scope.readyToRefreshLevels($scope.objectsToUnlock.length);
         }
+    };
+
+    $scope.setActiveLevelId = function(id) {
+        $scope.activeLevelId = id;
     };
 
     $scope.changeMainTab = function(ind) {

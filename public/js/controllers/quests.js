@@ -19,7 +19,6 @@ gamififcationApp.controller('QuestsCtrl', function($scope, $ionicModal, $ionicPo
 
 gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicModal, $ionicPopup, $http, $q, gamificationFactory, gamificationUtilities) {
     $scope.activeLevelIndex = 0;
-    $scope.activeLevelId = null;
     $scope.levels = [];
     $scope.tasks = [];
     $scope.editing = false;
@@ -29,42 +28,19 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
         $scope.initIndexView();
     }
 
-    $scope.blogLevelsDynamicClass = function(lvl, ind) {
-        if(lvl.locked == false) {
-            if((ind+1) == $scope.activeLevelIndex) {
-                return "button active";
-            }
-            else {
-                return "button";
-            }
-        }
-        else {
-            if((ind+1) == $scope.activeLevelIndex) {
-                return "button active icon-right ion-ios7-locked";
-            }
-            else {
-                return "button icon-right ion-ios7-locked";
-            }
-        }
-    };
-
-    $scope.getTaskIconClass = function(tsk) {
-        if(tsk.complete) {
-            return "icon ion-ios7-checkmark-outline";
-        }
-        else {
-            return "icon ion-ios7-arrow-right";
-        }
-
-    };
-
     $scope.backToQuest = function() {
         window.location.href = '#/tab/quests';
     };
 
     $scope.unveilLevel = function(lvl) {
-        var ele = $('#levelsNavigationBar').children();
-        console.log('yo');
+        if(lvl.locked == false) {
+            $scope.activeLevelIndex = lvl.order;
+            $scope.setActiveLevelId(lvl._id);
+
+            loadCurrentLevel();
+        }
+
+
     };
 
     $scope.isTaskComplete = function(arr) {
@@ -86,11 +62,18 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
         for(var i=0; i<reversedLevelsArray.length; i++) {
             if(reversedLevelsArray[i].locked == false) {
                 $scope.activeLevelIndex = reversedLevelsArray[i].order;
-                $scope.activeLevelId = reversedLevelsArray[i]._id;
-
+                $scope.setActiveLevelId(reversedLevelsArray[i]._id);
+                break;
             }
         }
 
+        $scope.levels = $scope.sortedlevels.slice(0);
+
+        loadCurrentLevel();
+
+    };
+
+    function loadCurrentLevel() {
         gamificationFactory.doGetURL('/level/'+$scope.activeLevelId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             $scope.tasks = gamificationUtilities.sortArrayByKey(response[0].tasks, 'order');
             $scope.setObjectsToUnlock(response[0].idstounlock);
@@ -111,9 +94,7 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
                 $scope.setOneTaskPending(true);
             }
         });
-
-        $scope.levels = $scope.sortedlevels.slice(0);
-    };
+    }
 
     initQuestView();
 });

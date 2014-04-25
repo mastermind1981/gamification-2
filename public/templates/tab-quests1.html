@@ -5,13 +5,13 @@
     </div>
     <ion-content class="has-header">
         <div id="levelsNavigationBar" class="button-bar" style="margin-top: 40px">
-            <a ng-repeat="level in levels" ng-class="blogLevelsDynamicClass(level, $index)" ng-click="unveilLevel(level, $index)">{{ level.order }}</a>
+            <button ng-repeat="level in levels" class="button" ng-class="{'icon-right ion-ios7-locked': level.locked, 'levelButtonSelected': level.order==activeLevelIndex}" ng-click="unveilLevel(level)">{{ level.order }}</button>
         </div>
         <div class="list padding">
             <a ng-repeat="task in tasks" class="item item-icon-right" ng-click="navigateToTask(task)">
-                <div style="width: 50px;height: 50px; background-color: #4A87EE; display: table-cell; text-align:center; vertical-align: middle;">{{task.order}}</div>
-                <div style="padding-left: 20px; height: 50px; display: table-cell; vertical-align: middle;">{{task.label}}</div>
-                <i ng-class="getTaskIconClass(task)"></i>
+                <div class="taskIconCounter">{{task.order}}</div>
+                <div class="taskIconLabel">{{task.label}}</div>
+                <i class="icon" ng-class="{'ion-ios7-checkmark-outline': task.complete, 'ion-ios7-arrow-right': !task.complete}"></i>
             </a>
         </div>
     </ion-content>
