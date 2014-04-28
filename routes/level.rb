@@ -190,9 +190,15 @@ class Gamification < Sinatra::Application
           end
 
           if group
-            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => data['finishedOn']);
-            level.completedobjects << completedobject
-            level.save
+            #make group does not re-submit a task completion
+            retrievedCompletedobject = Completedobject.where(:level_id => params[:id], :groupId => data['groupId']).length
+
+            if retrievedCompletedobject == 0 then
+              completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => Time.new().to_i);
+              level.completedobjects << completedobject
+              level.save
+            end
+
             status 200
             return  level.to_json
           else
@@ -278,7 +284,7 @@ class Gamification < Sinatra::Application
   # body [Object] in JSON. ex: {"label":"<String>" }
   #
   # return [Object] level
-  put '/level/:id/addidtounlock/:unid' do
+  put '/level/:id/addidtounlock' do
     if authorized?
       request.body.rewind  # in case someone already read it
       content_type :json
@@ -286,8 +292,20 @@ class Gamification < Sinatra::Application
       level = Level.find(params[:id])
 
       if level then
-        level.idstounlock << params[:unid]
-        level.save
+
+        doNotExists = true;
+        data = JSON.parse request.body.read
+
+        level.idstounlock.each do |idd|
+          if idd["unid"] == data['unid'] then
+            doNotExists = false;
+          end
+        end
+
+        if doNotExists then
+          level.idstounlock << {:unid => data['unid'], :type => data['type']}
+          level.save
+        end
 
         status 200
 
@@ -315,8 +333,16 @@ class Gamification < Sinatra::Application
       level = Level.find(params[:id])
 
       if level then
-        level.idstounlock.delete(params[:unid])
-        level.save
+
+        data = JSON.parse request.body.read
+
+        level.idstounlock.each do |idd|
+          if idd["unid"] == data['unid'] then
+            level.idstounlock.delete(idd)
+          end
+        end
+
+        level.save!
 
         status 200
 

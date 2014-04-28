@@ -1,6 +1,7 @@
 gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ionicPopup, $http, $q, gamificationFactory, gamificationUtilities) {
     $scope.activityMenuModel = 0;
     $scope.activityBadgeValue = 0;
+    $scope.groupStats = [];
 
     $scope.postMessage = function() {
         var formValid = true;
@@ -85,11 +86,34 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
     $scope.closeModal = function() {
         $scope.modal.hide();
     };
+
     //Cleanup the modal when we're done with it!
     $scope.$on('$destroy', function() {
         $scope.modal.remove();
     });
 
+    $scope.generateStats = function() {
+        gamificationFactory.doGetURL('/queststats/'+$scope.classroomId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            $scope.groupStats = response[0];
+        });
+    };
+
+    $scope.getQuestProgress = function(quest) {
+        total = 0;
+        for(var i=0; i<quest.levels.length; i++) {
+            if(quest.levels[i].completed == 1) {
+                total = total + (100/quest.levels.length);
+            }
+            else {
+                for(var j=0; j<quest.levels[i].tasks.length; j++) {
+                    if(quest.levels[i].tasks[j].completed == 1) {
+                        total = total + (100/(quest.levels[i].tasks.length*quest.levels.length));
+                    }
+                }
+            }
+        }
+        return total.toFixed(2);
+    };
 
     $scope.navigateToActivity = function(message) {
         if(message.label != 'JOINED GAMIFICATION'  && message.url != null) {

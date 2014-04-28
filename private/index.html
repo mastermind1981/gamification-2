@@ -7,6 +7,8 @@
     <meta name="description" content="Gamification project between Caroline Cruaud (UiO) and Engagelab (UiO)">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="author" content="Jeremy Toussaint, UiO" />
 
     <link href="css/ionic.css" rel="stylesheet">
@@ -19,7 +21,6 @@
     <script src="js/strophe.js"></script>
     <script src="js/strophe.muc.js"></script>
     <script src="js/init.js"></script>
-    <script src="js/services.js"></script>
     <script src="js/factories.js"></script>
     <script src="js/index.js"></script>
     <script src="js/controllers/activities.js"></script>
@@ -38,7 +39,7 @@
                 <a href="#"><img ng-src="{{avatarUrl}}"/></a>
             </div>
             <div style="float: left; margin-left: 10px">
-                {{username}} ({{facebookId}}) <br />
+                {{username}}<br />
                 <a href="" ng-click="logout()">LOGOUT</a>
             </div>
         </div>

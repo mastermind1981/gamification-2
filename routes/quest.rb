@@ -14,6 +14,82 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get all quests stats
+  #
+  # return [Array] quest objects
+  get '/queststats/:classroomId' do
+    if authorized?
+      content_type :json
+
+      resultObject = []
+      @quest = Quest.order_by(:order.asc).all()
+
+      @groups = Group.where(:classroom_id => params[:classroomId])
+
+      @groups.each do |group|
+        groupObject = {};
+        groupObject['_id'] = group._id;
+        groupObject['label'] = group.label;
+        groupObject['avatarUrl'] = group.avatarUrl;
+        groupObject['quests'] = [];
+
+        @quest.each do |quest|
+
+          if quest.assignedgroups.include?(group._id.to_s) then
+            questObject = {};
+            questObject['_id'] = quest._id;
+            questObject['label'] = quest.label;
+            questObject['locked'] = quest.locked;
+            completeQuest = Completedobject.where(:quest_id => quest._id, :groupId => group._id).length;
+            questObject['completed'] = completeQuest;
+            questObject['levels'] = [];
+
+            if completeQuest == 0 then
+
+              quest.levels.each do |level|
+                levelObject = {};
+                levelObject['_id'] = level._id;
+                levelObject['label'] = level.label;
+                completeLevel = Completedobject.where(:level_id => level._id, :groupId => group._id).length;
+                levelObject['completed'] = completeLevel;
+                levelObject['tasks'] = [];
+
+                if completeLevel == 0 then
+
+                  level.tasks.each do |task|
+
+                    taskObject = {};
+                    taskObject['_id'] = task._id;
+                    taskObject['label'] = task.label;
+                    completeTask = Completedobject.where(:task_id => task._id, :groupId => group._id).length;
+                    taskObject['completed'] = completeTask;
+
+                    levelObject['tasks'] << taskObject;
+
+                  end
+
+                end
+
+                questObject['levels'] << levelObject;
+              end
+
+            end
+
+          groupObject['quests'] << questObject;
+          end
+
+        end
+
+        resultObject << groupObject;
+      end
+
+      status 200
+      return resultObject.to_json
+    else
+      status 401
+    end
+  end
+
   # Get all quests
   #
   # return [Array] quest objects
@@ -299,9 +375,15 @@ class Gamification < Sinatra::Application
 
           if quest.assignedgroups.include?(data['groupId']) then
 
-            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => data['finishedOn']);
-            quest.completedobjects << completedobject
-            quest.save
+            #make group does not re-submit a task completion
+            retrievedCompletedobject = Completedobject.where(:quest_id => params[:id], :groupId => data['groupId']).length
+
+            if retrievedCompletedobject == 0 then
+              completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => Time.new().to_i);
+              quest.completedobjects << completedobject
+              quest.save
+            end
+
             status 200
             return  quest.to_json
           else

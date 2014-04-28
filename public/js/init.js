@@ -1,4 +1,4 @@
-var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'gamififcationApp.services'])
+var gamififcationApp = angular.module('gamififcationApp', ['ionic'])
 
    .config(function($stateProvider, $urlRouterProvider) {
 
@@ -107,3 +107,6 @@ var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'gamififcati
             $urlRouterProvider.otherwise('/tab/blank');
 
         });
+
+
+document.documentElement.requestFullscreen();

@@ -19,7 +19,6 @@ gamififcationApp.controller('QuestsCtrl', function($scope, $ionicModal, $ionicPo
 
 gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicModal, $ionicPopup, $http, $q, gamificationFactory, gamificationUtilities) {
     $scope.activeLevelIndex = 0;
-    $scope.activeLevelId = null;
     $scope.levels = [];
     $scope.tasks = [];
     $scope.editing = false;
@@ -29,42 +28,31 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
         $scope.initIndexView();
     }
 
-    $scope.blogLevelsDynamicClass = function(lvl, ind) {
-        if(lvl.locked == false) {
-            if((ind+1) == $scope.activeLevelIndex) {
-                return "button active";
-            }
-            else {
-                return "button";
-            }
-        }
-        else {
-            if((ind+1) == $scope.activeLevelIndex) {
-                return "button active icon-right ion-ios7-locked";
-            }
-            else {
-                return "button icon-right ion-ios7-locked";
-            }
-        }
-    };
-
-    $scope.getTaskVisibility = function(tsk) {
-        if(tsk.completedobjects.indexOf($scope.groupId) > -1) {
-            return false;
-        }
-        else {
-            return true;
-        }
-
-    };
-
     $scope.backToQuest = function() {
         window.location.href = '#/tab/quests';
     };
 
     $scope.unveilLevel = function(lvl) {
-        var ele = $('#levelsNavigationBar').children();
-        console.log('yo');
+        if(lvl.locked == false) {
+            $scope.activeLevelIndex = lvl.order;
+            $scope.setActiveLevelId(lvl._id);
+
+            loadCurrentLevel();
+        }
+
+
+    };
+
+    $scope.isTaskComplete = function(arr) {
+
+        for(var i=0; i<arr.length; i++) {
+            if(arr[i].groupId == $scope.groupId) {
+                return true;
+                break;
+            }
+        }
+
+        return false;
     };
 
     function initQuestView() {
@@ -74,17 +62,39 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
         for(var i=0; i<reversedLevelsArray.length; i++) {
             if(reversedLevelsArray[i].locked == false) {
                 $scope.activeLevelIndex = reversedLevelsArray[i].order;
-                $scope.activeLevelId = reversedLevelsArray[i]._id;
+                $scope.setActiveLevelId(reversedLevelsArray[i]._id);
                 break;
             }
         }
 
+        $scope.levels = $scope.sortedlevels.slice(0);
+
+        loadCurrentLevel();
+
+    };
+
+    function loadCurrentLevel() {
         gamificationFactory.doGetURL('/level/'+$scope.activeLevelId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             $scope.tasks = gamificationUtilities.sortArrayByKey(response[0].tasks, 'order');
-        });
+            $scope.setObjectsToUnlock(response[0].idstounlock);
 
-        $scope.levels = $scope.sortedlevels.slice(0);
-    };
+            var numberOfCompletedTasks = 0;
+            //find out which are completed by current group
+            for(var i=0; i < $scope.tasks.length; i++) {
+                if($scope.isTaskComplete($scope.tasks[i].completedobjects)) {
+                    $scope.tasks[i].complete = true;
+                    numberOfCompletedTasks++;
+                }
+                else {
+                    $scope.tasks[i].complete = false;
+                }
+            }
+
+            if(numberOfCompletedTasks == $scope.tasks.length-1) {
+                $scope.setOneTaskPending(true);
+            }
+        });
+    }
 
     initQuestView();
 });
@@ -119,9 +129,18 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
         }
     };
 
+    $scope.validateTask = function() {
+
+        var data = {};
+        data.groupId = $scope.groupId;
+
+        gamificationFactory.doPutURL('/task/'+$scope.activeTask._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+            $scope.returnToLevels();
+        });
+    };
+
     $scope.updateCurrentTask = function() {
         var el = $('#urlTextInput')[0];
-
 
         if(el.value != "" && $scope.currentCompletedObjectId != null) {
             var data = {};

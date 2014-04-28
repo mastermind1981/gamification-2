@@ -9,7 +9,9 @@
                     </div>
                 </div>
             </div>
-            <div ng-show="classrooms.length != 0" class="list" style="max-width: 300px; margin: 0 auto">
+            <div ng-show="classrooms.length != 0" class="list classroomList" style="max-width: 300px; margin: 0 auto">
+                <h3>Pick a classroom and press "JOIN"</h3>
+
                 <label class="item item-radio" ng-repeat="classroom in classrooms" ng-model="classModel">
                     <input type="radio" name="group" ng-click="pickClassroom(classroom)">
                     <div class="item-content">

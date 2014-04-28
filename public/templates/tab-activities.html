@@ -17,7 +17,7 @@
                 <i ng-if="activityMenuModel != 2" class="icon ion-ios7-person-outline"></i>
                 My
             </a>
-            <a class="tab-item" ng-click="activityMenuModel=3">
+            <a class="tab-item" ng-click="activityMenuModel=3;generateStats()" >
                 <i ng-if="activityMenuModel == 3" class="icon ion-ios7-pie"></i>
                 <i ng-if="activityMenuModel != 3" class="icon ion-ios7-pie-outline"></i>
                 Stats
@@ -30,7 +30,7 @@
         </div>
     </div>
     <ion-content class="has-header padding" ng-show="activityMenuModel==0">
-        <div class="list" style="margin-top: 50px">
+        <div class="list" style="margin-top: 50px; margin-bottom: 80px">
             <div class="item item-divider">All Activities</div>
             <a ng-repeat="message in activities_all" class="item item-avatar item-icon-right" ng-click="navigateToActivity(message)">
                 <img ng-src="{{message.ownerAvatar}}">
@@ -44,7 +44,7 @@
     </ion-content>
 
     <ion-content class="has-header padding" ng-show="activityMenuModel==1">
-        <div style="margin-top: 50px">
+        <div style="margin-top: 50px; margin-bottom: 80px">
             <div class="item item-divider">Group Activities</div>
             <a ng-repeat="message in activities_group" class="item item-avatar item-icon-right">
                 <img ng-src="{{message.ownerAvatar}}">
@@ -52,13 +52,13 @@
                 <h2>{{message.ownerName}}</h2>
                 <span>{{message.label}}</span>
                 <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
-                <i ng-if="message.label != 'JOINED GAMIFICATION'" class="icon ion-ios7-arrow-right"></i>
+                <i ng-if="(message.label != 'JOINED GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>
     </ion-content>
 
     <ion-content class="has-header padding" ng-show="activityMenuModel==2">
-        <div style="margin-top: 50px">
+        <div style="margin-top: 50px; margin-bottom: 80px">
             <div class="item item-divider">My Activities</div>
             <a ng-repeat="message in activities_my" class="item item-avatar item-icon-right">
                 <img ng-src="{{message.ownerAvatar}}">
@@ -66,23 +66,41 @@
                 <h2>{{message.ownerName}}</h2>
                 <span>{{message.label}}</span>
                 <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
-                <i ng-if="message.label != 'JOINED GAMIFICATION'" class="icon ion-ios7-arrow-right"></i>
+                <i ng-if="(message.label != 'JOINED GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>
     </ion-content>
 
     <ion-content class="has-header padding" ng-show="activityMenuModel==3">
-        <div style="margin-top: 50px">
-            <div class="item item-divider">Stats</div>
+        <div style="margin-top: 50px; margin-bottom: 80px">
+            <div class="statGroupDiv" ng-repeat="group in groupStats">
+                <h4>{{ group.label }}</h4>
+                <ion-list>
+                    <ion-item class="questItems" ng-repeat="quest in group.quests">
+                        <div class="statQuestTitle">{{ quest.label }}</div>
+                        <div class="statQuestProgress">
+                            <div ng-show="quest.locked==false" class="range range-positive">
+                                <i class="icon ion-ios7-checkmark-outline"></i>
+                                <input type="range" name="volume" min="0" max="100" value="{{getQuestProgress(quest)}}">
+                                <i class="icon ion-ios7-checkmark"></i>
+                                <h4 style="margin-left: 10px">{{getQuestProgress(quest)}} %</h4>
+                            </div>
+                            <div ng-show="quest.locked==true" style="margin-left: 10px">
+                                <i class="icon ion-ios7-locked"></i>
+                            </div>
+                        </div>
+                    </ion-item>
+                </ion-list>
+            </div>
         </div>
     </ion-content>
 
     <ion-content class="has-header padding" ng-show="activityMenuModel==4">
-        <div style="margin-top: 50px">
+        <div style="margin-top: 50px; margin-bottom: 80px">
             <div class="item item-divider">Commmunication</div>
             <p style="margin-top: 10px; margin-bottom: 10px">Here you can write a message to your class:</p>
             <div class="item item-input-inset">
-                <textarea id="commActivitiesFeedTextarea" style="height: 200px; width: 100%; color: #222222; resize: vertical"></textarea>
+                <textarea id="commActivitiesFeedTextarea" style="height: 100px; width: 100%; color: #222222; resize: vertical"></textarea>
 
             </div>
             <div class="item item-input-inset">
