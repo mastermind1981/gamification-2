@@ -4,6 +4,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.groupId = null;
     $scope.userId = null;
     $scope.facebookId = "";
+    $scope.classroomId = "";
     $scope.avatarUrl = "";
 
     $scope.notReadyToNavigate = true;
@@ -169,6 +170,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             $scope.avatarUrl = response[0].avatar;
             $scope.userId = response[0]._id;
             $scope.groupId = response[0].group_id;
+            $scope.classroomId = response[0].classroom_id;
 
             if(response[0].classroom_id == null) {
                 $scope.retrieveClassrooms();

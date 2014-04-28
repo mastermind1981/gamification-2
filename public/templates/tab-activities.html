@@ -17,7 +17,7 @@
                 <i ng-if="activityMenuModel != 2" class="icon ion-ios7-person-outline"></i>
                 My
             </a>
-            <a class="tab-item" ng-click="activityMenuModel=3;" >
+            <a class="tab-item" ng-click="activityMenuModel=3;generateStats()" >
                 <i ng-if="activityMenuModel == 3" class="icon ion-ios7-pie"></i>
                 <i ng-if="activityMenuModel != 3" class="icon ion-ios7-pie-outline"></i>
                 Stats
@@ -52,7 +52,7 @@
                 <h2>{{message.ownerName}}</h2>
                 <span>{{message.label}}</span>
                 <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
-                <i ng-if="message.label != 'JOINED GAMIFICATION'" class="icon ion-ios7-arrow-right"></i>
+                <i ng-if="(message.label != 'JOINED GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>
     </ion-content>
@@ -66,14 +66,32 @@
                 <h2>{{message.ownerName}}</h2>
                 <span>{{message.label}}</span>
                 <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
-                <i ng-if="message.label != 'JOINED GAMIFICATION'" class="icon ion-ios7-arrow-right"></i>
+                <i ng-if="(message.label != 'JOINED GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>
     </ion-content>
 
     <ion-content class="has-header padding" ng-show="activityMenuModel==3">
         <div style="margin-top: 50px; margin-bottom: 80px">
-            <div class="item item-divider">Stats</div>
+            <div class="statGroupDiv" ng-repeat="group in groupStats">
+                <h4>{{ group.label }}</h4>
+                <ion-list>
+                    <ion-item class="questItems" ng-repeat="quest in group.quests">
+                        <div class="statQuestTitle">{{ quest.label }}</div>
+                        <div class="statQuestProgress">
+                            <div ng-show="quest.locked==false" class="range range-positive">
+                                <i class="icon ion-ios7-checkmark-outline"></i>
+                                <input type="range" name="volume" min="0" max="100" value="{{getQuestProgress(quest)}}">
+                                <i class="icon ion-ios7-checkmark"></i>
+                                <h4 style="margin-left: 10px">{{getQuestProgress(quest)}} %</h4>
+                            </div>
+                            <div ng-show="quest.locked==true" style="margin-left: 10px">
+                                <i class="icon ion-ios7-locked"></i>
+                            </div>
+                        </div>
+                    </ion-item>
+                </ion-list>
+            </div>
         </div>
     </ion-content>
 
