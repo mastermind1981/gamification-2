@@ -157,18 +157,20 @@ ion-view {
     margin-bottom: 10px;
 }
 
-.item-complex .item-content, .item-radio .item-content {
-    padding: 0;
-    border: none;
-    background-color: #555555;
-}
-
 .questItems {
-    color: #000000;
     margin: 0;
     border-width: 0;
     margin-left: 10px;
     margin-right: 10px;
+    color: #FFFFFF;
+}
+
+.questItems a.item-content,
+.questItems a.item-content {
+    padding: 0;
+    border: none;
+    background-color: #555555;
+    color: #FFFFFF;
 }
 
 .statGroupDiv h4 {
@@ -182,7 +184,7 @@ ion-view {
     width: 100px;
     min-width: 100px;
     height: 50px;
-    background-color: #555555;
+    /*background-color: #555555;    */
     display: table-cell;
     vertical-align: middle;
     text-align: left;
@@ -194,5 +196,5 @@ ion-view {
     height: 50px;
     display: table-cell;
     vertical-align: middle;
-    background-color: #555555;
+    /* background-color: #555555; */
 }
