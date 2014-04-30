@@ -104,8 +104,6 @@ class Gamification < Sinatra::Application
       student = Student.find_by(facebookId: @user["id"])
       unless student then
         Student.create(:facebookId => @user["id"])
-
-        resp = open('http://'+ENV['XMPP_SERVER']+':'+ENV['XMPP_SERVER_PORT']+'/plugins/userService/userservice?type=add&secret='+ENV['XMPP_SERVER_SECRET']+'&username='+@user["id"]+'&password='+ENV['XMPP_DEFAULT_PASSWORD']+'&name=GAMI:_'+@user["first_name"]+'_'+@user["last_name"]+'&email='+@user["id"]+'@uio.im');
       end
 
       send_file File.join('private', 'index.html')

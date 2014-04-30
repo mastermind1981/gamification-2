@@ -30,7 +30,7 @@
         </div>
     </div>
     <ion-content class="has-header padding" ng-show="activityMenuModel==0">
-        <div class="list" style="margin-top: 50px; margin-bottom: 150px">
+        <div class="list" style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">All Activities</div>
             <a ng-repeat="message in activities_all" class="item item-avatar item-icon-right" ng-click="navigateToActivity(message)">
                 <img ng-src="{{message.ownerAvatar}}">
@@ -44,7 +44,7 @@
     </ion-content>
 
     <ion-content class="has-header padding" ng-show="activityMenuModel==1">
-        <div style="margin-top: 50px; margin-bottom: 80px">
+        <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">Group Activities</div>
             <a ng-repeat="message in activities_group" class="item item-avatar item-icon-right">
                 <img ng-src="{{message.ownerAvatar}}">
@@ -58,7 +58,7 @@
     </ion-content>
 
     <ion-content class="has-header padding" ng-show="activityMenuModel==2">
-        <div style="margin-top: 50px; margin-bottom: 80px">
+        <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">My Activities</div>
             <a ng-repeat="message in activities_my" class="item item-avatar item-icon-right">
                 <img ng-src="{{message.ownerAvatar}}">
@@ -72,7 +72,7 @@
     </ion-content>
 
     <ion-content class="has-header padding" ng-show="activityMenuModel==3">
-        <div style="margin-top: 50px; margin-bottom: 80px">
+        <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="statGroupDiv" ng-repeat="group in groupStats">
                 <h4>{{ group.label }}</h4>
                 <ion-list>
@@ -96,7 +96,7 @@
     </ion-content>
 
     <ion-content class="has-header padding" ng-show="activityMenuModel==4">
-        <div style="margin-top: 50px; margin-bottom: 80px">
+        <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">Commmunication</div>
             <p style="margin-top: 10px; margin-bottom: 10px">Here you can write a message to your class:</p>
             <div class="item item-input-inset">

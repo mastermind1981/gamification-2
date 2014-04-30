@@ -17,7 +17,7 @@ class Gamification < Sinatra::Application
   get '/newactivities' do
     if authorized?
       content_type :json
-      @activity = Activity.desc(:time).limit(3);
+      @activity = Activity.desc(:time).limit(10);
       status 200
       return @activity.reverse.to_json
     end

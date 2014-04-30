@@ -43,7 +43,7 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
                 data.groupId = $scope.groupId;
 
                 gamificationFactory.doPutURL('/activity/'+response[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
-                    $scope.notifyMessaging();
+                    $scope.notif();
                     $scope.showMessageOKAlert();
 
                 });
