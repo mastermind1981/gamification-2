@@ -107,3 +107,5 @@ var gamififcationApp = angular.module('gamififcationApp', ['ionic'])
             $urlRouterProvider.otherwise('/tab/blank');
 
         });
+
+

@@ -1,4 +1,4 @@
-gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, gamificationUtilities, $location) {
+gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, gamificationUtilities, $location, socket) {
 
     $scope.username = "";
     $scope.groupId = null;
@@ -34,8 +34,27 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.participants = null;
     $scope.room = "gamification";
 
+    $scope.notif = function() {
+        socket.emit('notif');
+        updateAllActivities();
+    };
+
+    socket.on('notify', function (data) {
+        if(data.message == "GAMIFICATION_UPDATE") {
+            console.log("updating activities");
+            updateAllActivities();
+
+            if($location.$$path != '/tab/activities') {
+                console.log(true)
+                $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
+            }
+        }
+    });
+
+    getAllActivities();
+
     /* ** All the XMPP business ** */
-    function enableMessaging() {
+    /*function enableMessaging() {
         $scope.connection = new Strophe.Connection('http://intermedia-prod03.uio.no/bosh');
 
         $scope.connection._hitError = function (reqStatus) {
@@ -56,36 +75,36 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
         //$urlRouterProvider.otherwise('/tab/activities');
         getAllActivities();
-    };
+    };*/
 
-    $scope.$on('gamififcationApp.connected', function() {
-        console.log("connected");
-        $scope.chatMode = true;
-        $scope.joined = false;
-        $scope.participants = {};
-        $scope.connection.addHandler($scope.on_presence, null, "presence");
-        $scope.connection.addHandler($scope.on_public_message, null, "message", "groupchat");
-        $scope.connection.send($pres({to: $scope.room + "@conference."+$scope.domain+"/"+$scope.facebookId }).c('x', {xmlns: $scope.NS_MUC}));
-
-        //create a MUC room on the fly
-        /*$scope.connection.muc.init($scope.connection);
-        var d = $pres({from: $scope.nickname+"@"+$scope.domain, to: "gamification@conference."+$scope.domain+"/"+$scope.nickname}).c('x',{xmlns: $scope.NS_MUC});
-        $scope.connection.send(d.tree());
-        $scope.connection.muc.createInstantRoom("gamification@conference."+$scope.domain); */
-
-    });
-
-    $scope.$on('gamififcationApp.disconnected', function() {
-        console.log("disconnected");
-        enableMessaging();
-    });
-
-    $scope.on_presence = function(presence) {
-        console.log(presence);
-        $scope.joined = true;
-
-        return true;
-    };
+//    $scope.$on('gamififcationApp.connected', function() {
+//        console.log("connected");
+//        $scope.chatMode = true;
+//        $scope.joined = false;
+//        $scope.participants = {};
+//        $scope.connection.addHandler($scope.on_presence, null, "presence");
+//        $scope.connection.addHandler($scope.on_public_message, null, "message", "groupchat");
+//        $scope.connection.send($pres({to: $scope.room + "@conference."+$scope.domain+"/"+$scope.facebookId }).c('x', {xmlns: $scope.NS_MUC}));
+//
+//        //create a MUC room on the fly
+//        /*$scope.connection.muc.init($scope.connection);
+//        var d = $pres({from: $scope.nickname+"@"+$scope.domain, to: "gamification@conference."+$scope.domain+"/"+$scope.nickname}).c('x',{xmlns: $scope.NS_MUC});
+//        $scope.connection.send(d.tree());
+//        $scope.connection.muc.createInstantRoom("gamification@conference."+$scope.domain); */
+//
+//    });
+//
+//    $scope.$on('gamififcationApp.disconnected', function() {
+//        console.log("disconnected");
+//        enableMessaging();
+//    });
+//
+//    $scope.on_presence = function(presence) {
+//        console.log(presence);
+//        $scope.joined = true;
+//
+//        return true;
+//    };
 
     $scope.postActivity = function() {
         gamificationFactory.doPostURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function(response) {
@@ -97,34 +116,43 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             data.groupId = $scope.groupId;
 
             gamificationFactory.doPutURL('/activity/'+response[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
-                $scope.notifyMessaging();
+                $scope.notif();
             });
 
 
         });
     }
 
-    $scope.on_public_message = function(message) {
-
-        if(message.firstElementChild.innerHTML == "GAMIFICATION UPDATE") {
-            console.log("updating activities");
-            updateAllActivities();
-
-            if($location.$$path != '/tab/activities') {
-                console.log(true)
-                $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
-            }
-        }
-
-        return true;
-    };
-
-    $scope.notifyMessaging = function() {
-        $scope.connection.send($msg({to: $scope.room+ "@conference."+$scope.domain, type: "groupchat"}).c('body').t('GAMIFICATION UPDATE'));
-    };
+//    $scope.on_public_message = function(message) {
+//
+//        if(message.firstElementChild.innerHTML == "GAMIFICATION UPDATE") {
+//            console.log("updating activities");
+//            updateAllActivities();
+//
+//            if($location.$$path != '/tab/activities') {
+//                console.log(true)
+//                $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
+//            }
+//        }
+//
+//        return true;
+//    };
+//
+//    $scope.notifyMessaging = function() {
+//        $scope.connection.send($msg({to: $scope.room+ "@conference."+$scope.domain, type: "groupchat"}).c('body').t('GAMIFICATION UPDATE'));
+//    };
 
     function getAllActivities() {
         gamificationFactory.doGetURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            response[0].forEach(function(activity) {
+                $scope.activities_all[activity.time] = activity
+            });
+            filterActivities();
+        });
+    };
+
+    function updateAllActivities() {
+        gamificationFactory.doGetURL('/newactivities?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             response[0].forEach(function(activity) {
                 $scope.activities_all[activity.time] = activity
             });
@@ -147,15 +175,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         }
     };
 
-    function updateAllActivities() {
-        gamificationFactory.doGetURL('/newactivities?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
-            response[0].forEach(function(activity) {
-                $scope.activities_all[activity.time] = activity
-            });
-            filterActivities();
-        });
-    };
-    /* ** end XMPP business ** */
 
     $scope.retrieveClassrooms = function() {
         gamificationFactory.doGetURL('/classroom').then(function (response) {
@@ -180,7 +199,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             else {
                 $scope.notReadyToNavigate = false;
                 $scope.changeMainTab(0);
-                enableMessaging();
             }
         });
     };
