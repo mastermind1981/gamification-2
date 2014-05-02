@@ -6,7 +6,9 @@ class Checklistitem
   has_many :completedobjects
   field :completedobjects, :type => Array, :default => []
 
+  field :label, :type => String
   field :description, :type => String
   field :frequency, :type => String
+  field :assignedclass, :type => Array, :default => []
   field :badges, :type => Array, :default => []
 end

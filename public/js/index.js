@@ -28,6 +28,13 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.activeLevelId = null;
     $scope.objectsToUnlock = [];
 
+    $scope.dailyci = null;
+    $scope.weeklyci = null;
+    $scope.dailyciProgress = 0;
+    $scope.weeklyciProgress = 0;
+    $scope.checkinBadgeValue = 0;
+    $scope.activeCheckin = null
+
     $scope.domain = "intermedia-prod03.uio.no";
     $scope.connection = null;
     $scope.password = "gami";
@@ -50,8 +57,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             }
         }
     });
-
-    getAllActivities();
 
     /* ** All the XMPP business ** */
     /*function enableMessaging() {
@@ -111,7 +116,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
             var data = {};
             data.studentId = $scope.facebookId;
-            data.label = "JOINED GAMIFICATION";
+            data.label = "JOINED_GAMIFICATION";
             data.type = "STUDENT";
             data.groupId = $scope.groupId;
 
@@ -142,25 +147,61 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 //        $scope.connection.send($msg({to: $scope.room+ "@conference."+$scope.domain, type: "groupchat"}).c('body').t('GAMIFICATION UPDATE'));
 //    };
 
-    function getAllActivities() {
+    $scope.getAllActivities = function() {
         gamificationFactory.doGetURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             response[0].forEach(function(activity) {
                 $scope.activities_all[activity.time] = activity
+                $scope.filterActivities();
             });
-            filterActivities();
         });
+    };
+
+
+    $scope.retrieveCheckins = function() {
+
+        $scope.checkinBadgeValue = 0;
+
+        gamificationFactory.doGetURL('/checklistitem/daily/byclassid/'+$scope.classroomId+'/'+$scope.userId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            $scope.dailyci = response[0];
+            $scope.dailyciProgress = 0;
+
+            for(var i in $scope.dailyci) {
+                if(!$scope.dailyci[i].completed) {
+                    $scope.checkinBadgeValue = $scope.checkinBadgeValue + 1;
+                }
+                else {
+                    $scope.dailyciProgress = $scope.dailyciProgress + (100/$scope.dailyci.length);
+                }
+            }
+        });
+
+        gamificationFactory.doGetURL('/checklistitem/weekly/byclassid/'+$scope.classroomId+'/'+$scope.userId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            $scope.weeklyci = response[0];
+            $scope.weeklyciProgress = 0;
+
+            for(var i in $scope.weeklyci) {
+                if(!$scope.weeklyci[i].completed) {
+                    $scope.checkinBadgeValue = $scope.checkinBadgeValue + 1;
+                }
+                else {
+                    $scope.weeklyciProgress = $scope.weeklyciProgress + (100/$scope.weeklyci.length);
+                }
+            }
+        });
+
+
     };
 
     function updateAllActivities() {
         gamificationFactory.doGetURL('/newactivities?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             response[0].forEach(function(activity) {
                 $scope.activities_all[activity.time] = activity
+                $scope.filterActivities();
             });
-            filterActivities();
         });
     };
 
-    function filterActivities() {
+    $scope.filterActivities = function() {
         $scope.activities_my = [];
         $scope.activities_group = [];
 
@@ -199,6 +240,9 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             else {
                 $scope.notReadyToNavigate = false;
                 $scope.changeMainTab(0);
+
+                $scope.getAllActivities();
+                $scope.retrieveCheckins();
             }
         });
     };
@@ -211,6 +255,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         if($scope.selectedClass != null) {
             gamificationFactory.doPutURL('/classroom/'+$scope.selectedClass+'/addstudent/'+$scope.userId).then(function (response) {
                 $scope.retrieveUser($scope.facebookId);
+                $scope.postActivity();
             });
         }
     };
@@ -319,5 +364,10 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 window.location.href = '#/tab/blogs';
                 break;
         }
+    };
+
+    $scope.navigateToCheckin = function(ci) {
+        $scope.activeCheckin = ci;
+        window.location.href = '#/tab/checkins1';
     };
 });

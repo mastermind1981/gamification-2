@@ -30,6 +30,22 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get groups for a classroom by id
+  #
+  # param [String] the classroom id
+  #
+  # return [Object] classroom
+  get '/group/classroom/:id' do
+    if authorized?
+      content_type :json
+      group = Group.where(:classroom_id => params[:id])
+      status 200
+      return group.to_json
+    else
+      status 401
+    end
+  end
+
   # Create a new group
   #
   # return [Object] group

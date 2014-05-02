@@ -37,8 +37,8 @@
 
                 <h2>{{message.ownerName}}</h2>
                 <span>{{message.label}}</span>
-                <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
-                <i ng-if="(message.label != 'JOINED GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
+                <i ng-if="message.label == 'JOINED_GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
+                <i ng-if="(message.label != 'JOINED_GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>
     </ion-content>
@@ -51,8 +51,8 @@
 
                 <h2>{{message.ownerName}}</h2>
                 <span>{{message.label}}</span>
-                <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
-                <i ng-if="(message.label != 'JOINED GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
+                <i ng-if="message.label == 'JOINED_GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
+                <i ng-if="(message.label != 'JOINED_GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>
     </ion-content>
@@ -65,8 +65,8 @@
 
                 <h2>{{message.ownerName}}</h2>
                 <span>{{message.label}}</span>
-                <i ng-if="message.label == 'JOINED GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
-                <i ng-if="(message.label != 'JOINED GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
+                <i ng-if="message.label == 'JOINED_GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
+                <i ng-if="(message.label != 'JOINED_GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>
     </ion-content>
@@ -81,7 +81,7 @@
                         <div class="statQuestProgress">
                             <div ng-show="quest.locked==false" class="range range-positive">
                                 <i class="icon ion-ios7-checkmark-outline"></i>
-                                <input type="range" name="volume" min="0" max="100" value="{{getQuestProgress(quest)}}">
+                                <input type="range" name="volume" min="0" max="100" ng-value="{{getQuestProgress(quest)}}">
                                 <i class="icon ion-ios7-checkmark"></i>
                                 <h4 style="margin-left: 10px">{{getQuestProgress(quest)}} %</h4>
                             </div>

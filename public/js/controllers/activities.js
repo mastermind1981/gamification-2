@@ -116,7 +116,7 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
     };
 
     $scope.navigateToActivity = function(message) {
-        if(message.label != 'JOINED GAMIFICATION'  && message.url != null) {
+        if(message.label != 'JOINED_GAMIFICATION'  && message.url != null) {
             window.open(message.url,'_blank');
         }
     };

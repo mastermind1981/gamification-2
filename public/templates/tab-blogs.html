@@ -1,5 +1,16 @@
 <ion-view>
-  <ion-content class="has-header">
-
-  </ion-content>
+    <ion-content class="padding">
+        <div class="list" style="margin-top: 50px; padding-bottom: 80px">
+            <div class="item item-divider">Blogs</div>
+            <a style="margin-top: 10px;" ng-repeat="group in blogGroups" class="item item-thumbnail-left item-icon-right" ng-click="navigateToBlog(group)">
+                <img ng-show="group.avatarUrl!=null" ng-src="{{group.avatarUrl}}">
+                <h2>{{group.label}}</h2>
+                <p>
+                    {{ getStudentList(group.students) }}
+                </p>
+                <i ng-show="group.avatarUrl==null" class="icon ion-ios7-close-outline"></i>
+                <i ng-show="group.avatarUrl!=null" class="icon ion-ios7-arrow-right"></i>
+            </a>
+        </div>
+    </ion-content>
 </ion-view>
