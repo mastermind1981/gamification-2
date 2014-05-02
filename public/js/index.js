@@ -30,6 +30,8 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
     $scope.dailyci = null;
     $scope.weeklyci = null;
+    $scope.dailyciProgress = 0;
+    $scope.weeklyciProgress = 0;
     $scope.checkinBadgeValue = 0;
     $scope.activeCheckin = null
 
@@ -161,20 +163,28 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
         gamificationFactory.doGetURL('/checklistitem/daily/byclassid/'+$scope.classroomId+'/'+$scope.userId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             $scope.dailyci = response[0];
+            $scope.dailyciProgress = 0;
 
             for(var i in $scope.dailyci) {
                 if(!$scope.dailyci[i].completed) {
                     $scope.checkinBadgeValue = $scope.checkinBadgeValue + 1;
+                }
+                else {
+                    $scope.dailyciProgress = $scope.dailyciProgress + (100/$scope.dailyci.length);
                 }
             }
         });
 
         gamificationFactory.doGetURL('/checklistitem/weekly/byclassid/'+$scope.classroomId+'/'+$scope.userId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             $scope.weeklyci = response[0];
+            $scope.weeklyciProgress = 0;
 
             for(var i in $scope.weeklyci) {
                 if(!$scope.weeklyci[i].completed) {
                     $scope.checkinBadgeValue = $scope.checkinBadgeValue + 1;
+                }
+                else {
+                    $scope.weeklyciProgress = $scope.weeklyciProgress + (100/$scope.weeklyci.length);
                 }
             }
         });

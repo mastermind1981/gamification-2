@@ -13,14 +13,16 @@ gamififcationApp.controller('Checkins1Ctrl', function($scope, $ionicModal, $ioni
 
     $scope.validateCheckin = function() {
 
-        var data = {};
-        data.userId = $scope.userId;
-        data.text = "";
+        if(!$scope.activeCheckin.completed) {
+            var data = {};
+            data.userId = $scope.userId;
+            data.text = "";
 
-        gamificationFactory.doPutURL('/checklistitem/'+$scope.activeCheckin._id+'/addcompletedstudent?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
-            $scope.retrieveCheckins();
-            $scope.changeMainTab(2);
-        });
+            gamificationFactory.doPutURL('/checklistitem/'+$scope.activeCheckin._id+'/addcompletedstudent?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+                $scope.retrieveCheckins();
+                $scope.changeMainTab(2);
+            });
+        }
     };
 
     if ($scope.userId == null) {

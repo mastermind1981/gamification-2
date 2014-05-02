@@ -48,22 +48,25 @@ class Gamification < Sinatra::Application
           if checklistitem.completedobjects.empty? then
             checklistitem["completed"] = false;
           else
-            olderthanaday = false;
+            lessthanaday = false;
 
             completedobjects = Completedobject.where(:userId => params[:userid], :checklistitem_id => checklistitem._id)
             completedobjects.each do |completedobject|
 
-              diffsec = daysec - completedobject.finishedOn.to_i
-              if diffsec < 86400 and diffsec > 0 then
-                olderthanaday = true;
+              timecomp = Time.at(completedobject.finishedOn.to_i);
+              todaytimecomp = Time.local(timecomp.year, timecomp.month, timecomp.day, 0,0,0).to_i
+
+              diffsec = Time.now.to_i - todaytimecomp;
+              if diffsec < 86400 && diffsec > 0 then
+                lessthanaday = true;
                 break;
               end
             end
 
-            if olderthanaday
-              checklistitem["completed"] = false;
-            else
+            if lessthanaday
               checklistitem["completed"] = true;
+            else
+              checklistitem["completed"] = false;
             end
           end
 
@@ -95,21 +98,25 @@ class Gamification < Sinatra::Application
           if checklistitem.completedobjects.empty? then
             checklistitem["completed"] = false;
           else
-            olderthanaweek = false;
+            lesthanaweek = false;
 
             completedobjects = Completedobject.where(:userId => params[:userid], :checklistitem_id => checklistitem._id)
             completedobjects.each do |completedobject|
-              diffsec = weeksec - completedobject.finishedOn.to_i
-              if diffsec < 604800 and diffsec > 0 then
-                olderthanaweek = true;
+
+              timecomp = Time.at(completedobject.finishedOn.to_i);
+              mondytimecomp = timecomp.to_i - (86400 * (timecomp.strftime("%u").to_i - 1));
+
+              diffsec = Time.now.to_i - mondytimecomp
+              if diffsec < 604800 && diffsec > 0 then
+                lesthanaweek = true;
                 break;
               end
             end
 
-            if olderthanaweek
-              checklistitem["completed"] = false;
-            else
+            if lesthanaweek
               checklistitem["completed"] = true;
+            else
+              checklistitem["completed"] = false;
             end
           end
 
