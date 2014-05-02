@@ -24,10 +24,6 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
     $scope.editing = false;
     $scope.urltext = "";
 
-    if ($scope.userId == null) {
-        $scope.initIndexView();
-    }
-
     $scope.backToQuest = function() {
         window.location.href = '#/tab/quests';
     };
@@ -171,5 +167,11 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
 
     };
 
-    initQuestView();
+    if ($scope.userId == null) {
+        $scope.initIndexView();
+    }
+    else {
+        initQuestView();
+    }
+
 });

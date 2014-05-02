@@ -1,5 +1,19 @@
 <ion-view>
-  <ion-content class="has-header">
+    <ion-content class="padding">
+        <div class="list" style="margin-top: 50px; margin-bottom: 80px">
+            <div class="item item-divider">Daily</div>
+            <a ng-repeat="dci in dailyci" class="item item-icon-right" ng-click="navigateToCheckin(dci)">
+                <div style="width: 50px;height: 50px; background-color: #4A87EE; display: table-cell; text-align:center; vertical-align: middle;"><img ng-show="dci.completed" src="https://cdn3.iconfinder.com/data/icons/iconic-1/32/check_alt-128.png" width="30px" height="30px" /></div>
+                <div style="padding-left: 20px; height: 50px; display: table-cell; vertical-align: middle;">{{dci.label}}</div>
+                <i class="icon ion-ios7-arrow-right"></i>
+            </a>
 
-  </ion-content>
+            <div class="item item-divider">Weekly</div>
+            <a ng-repeat="wci in weeklyci" class="item item-icon-right" ng-click="navigateToCheckin(wci)">
+                <div style="width: 50px;height: 50px; background-color: #4A87EE; display: table-cell; text-align:center; vertical-align: middle;"><img ng-show="wci.completed" src="https://cdn3.iconfinder.com/data/icons/iconic-1/32/check_alt-128.png" width="30px" height="30px" /></div>
+                <div style="padding-left: 20px; height: 50px; display: table-cell; vertical-align: middle;">{{wci.label}}</div>
+                <i class="icon ion-ios7-arrow-right"></i>
+            </a>
+        </div>
+    </ion-content>
 </ion-view>

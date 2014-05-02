@@ -30,83 +30,95 @@ class Gamification < Sinatra::Application
     end
   end
 
-  # Get all the daily non-completed checklistitem for a user id
+  # Get daily checklistitems by a class id and a user id
   #
+  # param [String] the class id
   # param [String] the user id
   #
   # return [Object] checklistitem
-  get '/checklistitem/daily/:id' do
+  get '/checklistitem/daily/byclassid/:classid/:userid' do
     if authorized?
       content_type :json
+      @checklistitem = Checklistitem.order_by(:_id.asc).where(:frequency => "daily")
 
-      @daily = []
+      assignedChecklistitem = []
+      @checklistitem.each do |checklistitem|
+        if checklistitem.assignedclass.include?(params[:classid]) then
 
-      @checklistitem = Checklistitem.where(:frequency => "daily")
-      @checklistitem.each do|checklistitem|
+          if checklistitem.completedobjects.empty? then
+            checklistitem["completed"] = false;
+          else
+            olderthanaday = false;
 
-        if checklistitem.completedobjects.empty? then
-          @daily << checklistitem
-        else
-          olderthanaday = false;
+            completedobjects = Completedobject.where(:userId => params[:userid], :checklistitem_id => checklistitem._id)
+            completedobjects.each do |completedobject|
 
-          @completedobject = Completedobject.where(:userId => params[:id], :checklistitemId => checklistitem._id)
-          @completedobject.each do |completedobject|
-            diffsec = completedobject.finishedOn.to_i - daysec
-            if diffsec < 86400 and diffsec > 0 then
-              olderthanaday = true;
-              break;
+              diffsec = daysec - completedobject.finishedOn.to_i
+              if diffsec < 86400 and diffsec > 0 then
+                olderthanaday = true;
+                break;
+              end
+            end
+
+            if olderthanaday
+              checklistitem["completed"] = false;
+            else
+              checklistitem["completed"] = true;
             end
           end
 
-          unless olderthanaday
-            @daily << checklistitem
-          end
+          assignedChecklistitem << checklistitem;
         end
       end
 
       status 200
-      return @daily.to_json
+      return assignedChecklistitem.to_json
     else
       status 401
     end
   end
 
-  # Get all the weekly non-completed checklistitem for a user id
+  # Get weekly checklistitems by a class id and a user id
   #
+  # param [String] the class id
   # param [String] the user id
   #
   # return [Object] checklistitem
-  get '/checklistitem/weekly/:id' do
+  get '/checklistitem/weekly/byclassid/:classid/:userid' do
     if authorized?
       content_type :json
+      @checklistitem = Checklistitem.order_by(:_id.asc).where(:frequency => "weekly")
 
-      @weekly = []
+      assignedChecklistitem = []
+      @checklistitem.each do |checklistitem|
+        if checklistitem.assignedclass.include?(params[:classid]) then
+          if checklistitem.completedobjects.empty? then
+            checklistitem["completed"] = false;
+          else
+            olderthanaweek = false;
 
-      @checklistitem = Checklistitem.where(:frequency => "weekly")
-      @checklistitem.each do|checklistitem|
+            completedobjects = Completedobject.where(:userId => params[:userid], :checklistitem_id => checklistitem._id)
+            completedobjects.each do |completedobject|
+              diffsec = weeksec - completedobject.finishedOn.to_i
+              if diffsec < 604800 and diffsec > 0 then
+                olderthanaweek = true;
+                break;
+              end
+            end
 
-        if checklistitem.completedobjects.empty? then
-          @weekly << checklistitem
-        else
-          olderthanaweek = false;
-
-          @completedobject = Completedobject.where(:userId => params[:id], :checklistitemId => checklistitem._id)
-          @completedobject.each do |completedobject|
-            diffsec = completedobject.finishedOn.to_i - weeksec
-            if diffsec < 604800 and diffsec > 0 then
-              olderthanaweek = true;
-              break;
+            if olderthanaweek
+              checklistitem["completed"] = false;
+            else
+              checklistitem["completed"] = true;
             end
           end
 
-          unless olderthanaweek
-            @weekly << checklistitem
-          end
+          assignedChecklistitem << checklistitem;
         end
       end
 
       status 200
-      return @weekly.to_json
+      return assignedChecklistitem.to_json
     else
       status 401
     end
@@ -145,6 +157,11 @@ class Gamification < Sinatra::Application
       if checklistitem then
         data = JSON.parse request.body.read
 
+        unless data['label'].nil?
+          checklistitem.update_attributes(:label => data['label'])
+          checklistitem.save
+        end
+
         unless data['description'].nil?
           checklistitem.update_attributes(:description => data['description'])
           checklistitem.save
@@ -164,6 +181,45 @@ class Gamification < Sinatra::Application
         return  checklistitem.to_json
       else
         return {"error" => "ChecklistItem "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Add an assigned group to a checklistitem by id
+  #
+  # param [String] the quest id
+  #
+  # param [String] the level id
+  #
+  # return [Object] checklistitem
+  put '/checklistitem/:id/addassignedclass/:classid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      checklistitem = Checklistitem.find(params[:id])
+
+      if checklistitem then
+
+        begin
+          classroom = Classroom.find(params[:classid])
+        end
+
+        if classroom
+          checklistitem.assignedclass << params[:classid]
+          checklistitem.save
+        else
+          status 500
+          return {"error" => "Group "+params[:groupid]+" not found"}.to_json
+        end
+
+        status 200
+
+        return  checklistitem.to_json
+      else
+        return {"error" => "Quest "+params[:id]+" not found"}.to_json
       end
     else
       status 401
@@ -193,7 +249,7 @@ class Gamification < Sinatra::Application
           end
 
           if student
-            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => student.groupId, :finishedOn => Time.now);
+            completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :finishedOn => Time.now);
             checklistitem.completedobjects << completedobject
             checklistitem.save
             status 200

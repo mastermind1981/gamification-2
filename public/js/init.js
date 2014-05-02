@@ -72,6 +72,16 @@ var gamififcationApp = angular.module('gamififcationApp', ['ionic'])
                     }
                 })
 
+                .state('tab.checkins1', {
+                    url: '/checkins1',
+                    views: {
+                        'tab-checkins': {
+                            templateUrl: 'templates/tab-checkins1.html',
+                            controller: 'Checkins1Ctrl'
+                        }
+                    }
+                })
+
                 .state('tab.badges', {
                     url: '/badges',
                     views: {
