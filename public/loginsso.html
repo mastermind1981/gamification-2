@@ -1,8 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9]>    <html class="no-js lt-ie10" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
 <head>
-<meta charset="utf-8">
-<title>Gamification</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Gamification</title>
+
+    <meta name="description" content="Gamification project between Caroline Cruaud (UiO) and Engagelab (UiO)">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" media="(device-height: 568px)"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="author" content="Jeremy Toussaint, UiO" />
+
+    <link rel="shortcut icon" href="img/icon16x16.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/icon144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/icon114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/icon72x72.png">
+    <link rel="apple-touch-icon-precomposed" href="img/icon57x57.png">
 
     <!-- Local StyleSheets -->
     <link href="css/ionic.css" rel="stylesheet">
@@ -13,17 +32,11 @@
     <script src="js/login.js"></script>
 </head>
 <body ng-app="gamififcationAppLogin">
-    <ion-pane>
-        <ion-header-bar class="bar-stable">
-            <h1 class="title">GAMIFICATION</h1>
-        </ion-header-bar>
-        <ion-content>
-            <!--
-            This solution provides serverside only login. If no facebook session active, a facebook page is displayed with login form, and callback to the initial URL
-            -->
-            <div id="loginButtonDivWrapper"><button class="button icon-left ion-social-facebook" onclick="location.href='/login'">Login via Facebook</button></div>
-        </ion-content>
-    </ion-pane>
+    <div class="bar bar-header">
+        <h1 class="title">GAMIFICATION</h1>
+    </div>
+
+    <div id="loginButtonDivWrapper"><button class="button icon-left ion-social-facebook" onclick="location.href='/login'">Login via Facebook</button></div>
 
 </body>
 </html>

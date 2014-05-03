@@ -66,7 +66,6 @@ class Gamification < Sinatra::Application
     def daysec
       # Return the timestamp of 00:00 (day number) of the current day
       tday = Time.now;
-
       return Time.local(tday.year, tday.month, tday.day, 0,0,0).to_i
     end
 
