@@ -31,7 +31,7 @@
 
     <script src="js/login.js"></script>
 </head>
-<body ng-app="gamififcationAppLogin">
+<body ng-app="gamififcationAppLogin" ng-controller="loginCtrl">
 
     <div class="bar bar-header">
         <h1 class="title">GAMIFICATION</h1>
@@ -39,5 +39,8 @@
 
     <div id="loginButtonDivWrapper"><button class="button icon-left ion-social-facebook" onclick="location.href='/login'">Login via Facebook</button></div>
 
+    <div class="bar bar-footer" style="text-align: center; color: #888888; margin-bottom: 5px">
+        <div ng-show="checkIfMobile()" style="margin: 0 auto">On iDevices/Android, to view in fullscreen, install this web app on your device: tap <i class="icon ion-ios7-upload-outline"></i> and then <strong>Add to Home Screen</strong>.</div>
+    </div>
 </body>
 </html>
