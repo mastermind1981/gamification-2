@@ -8,6 +8,9 @@ class Group
   has_many :students
   field :students, :type => Array, :default => []
 
+  has_many :badges
+  field :badges, :type => Array, :default => []
+
   field :label, :type => String
   field :avatarUrl, :type => String
   field :blogUrl, :type => String

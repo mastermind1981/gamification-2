@@ -1,9 +1,13 @@
-angular.module('gamififcationAppLogin', ['ionic'])
+var gamififcationAppLogin = angular.module('gamififcationAppLogin', ['ionic']);
 
-    .run(function($ionicPlatform) {
-        $ionicPlatform.ready(function() {
-            if(window.StatusBar) {
-                StatusBar.styleDefault();
-            }
-        });
-    })
+gamififcationAppLogin.controller('loginCtrl', function($scope, $window) {
+
+    $scope.checkIfMobile = function() {
+        if ($window.document.activeElement.clientWidth < 700) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+});
