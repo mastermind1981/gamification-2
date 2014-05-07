@@ -53,14 +53,11 @@ class Gamification < Sinatra::Application
     end
 
     def HTTPauthorized?
-      if ENV['XMPP_SERVER'].nil? then
-        return true
-      else
         if session['access_token']
           return true
+        else
+          return false
         end
-        return false
-      end
     end
 
     def daysec
