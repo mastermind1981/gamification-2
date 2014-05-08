@@ -213,3 +213,8 @@ ion-view {
     top: 15px;
     max-height: 57px;
 }
+
+.tabs .tab-item .badge {
+    background-color: #4A87EE;
+    color: #FFFFFF;
+}

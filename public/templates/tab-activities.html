@@ -38,7 +38,8 @@
                 <h2>{{message.ownerName}}</h2>
                 <span>{{message.label}}</span>
                 <i ng-if="message.label == 'JOINED_GAMIFICATION'" class="icon ion-ios7-lightbulb"></i>
-                <i ng-if="(message.label != 'JOINED_GAMIFICATION') && message.url != null" class="icon ion-ios7-arrow-right"></i>
+                <i ng-if="message.label == 'NEW_BADGE'" class="icon ion-ios7-pricetag"></i>
+                <i ng-if="message.label != 'JOINED_GAMIFICATION' && message.label != 'NEW_BADGE' && message.url != null" class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>
     </ion-content>

@@ -97,6 +97,11 @@ class Gamification < Sinatra::Application
           activity.save
         end
 
+        unless data['badgeId'].nil?
+          activity.update_attributes(:badgeId => data['badgeId'])
+          activity.save
+        end
+
         if data['type'] == 'STUDENT' then
           @graph = Koala::Facebook::API.new(session["access_token"])
           user = @graph.get_object(data['studentId'])
@@ -104,6 +109,14 @@ class Gamification < Sinatra::Application
 
           activity.update_attributes(:ownerName => user["first_name"] + ' ' +user["last_name"])
           activity.update_attributes(:ownerAvatar => avatar)
+          activity.save
+        end
+
+        if data['type'] == 'GROUP' then
+          group = Group.find(data['groupId']);
+
+          activity.update_attributes(:ownerName => group.label)
+          activity.update_attributes(:ownerAvatar => group.avatarUrl)
           activity.save
         end
 

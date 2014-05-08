@@ -40,11 +40,11 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.badgesStudent = null;
     $scope.badgeBadgeValue = 0;
 
-    $scope.domain = "intermedia-prod03.uio.no";
-    $scope.connection = null;
-    $scope.password = "gami";
-    $scope.participants = null;
-    $scope.room = "gamification";
+    //$scope.domain = "intermedia-prod03.uio.no";
+    //$scope.connection = null;
+    //$scope.password = "gami";
+    //$scope.participants = null;
+    //$scope.room = "gamification";
 
 
     //console.log($cookieStore.get('user'));
@@ -64,7 +64,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     socket.on('notify', function (data) {
         switch(data.message) {
             case "GAMIFICATION_UPDATE":
-                console.log("updating activities");
+                console.log("--> updating activities");
                 updateAllActivities();
 
                 if($location.$$path != '/tab/activities') {
@@ -73,7 +73,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 }
                 break;
             case "GAMIFICATION_BADGE":
-                console.log("updating badges");
+                console.log("--> updating badges");
                 $scope.retrieveBadges();
                 break;
         }
@@ -396,19 +396,19 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             var data = {};
             data.groupId = $scope.groupId;
 
-            gamificationFactory.doPutURL('/level/'+$scope.activeLevelId+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+            gamificationFactory.doPutURL('/level/'+$scope.activeLevelId+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (addcompletedgroupResponse) {
                 $scope.unlockingCounter = 0;
                 $scope.objectsToUnlock.forEach(function(obj) {
 
                     switch(obj['type']) {
                         case "LEVEL":
-                            gamificationFactory.doPutURL('/level/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                            gamificationFactory.doPutURL('/level/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (unlockLevelResponse) {
                                 $scope.unlockingCounter++;
                                 $scope.readyToRefreshLevels($scope.unlockingCounter);
                             });
                             break;
                         case "QUEST":
-                            gamificationFactory.doPutURL('/quest/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                            gamificationFactory.doPutURL('/quest/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (unlockQuestResponse) {
                                 $scope.unlockingCounter++;
                                 $scope.readyToRefreshLevels($scope.unlockingCounter);
                             });
@@ -417,18 +417,32 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 });
 
                 console.log("--> updated level - delivering badges if any");
-                $scope.badgesToAward = response[0].badges.length;
+                $scope.badgesToAward = addcompletedgroupResponse[0].badges.length;
                 for(var i=0; i < $scope.badgesToAward; i++) {
-                    gamificationFactory.doPutURL('/group/'+$scope.groupId+'/addbadge/'+response[0].badges[i]+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (res) {
-                        $scope.badgesGroup = res[0].badges;
 
-                        for(var i=0; i < res[0].students.length; i++) {
+                    gamificationFactory.doPutURL('/group/'+$scope.groupId+'/addbadge/'+addcompletedgroupResponse[0].badges[i]+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (addBadgeResponse) {
+                        $scope.badgesGroup = addBadgeResponse[0].badges;
 
-                            if((res[0].students[i])._id == $scope.userId) {
-                                $scope.badgesStudent = (res[0].students[i]).badges;
+                        for(var i=0; i < addBadgeResponse[0].students.length; i++) {
+
+                            if((addBadgeResponse[0].students[i])._id == $scope.userId) {
+                                $scope.badgesStudent = (addBadgeResponse[0].students[i]).badges;
                                 break;
                             }
                         }
+
+                        gamificationFactory.doPostURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function(postActivityResponse) {
+
+                            var data = {};
+                            data.label = "NEW_BADGE";
+                            data.type = "GROUP";
+                            data.groupId = $scope.groupId;
+                            data.badgeId = addcompletedgroupResponse[0].badges[i];
+
+                            gamificationFactory.doPutURL('/activity/'+postActivityResponse[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (putActivityResponse) {
+                                $scope.notif();
+                            });
+                        });
 
                         $scope.notifyBadges(i);
                     });

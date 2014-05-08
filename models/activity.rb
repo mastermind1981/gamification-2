@@ -11,4 +11,5 @@ class Activity
   field :time, :type => Integer
   field :ownerName, :type => String
   field :ownerAvatar, :type => String
+  field :badgeId, :type => String
 end
