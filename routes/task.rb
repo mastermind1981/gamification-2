@@ -141,6 +141,163 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Add an id to unlock to a task by id
+  #
+  # param [String] the task id
+  #
+  # body [Object] in JSON. ex: {"label":"<String>" }
+  #
+  # return [Object] task
+  put '/task/:id/addidtounlock' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      task = Task.find(params[:id])
+
+      if task then
+
+        doNotExists = true;
+        data = JSON.parse request.body.read
+
+        task.idstounlock.each do |idd|
+          if idd["unid"] == data['unid'] then
+            doNotExists = false;
+          end
+        end
+
+        if doNotExists then
+          task.idstounlock << {:unid => data['unid'], :type => data['type']}
+          task.save
+        end
+
+        status 200
+
+        return  task.to_json
+      else
+        return {"error" => "Task "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Remove an id to unlock to a task by id
+  #
+  # param [String] the task id
+  #
+  # body [Object] in JSON. ex: {"label":"<String>" }
+  #
+  # return [Object] task
+  put '/task/:id/removeidtounlock/:unid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      task = Task.find(params[:id])
+
+      if task then
+
+        data = JSON.parse request.body.read
+
+        task.idstounlock.each do |idd|
+          if idd["unid"] == data['unid'] then
+            task.idstounlock.delete(idd)
+          end
+        end
+
+        task.save!
+
+        status 200
+
+        return  task.to_json
+      else
+        return {"error" => "Task "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Add a badge id to deliver after a task by id
+  #
+  # param [String] the task id
+  #
+  # param [String] the badge id
+  #
+  # return [Object] task
+  put '/task/:id/addbadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      task = Task.find(params[:id])
+      badge = Badge.find(params[:badgeid])
+
+      if task && badge then
+
+        doNotExists = true;
+
+        task.badges.each do |bad|
+          if bad.to_s == params[:badgeid] then
+            doNotExists = false;
+            break;
+          end
+        end
+
+        if doNotExists then
+          task.badges << params[:badgeid]
+          task.save
+        end
+
+        status 200
+
+        return  task.to_json
+      else
+        return {"error" => "Task "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Remove a badge id to deliver after a task by id
+  #
+  # param [String] the task id
+  #
+  # param [String] the badge id
+  #
+  # return [Object] task
+  put '/task/:id/removebadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      task = Task.find(params[:id])
+      badge = Badge.find(params[:badgeid])
+
+      if task && badge then
+
+        task.badges.each do |bad|
+          if bad.to_s == params[:badgeid] then
+            task.badges.delete(params[:badgeid])
+            break;
+          end
+        end
+
+        task.save!
+
+        status 200
+
+        return  task.to_json
+      else
+        return {"error" => "Task "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
   # Delete a task by id
   #
   # param [String] the task id

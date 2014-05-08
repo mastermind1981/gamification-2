@@ -513,6 +513,85 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Add a badge id to deliver after a quest by id
+  #
+  # param [String] the quest id
+  #
+  # param [String] the badge id
+  #
+  # return [Object] quest
+  put '/quest/:id/addbadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      quest = Quest.find(params[:id])
+      badge = Badge.find(params[:badgeid])
+
+      if quest && badge then
+
+        doNotExists = true;
+
+        quest.badges.each do |bad|
+          if bad.to_s == params[:badgeid] then
+            doNotExists = false;
+            break;
+          end
+        end
+
+        if doNotExists then
+          quest.badges << params[:badgeid]
+          quest.save
+        end
+
+        status 200
+
+        return  quest.to_json
+      else
+        return {"error" => "Quest "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Remove a badge id to deliver after a quest by id
+  #
+  # param [String] the quest id
+  #
+  # param [String] the badge id
+  #
+  # return [Object] quest
+  put '/quest/:id/removebadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      quest = Quest.find(params[:id])
+      badge = Badge.find(params[:badgeid])
+
+      if quest && badge then
+
+        quest.badges.each do |bad|
+          if bad.to_s == params[:badgeid] then
+            quest.badges.delete(params[:badgeid])
+            break;
+          end
+        end
+
+        quest.save!
+
+        status 200
+
+        return  quest.to_json
+      else
+        return {"error" => "Quest "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
   # Delete a quest by id
   #
   # param [String] the quest id

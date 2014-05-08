@@ -355,6 +355,85 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Add a badge id to deliver after a level by id
+  #
+  # param [String] the level id
+  #
+  # param [String] the badge id
+  #
+  # return [Object] level
+  put '/level/:id/addbadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      level = Level.find(params[:id])
+      badge = Badge.find(params[:badgeid])
+
+      if level && badge then
+
+        doNotExists = true;
+
+        level.badges.each do |bad|
+          if bad.to_s == params[:badgeid] then
+            doNotExists = false;
+            break;
+          end
+        end
+
+        if doNotExists then
+          level.badges << params[:badgeid]
+          level.save
+        end
+
+        status 200
+
+        return  level.to_json
+      else
+        return {"error" => "Level "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Remove a badge id to deliver after a level by id
+  #
+  # param [String] the level id
+  #
+  # param [String] the badge id
+  #
+  # return [Object] level
+  put '/level/:id/removebadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      level = Level.find(params[:id])
+      badge = Badge.find(params[:badgeid])
+
+      if level && badge then
+
+        level.badges.each do |bad|
+          if bad.to_s == params[:badgeid] then
+            level.badges.delete(params[:badgeid])
+            break;
+          end
+        end
+
+        level.save!
+
+        status 200
+
+        return  level.to_json
+      else
+        return {"error" => "Level "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
 
   # Delete a level by id
   #

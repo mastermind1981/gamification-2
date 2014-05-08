@@ -198,3 +198,18 @@ ion-view {
     vertical-align: middle;
     /* background-color: #555555; */
 }
+
+.badgeCounter {
+    width: 57px;
+    height: 57px;
+    background-color: #4A87EE;
+    display: table-cell;
+    text-align:center;
+    vertical-align: middle;
+}
+
+.badgeLabel {
+    position: absolute;
+    top: 15px;
+    max-height: 57px;
+}

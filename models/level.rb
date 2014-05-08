@@ -16,4 +16,5 @@ class Level
   field :locked, :type => Boolean, :default => true
   field :introduction, :type => String
   field :idstounlock, :type => Array, :default => []
+  field :badges, :type => Array, :default => []
 end
