@@ -186,6 +186,56 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Add a badge to a group by id
+  #
+  # param [String] the group id
+  #
+  # param [String] the badge id
+  #
+  # return [Object] group
+  put '/group/:id/addbadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      group = Group.find(params[:id])
+
+      if group then
+
+        begin
+          badge = Badge.find(params[:badgeid])
+        end
+
+        if badge then
+          lastcount = 0;
+
+          group.badges.each do |bad|
+
+            if bad['origin']['_id'].to_s == params[:badgeid]
+              lastcount = bad['count'].to_i;
+              group.badges.delete(bad);
+              break;
+            end
+          end
+
+          group.badges << {"count" => lastcount+1, "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }}
+          group.save
+        else
+          status 500
+          return {"error" => "Badge "+params[:badgeid]+" not found"}.to_json
+        end
+
+        status 200
+
+        return  group.to_json
+      else
+        return {"error" => "Group "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
 
   # Delete a group by id
   #

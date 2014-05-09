@@ -14,4 +14,5 @@ class Quest
   field :locked, :type => Boolean, :default => true
   field :assignedgroups, :type => Array, :default => []
   field :idstounlock, :type => Array, :default => []
+  field :badges, :type => Array, :default => []
 end

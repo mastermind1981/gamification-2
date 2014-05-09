@@ -11,4 +11,6 @@ class Task
   field :order, :type => Integer
   field :label, :type => String
   field :introduction, :type => String
+  field :badges, :type => Array, :default => []
+  field :idstounlock, :type => Array, :default => []
 end

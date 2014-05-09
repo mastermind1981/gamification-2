@@ -63,8 +63,8 @@ class Gamification < Sinatra::Application
       if badge then
         data = JSON.parse request.body.read
 
-        unless data['type'].nil?
-          badge.update_attributes(:type => data['type'])
+        unless data['description'].nil?
+          badge.update_attributes(:description => data['description'])
           badge.save
         end
 
@@ -74,7 +74,7 @@ class Gamification < Sinatra::Application
         end
 
         unless data['avatar'].nil?
-          badge.update_attributes(:url => data['avatar'])
+          badge.update_attributes(:avatar => data['avatar'])
           badge.save
         end
 

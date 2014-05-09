@@ -92,7 +92,12 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
         });
     }
 
-    initQuestView();
+    if ($scope.userId == null) {
+        $scope.initIndexView();
+    }
+    else {
+        initQuestView();
+    }
 });
 
 

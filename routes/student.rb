@@ -134,6 +134,56 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Add a badge to a student by id
+  #
+  # param [String] the student id
+  #
+  # param [String] the badge id
+  #
+  # return [Object] group
+  put '/student/:id/addbadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      student = Student.find(params[:id])
+
+      if student then
+
+        begin
+          badge = Badge.find(params[:badgeid])
+        end
+
+        if badge then
+          lastcount = 0;
+
+          student.badges.each do |bad|
+
+            if bad['origin']['_id'].to_s == params[:badgeid]
+              lastcount = bad['count'].to_i;
+              student.badges.delete(bad);
+              break;
+            end
+          end
+
+          student.badges << {"count" => lastcount+1, "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }}
+          student.save
+        else
+          status 500
+          return {"error" => "Badge "+params[:badgeid]+" not found"}.to_json
+        end
+
+        status 200
+
+        return  student.to_json
+      else
+        return {"error" => "Student "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
 
   # Delete a student by id
   #

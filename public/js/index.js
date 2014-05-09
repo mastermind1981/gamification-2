@@ -1,4 +1,4 @@
-gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, gamificationUtilities, $location, socket) {
+gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, gamificationUtilities, $location, socket, $cookieStore) {
 
     $scope.username = "";
     $scope.groupId = null;
@@ -33,30 +33,53 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.dailyciProgress = 0;
     $scope.weeklyciProgress = 0;
     $scope.checkinBadgeValue = 0;
-    $scope.activeCheckin = null
+    $scope.activeCheckin = null;
 
-    $scope.domain = "intermedia-prod03.uio.no";
-    $scope.connection = null;
-    $scope.password = "gami";
-    $scope.participants = null;
-    $scope.room = "gamification";
+    $scope.badgesToAward = 0;
+    $scope.badgesGroup = null;
+    $scope.badgesStudent = null;
+    $scope.badgeBadgeValue = 0;
+
+    //$scope.domain = "intermedia-prod03.uio.no";
+    //$scope.connection = null;
+    //$scope.password = "gami";
+    //$scope.participants = null;
+    //$scope.room = "gamification";
+
+
+    //console.log($cookieStore.get('user'));
+    //$cookieStore.put('user', "shito");  parseInt('123.45')
+    //console.log($cookieStore.get('user'));
 
     $scope.notif = function() {
         socket.emit('notif');
         updateAllActivities();
     };
 
-    socket.on('notify', function (data) {
-        if(data.message == "GAMIFICATION_UPDATE") {
-            console.log("updating activities");
-            updateAllActivities();
+    $scope.notifbadge = function() {
+        console.log("--> sending badges notification");
+        socket.emit('badge');
+    };
 
-            if($location.$$path != '/tab/activities') {
-                console.log(true)
-                $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
-            }
+    socket.on('notify', function (data) {
+        switch(data.message) {
+            case "GAMIFICATION_UPDATE":
+                console.log("--> updating activities");
+                updateAllActivities();
+
+                if($location.$$path != '/tab/activities') {
+                    console.log(true);
+                    $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
+                }
+                break;
+            case "GAMIFICATION_BADGE":
+                console.log("--> updating badges");
+                $scope.retrieveBadges();
+                break;
         }
+
     });
+
 
     /* ** All the XMPP business ** */
     /*function enableMessaging() {
@@ -192,6 +215,51 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
     };
 
+    $scope.retrieveBadges = function() {
+
+        if($cookieStore.get('readbadges') == null) {
+            $cookieStore.put('readbadges', 0);
+        }
+
+        gamificationFactory.doGetURL('/group/'+$scope.groupId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            $scope.badgesGroup = response[0].badges;
+
+            for(var i=0; i < response[0].students.length; i++) {
+
+                if((response[0].students[i])._id == $scope.userId) {
+                    $scope.badgesStudent = (response[0].students[i]).badges;
+                    break;
+                }
+            }
+
+            console.log('--> new number of badges: '+$scope.getTotalNumberOfBadges());
+
+            if($location.$$path != '/tab/badges') {
+                $scope.badgeBadgeValue = $scope.getTotalNumberOfBadges() - parseInt($cookieStore.get('readbadges'));
+            }
+        });
+    };
+
+    $scope.getTotalNumberOfBadges = function() {
+        var totalNumber = 0;
+
+        for(var i=0; i < $scope.badgesGroup.length; i++) {
+            totalNumber = totalNumber + $scope.badgesGroup[i].count;
+        }
+
+        for(var j=0; j < $scope.badgesStudent.length; j++) {
+            totalNumber = totalNumber + $scope.badgesStudent[j].count;
+        }
+
+        return totalNumber;
+    };
+
+    $scope.reinitBadgeReadCounter = function() {
+        $scope.badgeBadgeValue = 0;
+        $cookieStore.put('readbadges', $scope.getTotalNumberOfBadges());
+    };
+
+
     function updateAllActivities() {
         gamificationFactory.doGetURL('/newactivities?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             response[0].forEach(function(activity) {
@@ -243,6 +311,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
                 $scope.getAllActivities();
                 $scope.retrieveCheckins();
+                $scope.retrieveBadges();
             }
         });
     };
@@ -309,31 +378,77 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         }
     };
 
+    $scope.notifyBadges = function(count) {
+        if(count == $scope.badgesToAward) {
+            console.log("--> all badges delivered");
+            $scope.notifbadge();
+            console.log('--> new number of badges: '+$scope.getTotalNumberOfBadges());
+
+            if($location.$$path != '/tab/badges') {
+                $scope.badgeBadgeValue = $scope.getTotalNumberOfBadges() - parseInt($cookieStore.get('readbadges'));
+            }
+        }
+    };
+
     $scope.returnToLevels = function() {
         if($scope.oneTaskPending) {
             //unlock next level
             var data = {};
             data.groupId = $scope.groupId;
 
-            gamificationFactory.doPutURL('/level/'+$scope.activeLevelId+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+            gamificationFactory.doPutURL('/level/'+$scope.activeLevelId+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (addcompletedgroupResponse) {
                 $scope.unlockingCounter = 0;
                 $scope.objectsToUnlock.forEach(function(obj) {
 
                     switch(obj['type']) {
                         case "LEVEL":
-                            gamificationFactory.doPutURL('/level/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                            gamificationFactory.doPutURL('/level/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (unlockLevelResponse) {
                                 $scope.unlockingCounter++;
                                 $scope.readyToRefreshLevels($scope.unlockingCounter);
                             });
                             break;
                         case "QUEST":
-                            gamificationFactory.doPutURL('/quest/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+                            gamificationFactory.doPutURL('/quest/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (unlockQuestResponse) {
                                 $scope.unlockingCounter++;
                                 $scope.readyToRefreshLevels($scope.unlockingCounter);
                             });
                             break;
                     };
                 });
+
+                console.log("--> updated level - delivering badges if any");
+                $scope.badgesToAward = addcompletedgroupResponse[0].badges.length;
+                for(var i=0; i < $scope.badgesToAward; i++) {
+
+                    gamificationFactory.doPutURL('/group/'+$scope.groupId+'/addbadge/'+addcompletedgroupResponse[0].badges[i]+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (addBadgeResponse) {
+                        $scope.badgesGroup = addBadgeResponse[0].badges;
+
+                        for(var i=0; i < addBadgeResponse[0].students.length; i++) {
+
+                            if((addBadgeResponse[0].students[i])._id == $scope.userId) {
+                                $scope.badgesStudent = (addBadgeResponse[0].students[i]).badges;
+                                break;
+                            }
+                        }
+
+                        gamificationFactory.doPostURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function(postActivityResponse) {
+
+                            var data = {};
+                            data.label = "NEW_BADGE";
+                            data.type = "GROUP";
+                            data.groupId = $scope.groupId;
+                            data.badgeId = addcompletedgroupResponse[0].badges[i];
+
+                            gamificationFactory.doPutURL('/activity/'+postActivityResponse[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (putActivityResponse) {
+                                $scope.notif();
+                            });
+                        });
+
+                        $scope.notifyBadges(i);
+                    });
+                }
+
+
             });
         }
         else {

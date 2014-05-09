@@ -1,4 +1,4 @@
-var gamififcationApp = angular.module('gamififcationApp', ['ionic'])
+var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'ngCookies'])
 
    .config(function($stateProvider, $urlRouterProvider) {
 

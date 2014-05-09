@@ -1,5 +1,29 @@
 <ion-view>
-  <ion-content class="has-header">
+    <ion-content class="padding">
+        <div class="list" style="margin-top: 50px; padding-bottom: 80px">
+            <div class="item item-divider item-icon-left" style="vertical-align: middle;"><i class="icon ion-ios7-people"></i> Group badges</div>
+            <div ng-repeat="badge in badgesGroup" class="item" style="max-height: 90px">
+                <div class="badgeCounter">{{badge.count}}</div>
+                <div class="badgeLabel" style="left: 87px">
+                    <img ng-src="{{badge.origin.avatar}}">
+                    <div class="badgeLabel" style="left: 70px">
+                        <h2>{{badge.origin.label}}</h2>
+                        <p>{{badge.origin.description}}</p>
+                    </div>
+                </div>
+            </div>
 
-  </ion-content>
+            <div class="item item-divider item-icon-left" style="margin-top: 10px;"><i class="icon ion-ios7-person"></i> My badges</div>
+            <div ng-repeat="badge in badgesStudent" class="item">
+                <div class="badgeCounter">{{badge.count}}</div>
+                <div class="badgeLabel" style="left: 87px">
+                    <img ng-src="{{badge.origin.avatar}}">
+                    <div class="badgeLabel" style="left: 70px">
+                        <h2>{{badge.origin.label}}</h2>
+                        <p>{{badge.origin.description}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
 </ion-view>

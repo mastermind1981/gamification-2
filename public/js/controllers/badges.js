@@ -1,4 +1,10 @@
-gamififcationApp.controller('BadgesCtrl', function($scope, $ionicModal, $ionicPopup, $http, $q, gamificationFactory, gamificationUtilities) {
+gamififcationApp.controller('BadgesCtrl', function($scope) {
 
+    if ($scope.userId == null) {
+        $scope.initIndexView();
+    }
+    else {
+        $scope.reinitBadgeReadCounter();
+    }
 });
 
