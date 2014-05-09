@@ -1,4 +1,4 @@
-gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificationFactory, $location, gamificationUtilities) {
+gamififcationApp.controller('adminCtrl', function($scope, $http, $q, gamificationFactory, $location, gamificationUtilities, $cookieStore) {
 
     $scope.classrooms = [];
     $scope.selectedClassGroups = [];
