@@ -11,4 +11,5 @@ class Checklistitem
   field :frequency, :type => String
   field :assignedclass, :type => Array, :default => []
   field :badges, :type => Array, :default => []
+  field :isnotificationitem, :type => Boolean, :default => false
 end

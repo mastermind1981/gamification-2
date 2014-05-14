@@ -13,4 +13,5 @@ class Task
   field :introduction, :type => String
   field :badges, :type => Array, :default => []
   field :idstounlock, :type => Array, :default => []
+  field :isblogurltask, :type => Boolean, :default => false
 end

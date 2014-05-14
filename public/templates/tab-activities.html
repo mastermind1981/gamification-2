@@ -80,7 +80,7 @@
                 <h4>{{ group.label }}</h4>
                 <ion-list>
                     <ion-item class="questItems" ng-repeat="quest in group.quests">
-                        <div class="statQuestTitle">{{ quest.label }}</div>
+                        <!-- div class="statQuestTitle">{{ quest.label }}</div>
                         <div class="statQuestProgress">
                             <div ng-show="quest.locked==false" class="range range-positive">
                                 <i class="icon ion-ios7-checkmark-outline"></i>
@@ -91,7 +91,9 @@
                             <div ng-show="quest.locked==true" style="margin-left: 10px">
                                 <i class="icon ion-ios7-locked"></i>
                             </div>
-                        </div>
+                        </div -->
+                        <div my-queststat item="quest"></div>
+
                     </ion-item>
                 </ion-list>
             </div>

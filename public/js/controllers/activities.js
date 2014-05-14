@@ -99,7 +99,7 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
     };
 
     $scope.getQuestProgress = function(quest) {
-        total = 0;
+        var total = 0;
         for(var i=0; i<quest.levels.length; i++) {
             if(quest.levels[i].completed == 1) {
                 total = total + (100/quest.levels.length);
@@ -112,6 +112,8 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
                 }
             }
         }
+
+        console.log('--> total: '+total);
         return total.toFixed(2);
     };
 
@@ -126,3 +128,33 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
     }
 });
 
+
+gamififcationApp.directive('myQueststat', function() {
+    return {
+        restrict: 'AEC',
+        transclude: false,
+        scope: {
+            currentQuest: '=item'
+        },
+        link: function(scope) {
+            scope.levelmin = 0;
+            scope.pourcent = 0;
+            scope.levelmax = 0;
+
+            for(var i=0; i<scope.currentQuest.levels.length; i++) {
+                if(scope.currentQuest.levels[i].completed != 1) {
+                    scope.levelmax = scope.currentQuest.levels[i].order;
+                    scope.levelmin = scope.levelmax - 1;
+
+                    for(var j=0; j<scope.currentQuest.levels[i].tasks.length; j++) {
+                        if(scope.currentQuest.levels[i].tasks[j].completed == 1) {
+                            scope.pourcent = scope.pourcent + (100/(scope.currentQuest.levels[i].tasks.length));
+                        }
+                    }
+                    break;
+                }
+            }
+        },
+        templateUrl: 'templates/directive-queststat.html'
+    };
+});

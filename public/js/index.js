@@ -67,10 +67,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 console.log("--> updating activities");
                 updateAllActivities();
 
-                if($location.$$path != '/tab/activities') {
-                    console.log(true);
-                    $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
-                }
                 break;
             case "GAMIFICATION_BADGE":
                 console.log("--> updating badges");
@@ -261,6 +257,12 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
 
     function updateAllActivities() {
+
+        if($location.$$path != '/tab/activities') {
+            console.log(true);
+            $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
+        }
+
         gamificationFactory.doGetURL('/newactivities?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             response[0].forEach(function(activity) {
                 $scope.activities_all[activity.time] = activity
