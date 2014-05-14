@@ -78,6 +78,11 @@ class Gamification < Sinatra::Application
           task.save
         end
 
+        unless data['isblogurltask'].nil?
+          task.update_attributes(:isblogurltask => data['isblogurltask'])
+          task.save
+        end
+
         status 200
 
         return  task.to_json

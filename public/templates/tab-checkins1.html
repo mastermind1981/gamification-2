@@ -14,6 +14,9 @@
                     Update
                 </button>
             </div -->
+            <div class="item item-input-inset" ng-show="activeCheckin.isnotificationitem" style="margin-bottom: 20px">
+                <textarea id="checkinTextarea" style="height: 100px; width: 100%; color: #222222; resize: vertical"></textarea>
+            </div>
             <li class="item item-checkbox" ng-click="validateCheckin()">
                 <label class="checkbox">
                     <input ng-checked="activeCheckin.completed" type="checkbox">

@@ -174,6 +174,11 @@ class Gamification < Sinatra::Application
           checklistitem.save
         end
 
+        unless data['isnotificationitem'].nil?
+          checklistitem.update_attributes(:isnotificationitem => data['isnotificationitem'])
+          checklistitem.save
+        end
+
         unless data['frequency'].nil?
           if data['frequency'] == 'daily' or data['frequency'] == 'weekly' then
             checklistitem.update_attributes(:frequency => data['frequency'])

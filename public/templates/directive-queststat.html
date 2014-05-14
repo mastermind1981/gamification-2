@@ -1,0 +1,12 @@
+<div class="statQuestTitle">{{ currentQuest.label }}</div>
+<div class="statQuestProgress">
+    <div ng-show="currentQuest.locked==false" class="range range-positive">
+        <span>Level {{ levelmin }}</span>
+        <input type="range" name="volume" min="0" max="100" value="{{pourcent}}">
+        <span>Level {{ levelmax }}</span>
+        <h4 style="margin-left: 10px; color: #000000">{{pourcent}} %</h4>
+    </div>
+    <div ng-show="currentQuest.locked==true" style="margin-left: 10px">
+        <i class="icon ion-ios7-locked"></i>
+    </div>
+</div>
