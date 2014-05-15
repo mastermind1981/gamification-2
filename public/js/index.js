@@ -397,6 +397,8 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             //unlock next level
             var data = {};
             data.groupId = $scope.groupId;
+            //deliverytype can be either 'AUTOMATIC', 'MANUAL', 'SPECIAL'
+            data.deliverytype = 'AUTOMATIC';
 
             gamificationFactory.doPutURL('/level/'+$scope.activeLevelId+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (addcompletedgroupResponse) {
                 $scope.unlockingCounter = 0;

@@ -33,6 +33,22 @@ class Gamification < Sinatra::Application
         groupObject['avatarUrl'] = group.avatarUrl;
         groupObject['quests'] = [];
 
+        badgeauto = 0;
+        badgemanu = 0;
+        badgespec = 0;
+        group.badges.each do |badge|
+          case badge['deliverytype']
+            when 'AUTOMATIC'
+              badgeauto = badgeauto + badge['count'].to_i
+            when 'MANUAL'
+              badgemanu = badgemanu + badge['count'].to_i
+            when 'SPECIAL'
+              badgespec = badgespec + badge['count'].to_i
+          end
+        end
+
+        groupObject['deliverytype'] = {"automatic" => badgeauto, "manual" => badgemanu, "special" => badgespec};
+
         @quest.each do |quest|
 
           if quest.assignedgroups.include?(group._id.to_s) then

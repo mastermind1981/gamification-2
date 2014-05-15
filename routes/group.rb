@@ -218,7 +218,8 @@ class Gamification < Sinatra::Application
             end
           end
 
-          group.badges << {"count" => lastcount+1, "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }}
+          data = JSON.parse request.body.read
+          group.badges << {"count" => lastcount+1, "deliverytype" => data['deliverytype'], "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }}
           group.save
         else
           status 500
