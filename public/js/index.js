@@ -16,7 +16,8 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.activityBadgeValue = 0;
 
     $scope.latestActivities = [];
-    $scope.activities_all = {};
+    $scope.activities_dico = {};
+    $scope.activities_all = [];
     $scope.activities_group = [];
     $scope.activities_my = [];
 
@@ -170,7 +171,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.getAllActivities = function() {
         gamificationFactory.doGetURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             response[0].forEach(function(activity) {
-                $scope.activities_all[activity.time] = activity
+                $scope.activities_dico[activity.time] = activity;
                 $scope.filterActivities();
             });
         });
@@ -266,25 +267,35 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
         gamificationFactory.doGetURL('/newactivities?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             response[0].forEach(function(activity) {
-                $scope.activities_all[activity.time] = activity
+                $scope.activities_dico[activity.time] = activity;
                 $scope.filterActivities();
             });
         });
     };
 
     $scope.filterActivities = function() {
+
+        $scope.activities_all = [];
+        for(var j in $scope.activities_dico) {
+            $scope.activities_all.push($scope.activities_dico[j]);
+        }
+
         $scope.activities_my = [];
         $scope.activities_group = [];
 
-        for(var i in $scope.activities_all) {
-            if(($scope.activities_all[i]).studentId == $scope.facebookId) {
-                $scope.activities_my.push($scope.activities_all[i]);
+        for(var i in $scope.activities_dico) {
+            if(($scope.activities_dico[i]).studentId == $scope.facebookId) {
+                $scope.activities_my.push($scope.activities_dico[i]);
             }
 
-            if(($scope.activities_all[i]).groupId == $scope.groupId) {
-                $scope.activities_group.push($scope.activities_all[i]);
+            if(($scope.activities_dico[i]).groupId == $scope.groupId) {
+                $scope.activities_group.push($scope.activities_dico[i]);
             }
         }
+
+        $scope.activities_all.reverse();
+        $scope.activities_my.reverse();
+        $scope.activities_group.reverse();
     };
 
 

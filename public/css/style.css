@@ -156,42 +156,36 @@ ion-view {
 
 .statGroupDiv {
     width: 100%;
-    background-color: #555555;
-    margin-bottom: 10px;
+    background-color: #F5F5F5;
+    margin-bottom: 20px;
 }
 
 .questItems {
     margin: 0;
-    border-width: 0;
-    margin-left: 10px;
-    margin-right: 10px;
-    color: #FFFFFF;
+    border-width: 1;
+    /* margin-left: 10px;
+    margin-right: 10px; */
+    color: #000000;
 }
 
 .questItems a.item-content,
 .questItems a.item-content {
     padding: 0;
     border: none;
-    background-color: #555555;
-    color: #FFFFFF;
-}
-
-.statGroupDiv h4 {
-    text-align: center;
-    color: #FFFFFF;
-    border-width: 1px;
-    border-bottom: #cccccc solid thin;
+    background-color: #FFFFFF;
+    color: #000000;
 }
 
 .statQuestTitle {
     width: 100px;
     min-width: 100px;
+    padding-left: 20px;
     height: 50px;
     /*background-color: #555555;    */
     display: table-cell;
     vertical-align: middle;
     text-align: left;
-    color: #FFFFFF;
+    color: #000000;
 }
 
 .statQuestProgress {
@@ -206,9 +200,10 @@ ion-view {
 .statQuestFooter {
     width: 100%;
     text-align: center;
-    color: #FFFFFF;
+    color: #000000;
     border-width: 1px;
-    border-top: #cccccc solid thin;
+    border: #cccccc solid thin;
+    border-top: none;
 }
 
 .statGroupDiv .list {
@@ -236,7 +231,10 @@ ion-view {
 }
 
 .progress-bar {
-    background-color: whiteSmoke;
+    -webkit-appearance: none;
+    appearance: none;
+
+    background-color: #FF0000;
     border-radius: 2px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
 
@@ -247,7 +245,7 @@ ion-view {
 }
 
 .progress-bar > span {
-    background-color: blue;
+    background-color: #FF0000;
     border-radius: 2px;
 
     display: block;
@@ -257,4 +255,34 @@ ion-view {
 .activityButtonSelected {
     background-color: #FFFFFF;
     border-bottom: none;
+}
+
+.item-divider {
+    border: none;
+    text-align: center;
+}
+
+.row {
+    padding: 0;
+}
+
+.col {
+    border-width: 1px;
+    border: #cccccc solid thin;
+    border-top: none;
+    border-bottom: none;
+}
+
+span.rnd {
+    background: #FFFFFF;
+    border-radius: 0.8em;
+    -moz-border-radius: 0.8em;
+    -webkit-border-radius: 0.8em;
+    color: #000000;
+    display: inline-block;
+    font-weight: bold;
+    line-height: 1.6em;
+    margin-right: 5px;
+    text-align: center;
+    width: 1.6em;
 }

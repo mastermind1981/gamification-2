@@ -3,6 +3,19 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
     $scope.activityBadgeValue = 0;
     $scope.groupStats = [];
 
+    $scope.getFormattedLabel = function(lab) {
+        switch(lab) {
+            case 'JOINED_GAMIFICATION':
+                return 'Joined gamification';
+                break;
+            case 'NEW_BADGE':
+                return 'New badge';
+                break;
+            default:
+                return lab;
+        }
+    }
+
     $scope.postMessage = function() {
         var formValid = true;
         var messageObject = {};
@@ -71,6 +84,7 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
         }).then(function(res) {
             $('#commActivitiesFeedTextarea').val('');
             $('#commActivitiesFeedTextinput').val('');
+            $scope.activityMenuModel = 0;
         });
     };
 
@@ -141,19 +155,27 @@ gamififcationApp.directive('myQueststat', function() {
             scope.pourcent = 0;
             scope.levelmax = 0;
 
-            for(var i=0; i<scope.currentQuest.levels.length; i++) {
-                if(scope.currentQuest.levels[i].completed != 1) {
-                    scope.levelmax = scope.currentQuest.levels[i].order;
-                    scope.levelmin = scope.levelmax - 1;
+            if(scope.currentQuest.completed == 1) {
+                scope.levelmin = " ";
+                scope.pourcent = 100;
+                scope.levelmax = " ";
+            }
+            else {
+                for(var i=0; i<scope.currentQuest.levels.length; i++) {
+                    if(scope.currentQuest.levels[i].completed != 1) {
+                        scope.levelmax = scope.currentQuest.levels[i].order;
+                        scope.levelmin = scope.levelmax - 1;
 
-                    for(var j=0; j<scope.currentQuest.levels[i].tasks.length; j++) {
-                        if(scope.currentQuest.levels[i].tasks[j].completed == 1) {
-                            scope.pourcent = scope.pourcent + (100/(scope.currentQuest.levels[i].tasks.length));
+                        for(var j=0; j<scope.currentQuest.levels[i].tasks.length; j++) {
+                            if(scope.currentQuest.levels[i].tasks[j].completed == 1) {
+                                scope.pourcent = scope.pourcent + (100/(scope.currentQuest.levels[i].tasks.length));
+                            }
                         }
+                        break;
                     }
-                    break;
                 }
             }
+
         },
         templateUrl: 'templates/directive-queststat.html'
     };
