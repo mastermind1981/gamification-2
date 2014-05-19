@@ -253,3 +253,8 @@ ion-view {
     display: block;
     text-indent: -9999px;
 }
+
+.activityButtonSelected {
+    background-color: #FFFFFF;
+    border-bottom: none;
+}
