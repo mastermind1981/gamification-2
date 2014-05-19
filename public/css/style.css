@@ -19,20 +19,24 @@ a img {
 
 @media {
     .range {
-        width: 600px;
+        /* width: 600px;        */
     }
 }
 
 @media (max-width: 768px) {
     .range {
-        width: 300px;
+        /* width: 300px; */
     }
 }
 
 @media (max-width: 480px) {
     .range {
-        width: 200px;
+        /* width: 200px;      */
     }
+}
+
+.range {
+    width: 100%;
 }
 
 #logo a {
@@ -152,7 +156,6 @@ ion-view {
 
 .statGroupDiv {
     width: 100%;
-    min-height: 150px;
     background-color: #555555;
     margin-bottom: 10px;
 }
@@ -192,11 +195,24 @@ ion-view {
 }
 
 .statQuestProgress {
+    width: 100%;
     padding-left: 20px;
     height: 50px;
     display: table-cell;
     vertical-align: middle;
     /* background-color: #555555; */
+}
+
+.statQuestFooter {
+    width: 100%;
+    text-align: center;
+    color: #FFFFFF;
+    border-width: 1px;
+    border-top: #cccccc solid thin;
+}
+
+.statGroupDiv .list {
+    margin-bottom: 0;
 }
 
 .badgeCounter {
@@ -217,4 +233,23 @@ ion-view {
 .tabs .tab-item .badge {
     background-color: #4A87EE;
     color: #FFFFFF;
+}
+
+.progress-bar {
+    background-color: whiteSmoke;
+    border-radius: 2px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25) inset;
+
+    height: 20px;
+
+    position: relative;
+    display: block;
+}
+
+.progress-bar > span {
+    background-color: blue;
+    border-radius: 2px;
+
+    display: block;
+    text-indent: -9999px;
 }

@@ -33,6 +33,22 @@ class Gamification < Sinatra::Application
         groupObject['avatarUrl'] = group.avatarUrl;
         groupObject['quests'] = [];
 
+        badgeauto = 0;
+        badgemanu = 0;
+        badgespec = 0;
+        group.badges.each do |badge|
+          case badge['deliverytype']
+            when 'AUTOMATIC'
+              badgeauto = badgeauto + badge['count'].to_i
+            when 'MANUAL'
+              badgemanu = badgemanu + badge['count'].to_i
+            when 'SPECIAL'
+              badgespec = badgespec + badge['count'].to_i
+          end
+        end
+
+        groupObject['deliverytype'] = {"automatic" => badgeauto, "manual" => badgemanu, "special" => badgespec};
+
         @quest.each do |quest|
 
           if quest.assignedgroups.include?(group._id.to_s) then
@@ -135,12 +151,16 @@ class Gamification < Sinatra::Application
       @assignedQuests = []
       @quest.each do |quest|
         if quest.assignedgroups.include?(params[:id]) then
+
+          completeQuest = Completedobject.where(:quest_id => quest._id, :groupId => params[:id]).length;
+          quest['completed'] = completeQuest;
+
           @assignedQuests.push(quest);
         end
       end
 
       status 200
-      return @assignedQuests.to_json(:except=> [ :levels, :tasks, :completedobjects ])
+      return @assignedQuests.to_json(:except=> [ :levels, :tasks ])
     else
       status 401
     end
@@ -466,7 +486,7 @@ class Gamification < Sinatra::Application
   # param [String] the quest id
   #
   # return [Object] quest
-  put '/quest/:id/addidtounlock/:unid' do
+  put '/quest/:id/addidtounlock' do
     if authorized?
       request.body.rewind  # in case someone already read it
       content_type :json
@@ -474,8 +494,19 @@ class Gamification < Sinatra::Application
       quest = Quest.find(params[:id])
 
       if quest then
-        quest.idstounlock << params[:unid]
-        quest.save
+        doNotExists = true;
+        data = JSON.parse request.body.read
+
+        quest.idstounlock.each do |idd|
+          if idd["unid"] == data['unid'] then
+            doNotExists = false;
+          end
+        end
+
+        if doNotExists then
+          quest.idstounlock << {:unid => data['unid'], :type => data['type']}
+          quest.save
+        end
 
         status 200
 

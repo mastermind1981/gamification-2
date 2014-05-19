@@ -58,7 +58,14 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
         for(var i=0; i<reversedLevelsArray.length; i++) {
             if(reversedLevelsArray[i].locked == false) {
                 $scope.activeLevelIndex = reversedLevelsArray[i].order;
-                $scope.setActiveLevelId(reversedLevelsArray[i]._id);
+
+                if(i < 1) {
+                    $scope.setActiveLevelId(reversedLevelsArray[i]._id, true);
+                }
+                else {
+                    $scope.setActiveLevelId(reversedLevelsArray[i]._id, false);
+                }
+
                 break;
             }
         }

@@ -281,7 +281,7 @@ class Gamification < Sinatra::Application
   #
   # param [String] the level id
   #
-  # body [Object] in JSON. ex: {"label":"<String>" }
+  # body [Object] in JSON. ex: {"unid":"<String>", "type":"<String>" ("LEVEL/"QUEST") }
   #
   # return [Object] level
   put '/level/:id/addidtounlock' do
