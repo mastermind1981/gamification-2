@@ -27,6 +27,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.sortedlevels = [];
     $scope.activeLevelId = null;
     $scope.objectsToUnlock = [];
+    $scope.activeLevelIsLast = false;
 
     $scope.dailyci = null;
     $scope.weeklyci = null;
@@ -353,8 +354,11 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         if(quest.locked == false) {
             gamificationFactory.doGetURL('/quest/'+quest._id+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
                 $scope.activeQuest = response[0];
-                $scope.sortedlevels = gamificationUtilities.sortArrayByKey($scope.activeQuest.levels, 'order');
-                window.location.href = '#/tab/quests1';
+                $scope.sortedlevels = [];
+                if($scope.activeQuest.levels.length > 0) {
+                    $scope.sortedlevels = gamificationUtilities.sortArrayByKey($scope.activeQuest.levels, 'order');
+                    window.location.href = '#/tab/quests1';
+                }
             });
         }
     };
@@ -377,6 +381,12 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.readyToRefreshLevels = function(count) {
         if(count == $scope.objectsToUnlock.length) {
             $scope.navigateToQuest($scope.activeQuest);
+        }
+    };
+
+    $scope.readyToRefreshQuests = function(count) {
+        if(count == $scope.activeQuest.idstounlock.length) {
+            $scope.changeMainTab(1);
         }
     };
 
@@ -421,12 +431,10 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 });
 
                 console.log("--> updated level - delivering badges if any");
-                $scope.badgesToAward = addcompletedgroupResponse[0].badges.length;
-                for(var i=0; i < $scope.badgesToAward; i++) {
+                $scope.levelbadgesToAward = addcompletedgroupResponse[0].badges.length;
+                for(var i=0; i < $scope.levelbadgesToAward; i++) {
 
                     gamificationFactory.doPutURL('/group/'+$scope.groupId+'/addbadge/'+addcompletedgroupResponse[0].badges[i]+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (addBadgeResponse) {
-                        $scope.badgesGroup = addBadgeResponse[0].badges;
-
                         for(var i=0; i < addBadgeResponse[0].students.length; i++) {
 
                             if((addBadgeResponse[0].students[i])._id == $scope.userId) {
@@ -448,9 +456,77 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                             });
                         });
 
+                        $scope.retrieveBadges();
                         $scope.notifyBadges(i);
                     });
                 }
+
+                if($scope.activeLevelIsLast) {
+                    $scope.activeLevelIsLast = false;
+
+                    gamificationFactory.doPutURL('/quest/'+$scope.activeQuest._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (addcompletedgroupResponse) {
+
+                        console.log("--> updated quest - delivering badges if any");
+                        $scope.questbadgesToAward = addcompletedgroupResponse[0].badges.length;
+                        for(var i=0; i < $scope.questbadgesToAward; i++) {
+
+                            gamificationFactory.doPutURL('/group/'+$scope.groupId+'/addbadge/'+addcompletedgroupResponse[0].badges[i]+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (addBadgeResponse) {
+                                $scope.badgesGroup = addBadgeResponse[0].badges;
+
+                                for(var i=0; i < addBadgeResponse[0].students.length; i++) {
+
+                                    if((addBadgeResponse[0].students[i])._id == $scope.userId) {
+                                        $scope.badgesStudent = (addBadgeResponse[0].students[i]).badges;
+                                        break;
+                                    }
+                                }
+
+                                gamificationFactory.doPostURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function(postActivityResponse) {
+
+                                    var data = {};
+                                    data.label = "NEW_BADGE";
+                                    data.type = "GROUP";
+                                    data.groupId = $scope.groupId;
+                                    data.badgeId = addcompletedgroupResponse[0].badges[i];
+
+                                    gamificationFactory.doPutURL('/activity/'+postActivityResponse[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (putActivityResponse) {
+                                        $scope.notif();
+                                    });
+                                });
+
+                                $scope.retrieveBadges();
+                                $scope.notifyBadges(i);
+                            });
+                        }
+
+                        $scope.unlockingCounter = 0;
+                        if($scope.activeQuest.idstounlock.length > 0) {
+                            $scope.activeQuest.idstounlock.forEach(function(obj) {
+
+                                switch(obj['type']) {
+                                    case "LEVEL":
+                                        gamificationFactory.doPutURL('/level/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (unlockLevelResponse) {
+                                            $scope.unlockingCounter++;
+                                            $scope.readyToRefreshQuests($scope.unlockingCounter);
+                                        });
+                                        break;
+                                    case "QUEST":
+                                        gamificationFactory.doPutURL('/quest/'+obj['unid']+'/unlock?nocache='+gamificationUtilities.getRandomUUID()).then(function (unlockQuestResponse) {
+                                            $scope.unlockingCounter++;
+                                            $scope.readyToRefreshQuests($scope.unlockingCounter);
+                                        });
+                                        break;
+                                };
+                            });
+                        }
+                        else {
+                            $scope.changeMainTab(1);
+                        }
+
+
+                    });
+                }
+
 
 
             });
@@ -460,8 +536,9 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         }
     };
 
-    $scope.setActiveLevelId = function(id) {
+    $scope.setActiveLevelId = function(id, lastLevel) {
         $scope.activeLevelId = id;
+        $scope.activeLevelIsLast = lastLevel;
     };
 
     $scope.changeMainTab = function(ind) {

@@ -482,7 +482,7 @@ class Gamification < Sinatra::Application
   # param [String] the quest id
   #
   # return [Object] quest
-  put '/quest/:id/addidtounlock/:unid' do
+  put '/quest/:id/addidtounlock' do
     if authorized?
       request.body.rewind  # in case someone already read it
       content_type :json
@@ -490,8 +490,19 @@ class Gamification < Sinatra::Application
       quest = Quest.find(params[:id])
 
       if quest then
-        quest.idstounlock << params[:unid]
-        quest.save
+        doNotExists = true;
+        data = JSON.parse request.body.read
+
+        quest.idstounlock.each do |idd|
+          if idd["unid"] == data['unid'] then
+            doNotExists = false;
+          end
+        end
+
+        if doNotExists then
+          quest.idstounlock << {:unid => data['unid'], :type => data['type']}
+          quest.save
+        end
 
         status 200
 
