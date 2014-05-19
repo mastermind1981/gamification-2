@@ -151,12 +151,16 @@ class Gamification < Sinatra::Application
       @assignedQuests = []
       @quest.each do |quest|
         if quest.assignedgroups.include?(params[:id]) then
+
+          completeQuest = Completedobject.where(:quest_id => quest._id, :groupId => params[:id]).length;
+          quest['completed'] = completeQuest;
+
           @assignedQuests.push(quest);
         end
       end
 
       status 200
-      return @assignedQuests.to_json(:except=> [ :levels, :tasks, :completedobjects ])
+      return @assignedQuests.to_json(:except=> [ :levels, :tasks ])
     else
       status 401
     end
