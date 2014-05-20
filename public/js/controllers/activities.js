@@ -3,6 +3,15 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
     $scope.activityBadgeValue = 0;
     $scope.groupStats = [];
 
+    $scope.getMessageAvatar = function(mess) {
+        if(mess.ownerAvatar != null) {
+         return mess.ownerAvatar
+        }
+        else {
+            return "img/group.png";
+        }
+    }
+
     $scope.getFormattedLabel = function(lab) {
         switch(lab) {
             case 'JOINED_GAMIFICATION':

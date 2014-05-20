@@ -13,7 +13,7 @@
         <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">All Activities</div>
             <a ng-repeat="message in activities_all" class="item item-avatar item-text-wrap item-icon-right" ng-click="navigateToActivity(message)">
-                <img ng-src="{{message.ownerAvatar}}">
+                <img ng-src="{{getMessageAvatar(message)}}">
 
                 <h2>{{message.ownerName}}</h2>
                 <span>{{getFormattedLabel(message.label)}}</span>
@@ -28,7 +28,7 @@
         <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">Group Activities</div>
             <a ng-repeat="message in activities_group" class="item item-avatar item-text-wrap item-icon-right">
-                <img ng-src="{{message.ownerAvatar}}">
+                <img ng-src="{{getMessageAvatar(message)}}">
 
                 <h2>{{message.ownerName}}</h2>
                 <span>{{getFormattedLabel(message.label)}}</span>
@@ -43,7 +43,7 @@
         <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">My Activities</div>
             <a ng-repeat="message in activities_my" class="item item-avatar item-text-wrap item-icon-right">
-                <img ng-src="{{message.ownerAvatar}}">
+                <img ng-src="{{getMessageAvatar(message)}}">
 
                 <h2>{{message.ownerName}}</h2>
                 <span>{{getFormattedLabel(message.label)}}</span>
