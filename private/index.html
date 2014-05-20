@@ -49,7 +49,7 @@
     <div class="bar bar-header" style="height: 60px; background-color: #f8f8f8" ng-show="userId != null">
         <div>
             <div style="float: left">
-                <a href="#"><img ng-src="{{avatarUrl}}"/></a>
+                <a href="#"><img ng-src="{{avatarUrl}}" style="width: 40px; height: 40px; border-radius: 4px"/></a>
             </div>
             <div style="float: left; margin-left: 10px">
                 {{username}}<br />
@@ -58,9 +58,7 @@
         </div>
 
         <div ng-if="groupId != null" style="position: absolute; top: 5px; right: 5px; bottom: 5px">
-            <button style="height: 100%; width: 60px" class="button icon ion-ios7-world"></button>
-            <button style="height: 100%; width: 60px" class="button icon ion-android-friends"></button>
-
+            <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-ios7-infinite"></button>
         </div>
     </div>
 

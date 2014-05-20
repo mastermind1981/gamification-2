@@ -5,7 +5,10 @@
     </div>
     <ion-content class="has-header">
         <div class="list padding taskDiv" style="margin-top: 45px">
-            <h2>{{ activeCheckin.description }}</h2>
+            <div class="item item-divider"></div>
+            <div class="item item-text-wrap" style="text-align: center;">
+                <h1>{{ activeCheckin.description }}</h1>
+            </div>
             <!-- div class="item item-input-inset">
                 <label class="item-input-wrapper">
                     <input id="urlTextInput" type="text" placeholder="Url" ng-model="urltext" ng-change="showUpdateButton()">
@@ -14,8 +17,8 @@
                     Update
                 </button>
             </div -->
-            <div class="item item-input-inset" ng-show="activeCheckin.isnotificationitem" style="margin-bottom: 20px">
-                <textarea id="checkinTextarea" style="height: 100px; width: 100%; color: #222222; resize: vertical"></textarea>
+            <div class="item item-input-inset" ng-show="activeCheckin.isnotificationitem">
+                <textarea id="checkinTextarea" placeholder="Type here ..." style="height: 100px; width: 100%; color: #222222; resize: vertical"></textarea>
             </div>
             <li class="item item-checkbox" ng-click="validateCheckin()">
                 <label class="checkbox">

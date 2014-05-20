@@ -23,6 +23,9 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
     $scope.tasks = [];
     $scope.editing = false;
     $scope.urltext = "";
+    $scope.levelmin = 0;
+    $scope.pourcent = 0;
+    $scope.levelmax = 0;
 
     $scope.backToQuest = function() {
         window.location.href = '#/tab/quests';
@@ -82,16 +85,21 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
             $scope.setObjectsToUnlock(response[0].idstounlock);
 
             var numberOfCompletedTasks = 0;
+            $scope.levelmax = $scope.tasks.length;
+            $scope.levelmin = 0;
             //find out which are completed by current group
             for(var i=0; i < $scope.tasks.length; i++) {
                 if($scope.isTaskComplete($scope.tasks[i].completedobjects)) {
                     $scope.tasks[i].complete = true;
+                    $scope.levelmin++;
                     numberOfCompletedTasks++;
                 }
                 else {
                     $scope.tasks[i].complete = false;
                 }
             }
+
+            $scope.pourcent = (($scope.levelmin*100)/$scope.levelmax)
 
             if(numberOfCompletedTasks == $scope.tasks.length-1) {
                 $scope.setOneTaskPending(true);
