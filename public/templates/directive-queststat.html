@@ -3,13 +3,13 @@
     <div ng-show="currentQuest.locked==false" class="range range-positive">
         <span style="min-width: 20px">{{ levelmin }}</span>
         <!-- input type="range" name="volume" min="0" max="100" value="{{pourcent}}" -->
-        <progress max="100" value="{{pourcent}}" style="margin-left: 40px;margin-right: 20px;">
+        <progress max="100" value="{{pourcent}}" style="margin-left: 10px;margin-right: 10px;">
             <div class="progress-bar">
                 <span ng-style="{width: pourcent+'%'}">Progress: {{pourcent}}%</span>
             </div>
         </progress>
         <span style="min-width: 20px">{{ levelmax }}</span>
-        <span style="margin-left: 40px; color: #000000; min-width: 50px; font-size: 11px; text-decoration: underline">{{pourcent}} %</span>
+        <span style="margin-left: 10px; color: #000000; min-width: 50px; font-size: 11px; text-decoration: underline">{{pourcent}} %</span>
     </div>
     <div ng-show="currentQuest.locked==true" style="margin-left: 2px">
         <i class="icon ion-ios7-locked"></i>
