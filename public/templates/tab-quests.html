@@ -6,8 +6,8 @@
     </ion-content>
     <ion-content class="padding" ng-show="groupId != null">
         <div class="list" style="margin-top: 50px; margin-bottom: 80px">
-            <div class="item item-divider">Quests</div>
-            <a ng-repeat="quest in quests" class="item item-icon-right" ng-click="navigateToQuest(quest)">
+            <div class="item item-divider ">Quests</div>
+            <a ng-repeat="quest in quests" class="item item-icon-right item-text-wrap" ng-click="navigateToQuest(quest)">
                 <div style="width: 40px;height: 40px; border-radius: 4px; background-color: #000000; color: #FFFFFF; display: table-cell; text-align:center; vertical-align: middle;">{{quest.order}}</div>
                 <div style="padding-left: 20px; height: 40px; display: table-cell; vertical-align: middle;">{{quest.label}}</div>
                 <i ng-if="quest.locked == true && quest.completed < 1" class="icon ion-ios7-locked"></i>
