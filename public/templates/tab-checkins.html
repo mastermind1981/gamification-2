@@ -2,31 +2,58 @@
     <ion-content class="padding">
         <div class="list" style="margin-top: 50px; margin-bottom: 80px">
             <div class="item item-divider">
-                <div style="float: left; margin-top: 12px; width: 50px">Daily</div>
+
+                <div class="levelProgress">
+                    <div class="range range-positive">
+                        <span style="min-width: 20px">Daily</span>
+                        <progress max="100" value="{{dailyciProgress}}" style="margin-left: 60px;margin-right: 20px;">
+                            <div class="progress-bar">
+                                <span ng-style="{width: dailyciProgress+'%'}">Daily: {{dailyciProgress}}%</span>
+                            </div>
+                        </progress>
+                        <span style="min-width: 20px">{{dailyciProgress.toFixed(2)}} %</span>
+                    </div>
+                </div>
+
+                <!-- div style="float: left; margin-top: 12px; width: 50px">Daily</div>
                 <div class="range range-positive" style="margin-left: 20px; float: left">
                     <i class="icon ion-ios7-checkmark-outline"></i>
                     <input type="range" min="0" max="100" ng-value="dailyciProgress">
                     <i class="icon ion-ios7-checkmark"></i>
                     <h4 style="margin-left: 10px">{{dailyciProgress.toFixed(2)}} %</h4>
-                </div>
+                </div -->
             </div>
             <a ng-repeat="dci in dailyci" class="item item-icon-right" ng-click="navigateToCheckin(dci)">
-                <div style="width: 50px;height: 50px; background-color: #4A87EE; display: table-cell; text-align:center; vertical-align: middle;"><img ng-show="dci.completed" src="https://cdn3.iconfinder.com/data/icons/iconic-1/32/check_alt-128.png" width="30px" height="30px" /></div>
-                <div style="padding-left: 20px; height: 50px; display: table-cell; vertical-align: middle;">{{dci.label}}</div>
+                <div style="width: 40px;height: 40px; border-radius: 4px; background-color: #000000; display: table-cell; text-align:center; vertical-align: middle;"><img ng-show="dci.completed" src="img/check.png" width="20px" height="20px" /></div>
+                <div style="padding-left: 20px; height: 40px; display: table-cell; vertical-align: middle;">{{dci.label}}</div>
                 <i class="icon ion-ios7-arrow-right"></i>
             </a>
 
-            <div class="item item-divider">
-                <div style="float: left; margin-top: 12px; width: 50px">Weekly</div>
+            <div class="item item-divider" style="margin-top: 20px">
+
+                <div class="levelProgress">
+                    <div class="range range-positive">
+                        <span style="min-width: 20px">Weekly</span>
+                        <progress max="100" value="{{weeklyciProgress}}" style="margin-left: 60px;margin-right: 20px;">
+                            <div class="progress-bar">
+                                <span ng-style="{width: weeklyciProgress+'%'}">Weekly: {{weeklyciProgress}}%</span>
+                            </div>
+                        </progress>
+                        <span style="min-width: 20px">{{weeklyciProgress.toFixed(2)}} %</span>
+                    </div>
+                </div>
+
+                <!-- div style="float: left; margin-top: 12px; width: 50px">Weekly</div>
                 <div class="range range-positive" style="margin-left: 20px; float: left">
                     <i class="icon ion-ios7-checkmark-outline"></i>
                     <input type="range" min="0" max="100" ng-value="weeklyciProgress">
                     <i class="icon ion-ios7-checkmark"></i>
                     <h4 style="margin-left: 10px">{{weeklyciProgress.toFixed(2)}} %</h4>
-                </div></div>
+                </div -->
+            </div>
             <a ng-repeat="wci in weeklyci" class="item item-icon-right" ng-click="navigateToCheckin(wci)">
-                <div style="width: 50px;height: 50px; background-color: #4A87EE; display: table-cell; text-align:center; vertical-align: middle;"><img ng-show="wci.completed" src="https://cdn3.iconfinder.com/data/icons/iconic-1/32/check_alt-128.png" width="30px" height="30px" /></div>
-                <div style="padding-left: 20px; height: 50px; display: table-cell; vertical-align: middle;">{{wci.label}}</div>
+                <div style="width: 40px;height: 40px; border-radius: 4px; background-color: #000000; display: table-cell; text-align:center; vertical-align: middle;"><img ng-show="wci.completed" src="img/check.png" width="20px" height="20px" /></div>
+                <div style="padding-left: 20px; height: 40px; display: table-cell; vertical-align: middle;">{{wci.label}}</div>
                 <i class="icon ion-ios7-arrow-right"></i>
             </a>
         </div>

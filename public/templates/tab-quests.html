@@ -8,8 +8,8 @@
         <div class="list" style="margin-top: 50px; margin-bottom: 80px">
             <div class="item item-divider">Quests</div>
             <a ng-repeat="quest in quests" class="item item-icon-right" ng-click="navigateToQuest(quest)">
-                <div style="width: 50px;height: 50px; background-color: #4A87EE; display: table-cell; text-align:center; vertical-align: middle;">{{quest.order}}</div>
-                <div style="padding-left: 20px; height: 50px; display: table-cell; vertical-align: middle;">{{quest.label}}</div>
+                <div style="width: 40px;height: 40px; border-radius: 4px; background-color: #000000; color: #FFFFFF; display: table-cell; text-align:center; vertical-align: middle;">{{quest.order}}</div>
+                <div style="padding-left: 20px; height: 40px; display: table-cell; vertical-align: middle;">{{quest.label}}</div>
                 <i ng-if="quest.locked == true && quest.completed < 1" class="icon ion-ios7-locked"></i>
                 <i ng-if="quest.locked == false && quest.completed < 1" class="icon ion-ios7-arrow-right"></i>
                 <i class="icon ion-ios7-checkmark-outline" ng-if="quest.completed > 0"></i>

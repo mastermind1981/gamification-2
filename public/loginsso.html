@@ -32,15 +32,17 @@
 
     <script src="js/login.js"></script>
 </head>
-<body ng-app="gamififcationAppLogin" ng-controller="loginCtrl">
+<body ng-app="gamififcationAppLogin" ng-controller="loginCtrl" bgcolor="#F5f5f5">
 
-    <div class="bar bar-header">
-        <h1 class="title">GAMIFICATION</h1>
+
+    <div id="loginButtonDivWrapper" style="text-align: center">
+        <span style="font-size: 75px; font-weight: bold;">Gamification</span>
+        <hr style="color: #000000; background-color: #000000; height: 2px; margin-top: 20px; width: 440px" />
+        <!-- button class="button icon-left ion-social-facebook-outline" style="margin-top: 20px; background-color: #0066FF" onclick="location.href='/login'">Sign in with Facebook</button -->
+        <img class="button" style="background-color: transparent; border: none; margin-top: 20px;" src="img/fblogin.png" width="472" height="88" onclick="location.href='/login'">
     </div>
 
-    <div id="loginButtonDivWrapper"><button class="button icon-left ion-social-facebook" onclick="location.href='/login'">Login via Facebook</button></div>
-
-    <div class="bar bar-footer" style="text-align: center; color: #888888; margin-bottom: 5px">
+    <div class="bar bar-footer" style="text-align: center; color: #f5f5f5; background-color: #f5f5f5;margin-bottom: 5px">
         <div ng-show="checkIfMobile()" style="margin: 0 auto">On iDevices/Android, to view in fullscreen, install this web app on your device: tap <i class="icon ion-ios7-upload-outline"></i> and then <strong>Add to Home Screen</strong>.</div>
     </div>
 </body>
