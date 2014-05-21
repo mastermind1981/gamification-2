@@ -22,7 +22,7 @@
                         </div>
                     </div>
                 </div>
-                <a ng-repeat="task in tasks" class="item item-icon-right" ng-click="navigateToTask(task)">
+                <a ng-repeat="task in tasks" class="item item-icon-right item-text-wrap" ng-click="navigateToTask(task)">
                     <div class="taskIconCounter">{{task.order}}</div>
                     <div class="taskIconLabel">{{task.label}}</div>
                     <i class="icon" ng-class="{'ion-ios7-checkmark-outline': task.complete, 'ion-ios7-arrow-right': !task.complete}"></i>
