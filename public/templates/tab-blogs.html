@@ -2,7 +2,7 @@
     <ion-content class="padding">
         <div class="list" style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">Groups</div>
-            <a style="margin-top: 10px;" ng-repeat="group in blogGroups" class="item item-thumbnail-left item-icon-right" ng-click="navigateToBlog(group)">
+            <a style="margin-bottom: 10px;" ng-repeat="group in blogGroups" class="item item-text-wrap item-thumbnail-left item-icon-right" ng-click="navigateToBlog(group)">
                 <img ng-show="group.avatarUrl!=null" ng-src="{{group.avatarUrl}}">
                 <h2>{{group.label}}</h2>
                 <p>

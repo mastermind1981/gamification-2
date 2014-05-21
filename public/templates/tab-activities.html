@@ -2,18 +2,18 @@
 
     <div class="bar bar-subheader activityFilterBar" style="border: none">
         <div class="button-bar" style="border: none">
-            <a class="button" ng-class="{'activityButtonSelected': activityMenuModel==0}" ng-click="activityMenuModel=0">All</a>
-            <a class="button" ng-disabled="groupId == null" ng-class="{'activityButtonSelected': activityMenuModel==1}" ng-click="activityMenuModel=1">Group</a>
-            <a class="button" ng-class="{'activityButtonSelected': activityMenuModel==2}" ng-click="activityMenuModel=2">My</a>
-            <a class="button" ng-class="{'activityButtonSelected': activityMenuModel==3}" ng-click="activityMenuModel=3;generateStats()">Stats</a>
-            <a class="button" ng-class="{'activityButtonSelected': activityMenuModel==4}" ng-click="activityMenuModel=4">Comment</a>
+            <a class="button" ng-class="{'activityButtonSelected': activityMenuModel==0}" ng-click="activityMenuModel=0" style="font-size: 10px; padding: 0">All</a>
+            <a class="button" ng-disabled="groupId == null" ng-class="{'activityButtonSelected': activityMenuModel==1}" ng-click="activityMenuModel=1" style="font-size: 10px; padding: 0">Group</a>
+            <a class="button" ng-class="{'activityButtonSelected': activityMenuModel==2}" ng-click="activityMenuModel=2" style="font-size: 10px; padding: 0">My</a>
+            <a class="button" ng-class="{'activityButtonSelected': activityMenuModel==3}" ng-click="activityMenuModel=3;generateStats()" style="font-size: 10px; padding: 0">Stats</a>
+            <a class="button" ng-class="{'activityButtonSelected': activityMenuModel==4}" ng-click="activityMenuModel=4" style="font-size: 10px; padding: 0">Comment</a>
         </div>
     </div>
     <ion-content class="has-header padding" ng-show="activityMenuModel==0">
         <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">All Activities</div>
             <a ng-repeat="message in activities_all" class="item item-avatar item-text-wrap item-icon-right" ng-click="navigateToActivity(message)">
-                <img ng-src="{{message.ownerAvatar}}">
+                <img ng-src="{{getMessageAvatar(message)}}">
 
                 <h2>{{message.ownerName}}</h2>
                 <span>{{getFormattedLabel(message.label)}}</span>
@@ -28,7 +28,7 @@
         <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">Group Activities</div>
             <a ng-repeat="message in activities_group" class="item item-avatar item-text-wrap item-icon-right">
-                <img ng-src="{{message.ownerAvatar}}">
+                <img ng-src="{{getMessageAvatar(message)}}">
 
                 <h2>{{message.ownerName}}</h2>
                 <span>{{getFormattedLabel(message.label)}}</span>
@@ -43,7 +43,7 @@
         <div style="margin-top: 50px; padding-bottom: 80px">
             <div class="item item-divider">My Activities</div>
             <a ng-repeat="message in activities_my" class="item item-avatar item-text-wrap item-icon-right">
-                <img ng-src="{{message.ownerAvatar}}">
+                <img ng-src="{{getMessageAvatar(message)}}">
 
                 <h2>{{message.ownerName}}</h2>
                 <span>{{getFormattedLabel(message.label)}}</span>

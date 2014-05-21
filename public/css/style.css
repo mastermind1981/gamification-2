@@ -122,8 +122,6 @@ ion-view {
 
 .taskDiv {
     margin-top: 10px;
-    margin-left: 40px;
-    margin-right: 40px;
 }
 
 .taskDiv h2 {
@@ -145,6 +143,7 @@ ion-view {
 
 .taskIconCounter {
     width: 40px;
+    min-width: 40px;
     height: 40px;
     background-color: #000000;
     display: table-cell;

@@ -184,6 +184,38 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Update a student by id
+  #
+  # param [String] the student id
+  #
+  # body [Object] in JSON. ex: {"facebook_id":"<String>", "expert_level":"<Integer>" }
+  #
+  # return [Object] student
+  put '/student/:id/setadmin' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      student = Student.find(params[:id])
+
+      if student then
+        data = JSON.parse request.body.read
+
+        unless data['admin'].nil?
+          student.update_attributes(:admin => data['admin'])
+          student.save
+        end
+
+        status 200
+        return  student.to_json
+      else
+        return {"error" => "Student "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
 
   # Delete a student by id
   #
