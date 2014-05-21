@@ -4,28 +4,30 @@
         <h1 class="title">{{ activeQuest.label }}</h1>
     </div>
     <ion-content class="has-header">
-        <div id="levelsNavigationBar" class="button-bar" style="margin-top: 40px">
-            <button ng-repeat="level in levels" class="button" ng-class="{'icon-right ion-ios7-locked': level.locked, 'levelButtonSelected': level.order==activeLevelIndex}" ng-click="unveilLevel(level)">{{ level.order }}</button>
-        </div>
-        <div class="list padding">
-            <div class="item item-divider" style="padding-top: 0;padding-bottom: 0">
-                <div class="levelProgress">
-                    <div class="range range-positive">
-                        <span style="min-width: 20px">Progress</span>
-                        <progress max="100" value="{{pourcent}}" style="margin-left: 60px;margin-right: 20px;">
-                            <div class="progress-bar">
-                                <span ng-style="{width: pourcent+'%'}">Progress: {{pourcent}}%</span>
-                            </div>
-                        </progress>
-                        <span style="min-width: 20px">{{ levelmin }} / {{ levelmax }}</span>
+        <div style="margin-top: 40px; padding-bottom: 80px">
+            <div id="levelsNavigationBar" class="button-bar">
+                <button ng-repeat="level in levels" class="button" ng-class="{'icon-right ion-ios7-locked': level.locked, 'levelButtonSelected': level.order==activeLevelIndex}" ng-click="unveilLevel(level)">{{ level.order }}</button>
+            </div>
+            <div class="list padding">
+                <div class="item item-divider" style="padding-top: 0;padding-bottom: 0">
+                    <div class="levelProgress">
+                        <div class="range range-positive">
+                            <span style="min-width: 20px">Progress</span>
+                            <progress max="100" value="{{pourcent}}" style="margin-left: 60px;margin-right: 20px;">
+                                <div class="progress-bar">
+                                    <span ng-style="{width: pourcent+'%'}">Progress: {{pourcent}}%</span>
+                                </div>
+                            </progress>
+                            <span style="min-width: 20px">{{ levelmin }} / {{ levelmax }}</span>
+                        </div>
                     </div>
                 </div>
+                <a ng-repeat="task in tasks" class="item item-icon-right" ng-click="navigateToTask(task)">
+                    <div class="taskIconCounter">{{task.order}}</div>
+                    <div class="taskIconLabel">{{task.label}}</div>
+                    <i class="icon" ng-class="{'ion-ios7-checkmark-outline': task.complete, 'ion-ios7-arrow-right': !task.complete}"></i>
+                </a>
             </div>
-            <a ng-repeat="task in tasks" class="item item-icon-right" ng-click="navigateToTask(task)">
-                <div class="taskIconCounter">{{task.order}}</div>
-                <div class="taskIconLabel">{{task.label}}</div>
-                <i class="icon" ng-class="{'ion-ios7-checkmark-outline': task.complete, 'ion-ios7-arrow-right': !task.complete}"></i>
-            </a>
         </div>
     </ion-content>
 </ion-view>
