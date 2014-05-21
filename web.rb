@@ -145,7 +145,15 @@ class Gamification < Sinatra::Application
   # Get the f.html page
   get '/admin.html' do
     if HTTPauthorized?
-      send_file File.join('private', 'admin.html')
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      @user = @graph.get_object("me")
+
+      student = Student.find_by(facebookId: @user["id"])
+      if student['admin']
+        send_file File.join('private', 'admin.html')
+      else
+        redirect '/'
+      end
     else
       redirect '/'
     end

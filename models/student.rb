@@ -10,4 +10,5 @@ class Student
   field :facebookId, :type => String
   field :expertLevel, :type => Integer, :default => 0
   field :badges, :type => Array, :default => []
+  field :admin, :type => Boolean, :default => false
 end
