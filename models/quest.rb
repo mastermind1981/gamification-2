@@ -15,4 +15,5 @@ class Quest
   field :assignedgroups, :type => Array, :default => []
   field :idstounlock, :type => Array, :default => []
   field :badges, :type => Array, :default => []
+  field :author, :type => String
 end

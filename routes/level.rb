@@ -14,6 +14,24 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get all levels
+  #
+  # return [Array] level objects
+  get '/adminlevel' do
+    if authorized?
+      content_type :json
+
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      user = @graph.get_object("me")
+
+      @level = Level.where(:author => user["id"])
+      status 200
+      return @level.to_json
+    else
+      status 401
+    end
+  end
+
   # Get a level by id
   #
   # param [String] the level id
@@ -38,7 +56,10 @@ class Gamification < Sinatra::Application
       request.body.rewind  # in case someone already read it
       content_type :json
 
-      level = Level.create()
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      user = @graph.get_object("me")
+
+      level = Level.create(:author => user["id"])
       status 200
       return  level.to_json
     else

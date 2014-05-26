@@ -14,6 +14,25 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get all quests
+  #
+  # return [Array] quest objects
+  get '/adminquest' do
+    if authorized?
+      content_type :json
+
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      user = @graph.get_object("me")
+
+      @quest = Quest.where(:author => user["id"])
+      status 200
+      return @quest.to_json
+    else
+      status 401
+    end
+  end
+
+
   # Get all quests stats
   #
   # return [Array] quest objects
@@ -174,7 +193,10 @@ class Gamification < Sinatra::Application
       request.body.rewind  # in case someone already read it
       content_type :json
 
-      quest = Quest.create()
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      user = @graph.get_object("me")
+
+      quest = Quest.create(:author => user["id"])
       status 200
       return  quest.to_json
     else

@@ -14,6 +14,24 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get all tasks
+  #
+  # return [Array] task objects
+  get '/admintask' do
+    if authorized?
+      content_type :json
+
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      user = @graph.get_object("me")
+
+      @task = Task.where(:author => user["id"])
+      status 200
+      return @task.to_json
+    else
+      status 401
+    end
+  end
+
   # Get a task by id
   #
   # param [String] the task id
@@ -38,7 +56,10 @@ class Gamification < Sinatra::Application
       request.body.rewind  # in case someone already read it
       content_type :json
 
-      task = Task.create()
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      user = @graph.get_object("me")
+
+      task = Task.create(:author => user["id"])
       status 200
       return  task.to_json
     else

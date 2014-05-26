@@ -33,37 +33,16 @@
     <script src="http://intense-cove-9922.herokuapp.com/socket.io/socket.io.js"></script>
     <script src="js/ionic.bundle.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-cookies.js"></script>
-    <script src="js/init.js"></script>
-    <script src="js/factories.js"></script>
-    <script src="js/index.js"></script>
-    <script src="js/controllers/activities.js"></script>
-    <script src="js/controllers/badges.js"></script>
-    <script src="js/controllers/blank.js"></script>
-    <script src="js/controllers/blogs.js"></script>
-    <script src="js/controllers/checkins.js"></script>
-    <script src="js/controllers/quests.js"></script>
+    <script src="js/admininit.js"></script>
+    <script src="js/adminfactories.js"></script>
+    <script src="js/controllers/admingroups.js"></script>
+    <script src="js/controllers/adminquest.js"></script>
 
 </head>
-<body ng-app="gamififcationApp" animation="slide-left-right-ios7" ng-controller="navigationCtrl">
+<body ng-app="gamificationAdminApp" animation="slide-left-right-ios7" ng-controller="adminMainCtrl">
 
-    <div class="bar bar-header" style="height: 60px; background-color: #f8f8f8" ng-show="userId != null">
-        <div>
-            <div style="float: left">
-                <a href="#"><img ng-src="{{avatarUrl}}" style="width: 40px; height: 40px; border-radius: 4px"/></a>
-            </div>
-            <div style="float: left; margin-left: 10px">
-                {{username}}<br />
-                <a href="" ng-click="logout()">LOGOUT</a>
-            </div>
-        </div>
-
-        <div ng-if="groupId != null" style="position: absolute; top: 5px; right: 5px; bottom: 5px">
-            <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-ios7-infinite"></button>
-        </div>
-    </div>
+    <div class="bar bar-header" style="height: 60px; background-color: #f8f8f8"><h1>Dashboard</h1></div>
 
     <ion-nav-view></ion-nav-view>
-
-    <div class="bar bar-footer" style="height: 60px" ng-show="notReadyToNavigate"></div>
 </body>
 </html>

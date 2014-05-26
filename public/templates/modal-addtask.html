@@ -1,0 +1,40 @@
+<div class="modal">
+    <ion-header-bar>
+        <h1 ng-show="taskToEdit == null" class="title">Create new task</h1>
+        <h1 ng-show="taskToEdit != null" class="title">Edit task</h1>
+        <div class="buttons">
+            <button class="button button-assertive" ng-click="deleteTask()">Delete</button>
+        </div>
+    </ion-header-bar>
+    <ion-content class="has-header has-footer" style="bottom: 44px">
+        <div class="list list-inset">
+            <label class="item item-input">
+                <span class="input-label">Order</span>
+                <input type="text" width="20px" disabled placeholder="{{ nextAvailableOrder }}">
+            </label>
+            <label class="item item-input">
+                <span class="input-label required">Label</span>
+                <input id="taskLabelInput" type="text" placeholder="Provide a label">
+            </label>
+            <li class="item item-toggle">
+                <span class="input-label required" style="margin-left: -6px">set Blog url?</span>
+                <label class="input-label toggle toggle-positive">
+                    <input type="checkbox" id="taskBlogurlInput">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+        </div>
+    </ion-content>
+    <ion-footer-bar style="bottom: 0; background-color: #f5f5f5">
+        <div class="buttons">
+            <button ng-show="taskToEdit == null" class="button" ng-click="createNewTask()">Create</button>
+            <button ng-show="taskToEdit != null" class="button" ng-click="updateTask()">Update</button>
+        </div>
+        <h1 class="title"> </h1>
+        <div class="buttons" ng-click="closeTaskModal()">
+            <button class="button">Cancel</button>
+        </div>
+    </ion-footer-bar>
+</div>
