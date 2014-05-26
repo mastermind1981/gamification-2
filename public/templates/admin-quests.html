@@ -1,0 +1,22 @@
+<ion-view>
+    <ion-content class="has-header padding">
+        <div class="list">
+            <div class="item item-divider">
+                <div class="h3 title">Quests</div>
+                <button class="button button-clear button-positive" ng-click="addnewquest()">Add quest</button>
+            </div>
+            <a ng-repeat="quest in quests" class="item item-text-wrap item-button-right">
+                <div style="min-width: 40px; width: 40px; height: 40px; border-radius: 4px; background-color: #000000; color: #FFFFFF; display: table-cell; text-align:center; vertical-align: middle;">{{quest.order}}</div>
+                <div style="padding-left: 20px; height: 40px; display: table-cell; vertical-align: middle;">{{quest.label}}</div>
+                <div class="buttons">
+                    <button class="button button-positive" style="margin-top: 10px" ng-click="editQuest(quest)">
+                        <i class="icon ion-edit"></i>Edit
+                    </button>
+                    <button class="button button-positive" style="margin-top: 10px" ng-click="navigateToQuest(quest)">
+                        <i class="icon ion-forward"></i>Levels
+                    </button>
+                </div>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

@@ -17,4 +17,5 @@ class Level
   field :introduction, :type => String
   field :idstounlock, :type => Array, :default => []
   field :badges, :type => Array, :default => []
+  field :author, :type => String
 end

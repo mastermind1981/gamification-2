@@ -184,11 +184,9 @@ class Gamification < Sinatra::Application
     end
   end
 
-  # Update a student by id
+  # Set a student as admin by id
   #
   # param [String] the student id
-  #
-  # body [Object] in JSON. ex: {"facebook_id":"<String>", "expert_level":"<Integer>" }
   #
   # return [Object] student
   put '/student/:id/setadmin' do
@@ -196,21 +194,30 @@ class Gamification < Sinatra::Application
       request.body.rewind  # in case someone already read it
       content_type :json
 
-      student = Student.find(params[:id])
+      @graph = Koala::Facebook::API.new(session["access_token"])
+      @user = @graph.get_object("me")
 
-      if student then
-        data = JSON.parse request.body.read
+      admstudent = Student.find_by(facebookId: @user["id"])
+      if admstudent['admin']
+        student = Student.find(params[:id])
 
-        unless data['admin'].nil?
-          student.update_attributes(:admin => data['admin'])
-          student.save
+        if student then
+          data = JSON.parse request.body.read
+
+          unless data['admin'].nil?
+            student.update_attributes(:admin => data['admin'])
+            student.save
+          end
+
+          status 200
+          return  student.to_json
+        else
+          return {"error" => "Student "+params[:id]+" not found"}.to_json
         end
-
-        status 200
-        return  student.to_json
       else
-        return {"error" => "Student "+params[:id]+" not found"}.to_json
+        return {"error" => "You do not have admin rights to perform this operation"}.to_json
       end
+
     else
       status 401
     end
