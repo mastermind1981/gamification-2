@@ -146,6 +146,12 @@ class Gamification < Sinatra::Application
               completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => Time.new().to_i);
               task.completedobjects << completedobject
               task.save
+
+
+              #update group blog url if true
+              task.isblogurltask
+
+
             end
 
             status 200

@@ -63,6 +63,7 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
                 data.type = "STUDENT";
                 data.url = messageObject.url;
                 data.groupId = $scope.groupId;
+                data.classroomId = $scope.classroomId;
 
                 gamificationFactory.doPutURL('/activity/'+response[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
                     $scope.notif();
