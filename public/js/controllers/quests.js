@@ -132,8 +132,18 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
 
     $scope.submitTaskIfComplete = function() {
         var el = $('#taskCompletedInput')[0];
+        var validTask = true;
 
-        if(el.checked == false) {
+        if($scope.activeTask.isblogurltask) {
+            if(gamificationUtilities.checkValidURL($('#urlTextInput').val()) && $('#urlTextInput').val() != '') {
+                validTask = true;
+            }
+            else {
+                validTask = false;
+            }
+        }
+
+        if(el.checked == false && validTask) {
             el.checked = true;
             $scope.validateTask();
         }
@@ -149,10 +159,19 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
 
         var data = {};
         data.groupId = $scope.groupId;
+        if($scope.activeTask.isblogurltask) {
+            data.blogUrl = $('#urlTextInput').val();
+        }
 
         gamificationFactory.doPutURL('/task/'+$scope.activeTask._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+
+            if($scope.activeTask.isblogurltask) {
+                $scope.retrieveGroup();
+            }
+
             $scope.returnToLevels();
         });
+
     };
 
     $scope.updateCurrentTask = function() {

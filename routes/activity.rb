@@ -14,10 +14,24 @@ class Gamification < Sinatra::Application
     end
   end
 
-  get '/newactivities' do
+  # Get all activities for a classroom
+  #
+  # return [Array] activity objects
+  get '/activities/:classid' do
     if authorized?
       content_type :json
-      @activity = Activity.desc(:time).limit(10);
+      @activity = Activity.where(:classroomId => params[:classid])
+      status 200
+      return @activity.to_json
+    else
+      status 401
+    end
+  end
+
+  get '/newactivities/:classid' do
+    if authorized?
+      content_type :json
+      @activity = Activity.where(:classroomId => params[:classid]).desc(:time).limit(10);
       status 200
       return @activity.reverse.to_json
     end
@@ -89,6 +103,11 @@ class Gamification < Sinatra::Application
 
         unless data['studentId'].nil?
           activity.update_attributes(:studentId => data['studentId'])
+          activity.save
+        end
+
+        unless data['classroomId'].nil?
+          activity.update_attributes(:classroomId => data['classroomId'])
           activity.save
         end
 

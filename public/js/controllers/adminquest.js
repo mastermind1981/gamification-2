@@ -304,6 +304,7 @@ gamificationAdminApp.controller('adminQuest2Ctrl', function ($scope, $location, 
     $scope.closeTaskModal = function () {
         $scope.taskToEdit = null;
         $('#taskLabelInput').val('');
+        $('#taskIntroductionInput').val('');
         $('#taskBlogurlInput').prop('checked', false);
         $scope.taskmodal.hide();
     };
@@ -351,7 +352,7 @@ gamificationAdminApp.controller('adminQuest2Ctrl', function ($scope, $location, 
     };
 
     $scope.createNewTask = function () {
-        if($('#taskLabelInput').val() != "" && $('#taskLabelInput').val() != null) {
+        if($('#taskLabelInput').val() != "" && $('#taskLabelInput').val() != null && $('#taskIntroductionInput').val() != null) {
             gamificationAdminFactory.doPostURL('/task?nocache=' + gamificationAdminUtilities.getRandomUUID()).then(function (postResponse) {
                 if(postResponse[1] == 200) {
                     $scope.taskToEdit = postResponse[0];
@@ -370,6 +371,7 @@ gamificationAdminApp.controller('adminQuest2Ctrl', function ($scope, $location, 
         data.label = $('#taskLabelInput').val();
         data.order = $scope.nextAvailableOrder;
         data.isblogurltask = $('#taskBlogurlInput').prop('checked');
+        data.introduction = $('#taskIntroductionInput').val();
 
         gamificationAdminFactory.doPutURL('/task/'+$scope.taskToEdit._id+'?nocache='+gamificationAdminUtilities.getRandomUUID(), data).then(function (putResponse) {
             $scope.closeTaskModal();
@@ -385,6 +387,7 @@ gamificationAdminApp.controller('adminQuest2Ctrl', function ($scope, $location, 
         $scope.nextAvailableOrder = l.order;
         $('#taskLabelInput').val(l.label);
         $('#taskBlogurlInput').prop('checked', l.isblogurltask);
+        $('#taskIntroductionInput').val(l.introduction);
 
     };
 

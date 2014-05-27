@@ -29,6 +29,7 @@ gamififcationApp.controller('Checkins1Ctrl', function($scope, $ionicModal, $ioni
                         data.label = $scope.textToSend;
                         data.type = "STUDENT";
                         data.groupId = $scope.groupId;
+                        data.classroomId = $scope.classroomId;
 
                         gamificationFactory.doPutURL('/activity/'+response[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
                             $scope.notif();

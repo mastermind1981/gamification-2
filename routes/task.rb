@@ -140,12 +140,18 @@ class Gamification < Sinatra::Application
           if group
 
             #make group does not re-submit a task completion
-            retrievedCompletedobject = Completedobject.where(:task_id => params[:id], :groupId => data['groupId']).length
+            retrievedCompletedobject = Completedobject.where(:task_id => params[:id], :groupId => data['groupId']).length;
 
             if retrievedCompletedobject == 0 then
               completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => Time.new().to_i);
               task.completedobjects << completedobject
               task.save
+
+              #update group blog url if true
+              if task.isblogurltask then
+                group.blogUrl = data['blogUrl'];
+                group.save
+              end
             end
 
             status 200

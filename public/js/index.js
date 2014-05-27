@@ -6,6 +6,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.facebookId = "";
     $scope.classroomId = "";
     $scope.avatarUrl = "";
+    $scope.groupblogUrl = null;
 
     $scope.notReadyToNavigate = true;
 
@@ -132,6 +133,12 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 //        return true;
 //    };
 
+    $scope.navigateToBlog = function() {
+        if($scope.groupblogUrl != null) {
+            window.open($scope.groupblogUrl,'_blank');
+        }
+    }
+
     $scope.postActivity = function() {
         gamificationFactory.doPostURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function(response) {
 
@@ -140,6 +147,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             data.label = "JOINED_GAMIFICATION";
             data.type = "STUDENT";
             data.groupId = $scope.groupId;
+            data.classroomId = $scope.classroomId;
 
             gamificationFactory.doPutURL('/activity/'+response[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
                 $scope.notif();
@@ -169,7 +177,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 //    };
 
     $scope.getAllActivities = function() {
-        gamificationFactory.doGetURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+        gamificationFactory.doGetURL('/activities/'+$scope.classroomId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             response[0].forEach(function(activity) {
                 $scope.activities_dico[activity.time] = activity;
                 $scope.filterActivities();
@@ -265,7 +273,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
         }
 
-        gamificationFactory.doGetURL('/newactivities?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+        gamificationFactory.doGetURL('/newactivities/'+$scope.classroomId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             response[0].forEach(function(activity) {
                 $scope.activities_dico[activity.time] = activity;
                 $scope.filterActivities();
@@ -300,8 +308,16 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
 
     $scope.retrieveClassrooms = function() {
-        gamificationFactory.doGetURL('/classroom').then(function (response) {
+        gamificationFactory.doGetURL('/classroom?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             $scope.classrooms = response[0];
+        });
+    }
+
+    $scope.retrieveGroup = function() {
+        gamificationFactory.doGetURL('/group/'+$scope.groupId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            if(response[0].blogUrl != null) {
+                $scope.groupblogUrl = response[0].blogUrl;
+            }
         });
     }
 
@@ -322,6 +338,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             else {
                 $scope.notReadyToNavigate = false;
                 $scope.changeMainTab(0);
+                $scope.retrieveGroup();
 
                 $scope.getAllActivities();
                 $scope.retrieveCheckins();
@@ -461,6 +478,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                             data.type = "GROUP";
                             data.groupId = $scope.groupId;
                             data.badgeId = addcompletedgroupResponse[0].badges[i];
+                            data.classroomId = $scope.classroomId;
 
                             gamificationFactory.doPutURL('/activity/'+postActivityResponse[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (putActivityResponse) {
                                 $scope.notif();
@@ -499,6 +517,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                                     data.type = "GROUP";
                                     data.groupId = $scope.groupId;
                                     data.badgeId = addcompletedgroupResponse[0].badges[i];
+                                    data.classroomId = $scope.classroomId;
 
                                     gamificationFactory.doPutURL('/activity/'+postActivityResponse[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (putActivityResponse) {
                                         $scope.notif();
