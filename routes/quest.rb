@@ -231,6 +231,11 @@ class Gamification < Sinatra::Application
           quest.save
         end
 
+        #unless data['author'].nil?
+        #  quest.update_attributes(:author => data['author'])
+        #  quest.save
+        #end
+
         status 200
 
         return  quest.to_json

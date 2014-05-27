@@ -42,7 +42,7 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
 
         if($('#commActivitiesFeedTextinput').val() != "") {
 
-            if(isValidURL($('#commActivitiesFeedTextinput').val())) {
+            if(gamificationUtilities.checkValidURL($('#commActivitiesFeedTextinput').val())) {
                 messageObject.url = $('#commActivitiesFeedTextinput').val();
             }
             else {
@@ -73,17 +73,6 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
             });
         }
 
-    };
-
-    function isValidURL(url) {
-        var myRegExp =/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!10(?:\.\d{1,3}){3})(?!127(?:\.\d{1,3}){3})(?!169\.254(?:\.\d{1,3}){2})(?!192\.168(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/[^\s]*)?$/i;
-
-        console.log('test: '+url);
-        if (!myRegExp.test(url)){
-            return false;
-        }else{
-            return true;
-        }
     };
 
     // An alert dialog
@@ -161,20 +150,17 @@ gamififcationApp.directive('myQueststat', function() {
             currentQuest: '=item'
         },
         link: function(scope) {
-            scope.levelmin = 0;
             scope.pourcent = 0;
-            scope.levelmax = 0;
+            scope.levelmax = "";
 
             if(scope.currentQuest.completed == 1) {
-                scope.levelmin = " ";
                 scope.pourcent = 100;
-                scope.levelmax = " ";
+                scope.levelmax = "       ";
             }
             else {
                 for(var i=0; i<scope.currentQuest.levels.length; i++) {
                     if(scope.currentQuest.levels[i].completed != 1) {
-                        scope.levelmax = scope.currentQuest.levels[i].order;
-                        scope.levelmin = scope.levelmax - 1;
+                        scope.levelmax = 'Level '+scope.currentQuest.levels[i].order;
 
                         for(var j=0; j<scope.currentQuest.levels[i].tasks.length; j++) {
                             if(scope.currentQuest.levels[i].tasks[j].completed == 1) {

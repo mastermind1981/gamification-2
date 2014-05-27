@@ -6,6 +6,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.facebookId = "";
     $scope.classroomId = "";
     $scope.avatarUrl = "";
+    $scope.groupblogUrl = null;
 
     $scope.notReadyToNavigate = true;
 
@@ -131,6 +132,12 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 //
 //        return true;
 //    };
+
+    $scope.navigateToBlog = function() {
+        if($scope.groupblogUrl != null) {
+            window.open($scope.groupblogUrl,'_blank');
+        }
+    }
 
     $scope.postActivity = function() {
         gamificationFactory.doPostURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function(response) {
@@ -301,8 +308,16 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
 
     $scope.retrieveClassrooms = function() {
-        gamificationFactory.doGetURL('/classroom').then(function (response) {
+        gamificationFactory.doGetURL('/classroom?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             $scope.classrooms = response[0];
+        });
+    }
+
+    $scope.retrieveGroup = function() {
+        gamificationFactory.doGetURL('/group/'+$scope.groupId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+            if(response[0].blogUrl != null) {
+                $scope.groupblogUrl = response[0].blogUrl;
+            }
         });
     }
 
@@ -323,6 +338,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             else {
                 $scope.notReadyToNavigate = false;
                 $scope.changeMainTab(0);
+                $scope.retrieveGroup();
 
                 $scope.getAllActivities();
                 $scope.retrieveCheckins();

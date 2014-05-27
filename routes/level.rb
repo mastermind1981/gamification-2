@@ -99,6 +99,11 @@ class Gamification < Sinatra::Application
           level.save
         end
 
+        unless data['locked'].nil?
+          level.update_attributes(:locked => data['locked'])
+          level.save
+        end
+
         status 200
 
         return  level.to_json

@@ -9,15 +9,20 @@
     <ion-content class="has-header has-footer" style="bottom: 44px">
         <div class="list list-inset">
             <label class="item item-input">
-                <span class="input-label">Order</span>
+                <span class="input-label" style="max-width: 100px;">Order</span>
                 <input type="text" width="20px" disabled placeholder="{{ nextAvailableOrder }}">
             </label>
             <label class="item item-input">
-                <span class="input-label required">Label</span>
+                <span class="input-label required" style="max-width: 100px;">Label</span>
                 <input id="taskLabelInput" type="text" placeholder="Provide a label">
             </label>
+            <label class="item item-input">
+                <span class="input-label required" style="max-width: 100px;">Description</span>
+                <!-- input id="taskLabelInput" type="text" placeholder="Provide a label" -->
+                <textarea id="taskIntroductionInput" style="height: 100px; width: 100%; color: #222222; resize: vertical" placeholder="Provide a description"></textarea>
+            </label>
             <li class="item item-toggle">
-                <span class="input-label required" style="margin-left: -6px">set Blog url?</span>
+                <span class="input-label required" style="margin-left: -6px; max-width: 100px;">set Blog url?</span>
                 <label class="input-label toggle toggle-positive">
                     <input type="checkbox" id="taskBlogurlInput">
                     <div class="track">
