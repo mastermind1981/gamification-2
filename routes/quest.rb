@@ -157,6 +157,29 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get a quest by id for a group id
+  #
+  # param [String] the quest id
+  # param [String] the group id
+  #
+  # return [Object] quest
+  get '/quest/:id/bygroupid/:grpid' do
+    if authorized?
+      content_type :json
+      quest = Quest.find(params[:id])
+      quest['hasaccess'] = quest.unlockedgroups.include?(params[:grpid]);
+
+      quest.levels.each do |level|
+        level['hasaccess'] = level.unlockedgroups.include?(params[:grpid])
+      end
+
+      status 200
+      return quest.to_json
+    else
+      status 401
+    end
+  end
+
   # Get a quest by a group id
   #
   # param [String] the group id
@@ -173,6 +196,7 @@ class Gamification < Sinatra::Application
 
           completeQuest = Completedobject.where(:quest_id => quest._id, :groupId => params[:id]).length;
           quest['completed'] = completeQuest;
+          quest['hasaccess'] = quest.unlockedgroups.include?(params[:id]);
 
           @assignedQuests.push(quest);
         end
@@ -223,12 +247,22 @@ class Gamification < Sinatra::Application
 
         unless data['label'].nil?
           quest.update_attributes(:label => data['label'])
-          quest.save
         end
 
         unless data['order'].nil?
           quest.update_attributes(:order => data['order'])
-          quest.save
+        end
+
+        unless data['locked'].nil?
+
+          quest.update_attributes(:locked => data['locked'])
+          quest.update_attributes(:unlockedgroups => [])
+
+            if data['locked'] == false then
+              quest.assignedgroups.each do |grpid|
+                quest.unlockedgroups << grpid
+              end
+            end
         end
 
         #unless data['author'].nil?
@@ -238,6 +272,7 @@ class Gamification < Sinatra::Application
 
         status 200
 
+        quest.save
         return  quest.to_json
       else
         return {"error" => "Quest "+params[:id]+" not found"}.to_json
@@ -345,8 +380,23 @@ class Gamification < Sinatra::Application
           group = Group.find(params[:groupid])
         end
 
-        if group
-          quest.assignedgroups << params[:groupid]
+        if group then
+          if quest.assignedgroups.include?(group._id.to_s) == false then
+            quest.assignedgroups << params[:groupid]
+          end
+
+          if quest.locked == false then
+            if quest.unlockedgroups.include?(group._id.to_s) == false then
+              quest.unlockedgroups << group._id.to_s
+            end
+
+            quest.levels.each do |level|
+              if level.locked == false then
+                level.unlockedgroups << params[:groupid]
+              end
+            end
+          end
+
           quest.save
         else
           status 500
@@ -466,6 +516,7 @@ class Gamification < Sinatra::Application
 
       if quest then
         quest.update_attributes(:locked => true)
+        quest.update_attributes(:unlockedgroups => [])
         quest.save
 
         status 200
@@ -495,6 +546,40 @@ class Gamification < Sinatra::Application
 
       if quest then
         quest.update_attributes(:locked => false)
+        quest.update_attributes(:unlockedgroups => [])
+        quest.assignedgroups.each do |grpid|
+          quest.unlockedgroups << grpid
+        end
+        quest.save
+
+        status 200
+
+        return  quest.to_json
+      else
+        return {"error" => "Quest "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+
+  # Unlock a quest by id for a group id
+  #
+  # param [String] the quest id
+  #
+  # return [Object] quest
+  put '/quest/:id/unlockfor/:grpid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      quest = Quest.find(params[:id])
+
+      if quest then
+        if quest.unlockedgroups.include?(params[:grpid].to_s) == false then
+          quest.unlockedgroups << params[:grpid]
+        end
         quest.save
 
         status 200
