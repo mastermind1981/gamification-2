@@ -107,6 +107,9 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
                     console.log("--> last task, next will complete the level");
                     $scope.setOneTaskPending(true);
                 }
+                else {
+                    $scope.setOneTaskPending(false);
+                }
             }
         });
     }
@@ -198,7 +201,6 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
     };
 
     function initQuestView() {
-
         for(var i=0; i < $scope.activeTask.completedobjects.length; i++) {
             if($scope.activeTask.completedobjects[i].groupId == $scope.groupId) {
                 $scope.currentCompletedObjectId = $scope.activeTask.completedobjects[i]._id;
@@ -212,7 +214,6 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
                 break;
             }
         }
-
     };
 
     if ($scope.userId == null) {

@@ -167,7 +167,7 @@ gamififcationApp.directive('myQueststat', function() {
             else {
                 for(var i=0; i<scope.currentQuest.levels.length; i++) {
                     if(scope.currentQuest.levels[i].completed != 1) {
-                        scope.levelmax = 'Level '+(parseInt(scope.currentQuest.levels[i].order)-1);
+                        scope.levelmax = 'Level '+(parseInt(scope.currentQuest.levels[i].order));
 
                         for(var j=0; j<scope.currentQuest.levels[i].tasks.length; j++) {
                             if(scope.currentQuest.levels[i].tasks[j].completed == 1) {

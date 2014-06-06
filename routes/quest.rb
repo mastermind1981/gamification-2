@@ -75,7 +75,7 @@ class Gamification < Sinatra::Application
             questObject['_id'] = quest._id;
             questObject['label'] = quest.label;
             questObject['order'] = quest.order;
-            questObject['locked'] = quest.locked;
+            questObject['locked'] = quest.unlockedgroups.include?(group._id.to_s);
             completeQuest = Completedobject.where(:quest_id => quest._id, :groupId => group._id).length;
             questObject['completed'] = completeQuest;
             questObject['levels'] = [];
