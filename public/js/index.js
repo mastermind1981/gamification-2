@@ -134,7 +134,15 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
     $scope.navigateToBlog = function() {
         if($scope.groupblogUrl != null) {
-            window.open($scope.groupblogUrl,'_blank');
+
+            if($scope.groupblogUrl.substr(0, 4) != "http") {
+                window.open("http://"+$scope.groupblogUrl,'_blank');
+            }
+            else {
+                window.open($scope.groupblogUrl,'_blank');
+            }
+
+
         }
     }
 
@@ -268,7 +276,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     function updateAllActivities() {
 
         if($location.$$path != '/tab/activities') {
-            console.log(true);
             $scope.activityBadgeValue = $scope.activityBadgeValue + 1;
         }
 
@@ -315,6 +322,9 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.retrieveGroup = function() {
         gamificationFactory.doGetURL('/group/'+$scope.groupId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
             if(response[0].blogUrl != null) {
+
+
+
                 $scope.groupblogUrl = response[0].blogUrl;
             }
         });
@@ -380,6 +390,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.navigateToQuest = function(quest) {
         console.log("--> quest hasaccess "+quest.hasaccess);
         if(quest.hasaccess) {
+            window.location.href = '#/tab/quests';
             gamificationFactory.doGetURL('/quest/'+quest._id+'/bygroupid/'+$scope.groupId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
                 $scope.activeQuest = response[0];
                 $scope.sortedlevels = [];
@@ -399,6 +410,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     };
 
     $scope.setOneTaskPending = function(b) {
+        console.log("--> setOneTaskPending: "+b);
         $scope.oneTaskPending = b;
     };
 
@@ -418,8 +430,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 gamificationFactory.doPutURL('/quest/'+$scope.activeQuest._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), {groupId: $scope.groupId, deliverytype: 'AUTOMATIC'}).then(function (addcompletedgroupResponse) {
 
                     console.log("--> updated quest - delivering badges if any");
-                    $scope.questbadgesToAward = addcompletedgroupResponse[0].badges.length;
-
                     $scope.deliverBadges(addcompletedgroupResponse[0].badges);
 
                     $scope.unlockingQuestCounter = 0;
@@ -513,7 +523,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                     });
                 }
                 else {
-                    console.log("--> nothing to unlock for completed level: ");
+                    console.log("--> nothing to unlock for completed level");
                     $scope.readyToRefreshLevels($scope.unlockingCounter);
                 }
 
@@ -523,7 +533,8 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             });
         }
         else {
-            $scope.readyToRefreshLevels($scope.objectsToUnlock.length);
+            //$scope.readyToRefreshLevels($scope.objectsToUnlock.length);
+            window.location.href = '#/tab/quests1';
         }
     };
 
@@ -531,6 +542,9 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
         for(var i=0; i < badgesArray.length; i++) {
 
             gamificationFactory.doPutURL('/group/'+$scope.groupId+'/addbadge/'+badgesArray[i]+'?nocache='+gamificationUtilities.getRandomUUID(), {groupId: $scope.groupId, deliverytype: 'AUTOMATIC'}).then(function (addBadgeResponse) {
+
+                $scope.collectedGroupBadges = addBadgeResponse[0].badges;
+
                 for(var i=0; i < addBadgeResponse[0].students.length; i++) {
 
                     if((addBadgeResponse[0].students[i])._id == $scope.userId) {
@@ -542,7 +556,12 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 gamificationFactory.doPostURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function(postActivityResponse) {
 
                     var data = {};
-                    data.label = "NEW_BADGE";
+                    $scope.collectedGroupBadges.forEach(function(obj) {
+                        if(obj['origin']._id == badgesArray[i]) {
+                            data.label = "Badge: "+obj['origin'].description;
+                        }
+                    });
+                    //data.label = "NEW_BADGE";
                     data.type = "GROUP";
                     data.groupId = $scope.groupId;
                     data.badgeId = badgesArray[i];

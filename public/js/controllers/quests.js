@@ -107,6 +107,9 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
                     console.log("--> last task, next will complete the level");
                     $scope.setOneTaskPending(true);
                 }
+                else {
+                    $scope.setOneTaskPending(false);
+                }
             }
         });
     }
@@ -139,7 +142,16 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
         var validTask = true;
 
         if($scope.activeTask.isblogurltask) {
-            if(gamificationUtilities.checkValidURL($('#urlTextInput').val()) && $('#urlTextInput').val() != '') {
+
+            var correctURL = $('#urlTextInput').val();
+            console.log("--> activity: old url: "+correctURL);
+            if(correctURL.substr(0, 4) != "http") {
+                correctURL = "http://" + correctURL;
+                console.log("--> activity: new url: "+correctURL);
+            }
+
+
+            if(gamificationUtilities.checkValidURL(correctURL) && $('#urlTextInput').val() != '') {
                 validTask = true;
             }
             else {
@@ -189,7 +201,6 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
     };
 
     function initQuestView() {
-
         for(var i=0; i < $scope.activeTask.completedobjects.length; i++) {
             if($scope.activeTask.completedobjects[i].groupId == $scope.groupId) {
                 $scope.currentCompletedObjectId = $scope.activeTask.completedobjects[i]._id;
@@ -203,7 +214,6 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
                 break;
             }
         }
-
     };
 
     if ($scope.userId == null) {

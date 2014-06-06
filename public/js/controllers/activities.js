@@ -42,8 +42,15 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
 
         if($('#commActivitiesFeedTextinput').val() != "") {
 
-            if(gamificationUtilities.checkValidURL($('#commActivitiesFeedTextinput').val())) {
-                messageObject.url = $('#commActivitiesFeedTextinput').val();
+            var correctURL = $('#commActivitiesFeedTextinput').val();
+            console.log("--> activity: old url: "+correctURL);
+            if(correctURL.substr(0, 4) != "http") {
+                correctURL = "http://" + correctURL;
+                console.log("--> activity: new url: "+correctURL);
+            }
+
+            if(gamificationUtilities.checkValidURL(correctURL)) {
+                messageObject.url = correctURL;
             }
             else {
                 formValid = false;
@@ -160,7 +167,7 @@ gamififcationApp.directive('myQueststat', function() {
             else {
                 for(var i=0; i<scope.currentQuest.levels.length; i++) {
                     if(scope.currentQuest.levels[i].completed != 1) {
-                        scope.levelmax = 'Level '+(parseInt(scope.currentQuest.levels[i].order)-1);
+                        scope.levelmax = 'Level '+(parseInt(scope.currentQuest.levels[i].order));
 
                         for(var j=0; j<scope.currentQuest.levels[i].tasks.length; j++) {
                             if(scope.currentQuest.levels[i].tasks[j].completed == 1) {
