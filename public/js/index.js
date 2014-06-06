@@ -418,8 +418,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 gamificationFactory.doPutURL('/quest/'+$scope.activeQuest._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), {groupId: $scope.groupId, deliverytype: 'AUTOMATIC'}).then(function (addcompletedgroupResponse) {
 
                     console.log("--> updated quest - delivering badges if any");
-                    $scope.questbadgesToAward = addcompletedgroupResponse[0].badges.length;
-
                     $scope.deliverBadges(addcompletedgroupResponse[0].badges);
 
                     $scope.unlockingQuestCounter = 0;
@@ -513,7 +511,7 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                     });
                 }
                 else {
-                    console.log("--> nothing to unlock for completed level: ");
+                    console.log("--> nothing to unlock for completed level");
                     $scope.readyToRefreshLevels($scope.unlockingCounter);
                 }
 

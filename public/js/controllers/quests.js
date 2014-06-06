@@ -139,7 +139,16 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
         var validTask = true;
 
         if($scope.activeTask.isblogurltask) {
-            if(gamificationUtilities.checkValidURL($('#urlTextInput').val()) && $('#urlTextInput').val() != '') {
+
+            var correctURL = $('#urlTextInput').val();
+            console.log("--> activity: old url: "+correctURL);
+            if(correctURL.substr(0, 4) != "http") {
+                correctURL = "http://" + correctURL;
+                console.log("--> activity: new url: "+correctURL);
+            }
+
+
+            if(gamificationUtilities.checkValidURL(correctURL) && $('#urlTextInput').val() != '') {
                 validTask = true;
             }
             else {

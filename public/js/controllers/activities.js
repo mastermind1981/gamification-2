@@ -42,8 +42,15 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
 
         if($('#commActivitiesFeedTextinput').val() != "") {
 
-            if(gamificationUtilities.checkValidURL($('#commActivitiesFeedTextinput').val())) {
-                messageObject.url = $('#commActivitiesFeedTextinput').val();
+            var correctURL = $('#commActivitiesFeedTextinput').val();
+            console.log("--> activity: old url: "+correctURL);
+            if(correctURL.substr(0, 4) != "http") {
+                correctURL = "http://" + correctURL;
+                console.log("--> activity: new url: "+correctURL);
+            }
+
+            if(gamificationUtilities.checkValidURL(correctURL)) {
+                messageObject.url = correctURL;
             }
             else {
                 formValid = false;
