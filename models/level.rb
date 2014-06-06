@@ -14,6 +14,7 @@ class Level
   field :order, :type => Integer
   field :label, :type => String
   field :locked, :type => Boolean, :default => true
+  field :unlockedgroups, :type => Array, :default => []
   field :introduction, :type => String
   field :idstounlock, :type => Array, :default => []
   field :badges, :type => Array, :default => []

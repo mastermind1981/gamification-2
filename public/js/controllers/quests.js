@@ -32,7 +32,7 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
     };
 
     $scope.unveilLevel = function(lvl) {
-        if(lvl.locked == false) {
+        if(lvl.hasaccess) {
             $scope.activeLevelIndex = lvl.order;
             $scope.setActiveLevelId(lvl._id);
 
@@ -59,7 +59,7 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
         reversedLevelsArray.reverse();
 
         for(var i=0; i<reversedLevelsArray.length; i++) {
-            if(reversedLevelsArray[i].locked == false) {
+            if(reversedLevelsArray[i].hasaccess) {
                 $scope.activeLevelIndex = reversedLevelsArray[i].order;
 
                 if(i < 1) {
@@ -81,28 +81,32 @@ gamififcationApp.controller('Quests1Ctrl', function($scope, $location, $ionicMod
 
     function loadCurrentLevel() {
         gamificationFactory.doGetURL('/level/'+$scope.activeLevelId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
-            $scope.tasks = gamificationUtilities.sortArrayByKey(response[0].tasks, 'order');
-            $scope.setObjectsToUnlock(response[0].idstounlock);
 
-            var numberOfCompletedTasks = 0;
-            $scope.levelmax = $scope.tasks.length;
-            $scope.levelmin = 0;
-            //find out which are completed by current group
-            for(var i=0; i < $scope.tasks.length; i++) {
-                if($scope.isTaskComplete($scope.tasks[i].completedobjects)) {
-                    $scope.tasks[i].complete = true;
-                    $scope.levelmin++;
-                    numberOfCompletedTasks++;
+            if(response[0].tasks != null) {
+                $scope.tasks = gamificationUtilities.sortArrayByKey(response[0].tasks, 'order');
+                $scope.setObjectsToUnlock(response[0].idstounlock);
+
+                var numberOfCompletedTasks = 0;
+                $scope.levelmax = $scope.tasks.length;
+                $scope.levelmin = 0;
+                //find out which are completed by current group
+                for(var i=0; i < $scope.tasks.length; i++) {
+                    if($scope.isTaskComplete($scope.tasks[i].completedobjects)) {
+                        $scope.tasks[i].complete = true;
+                        $scope.levelmin++;
+                        numberOfCompletedTasks++;
+                    }
+                    else {
+                        $scope.tasks[i].complete = false;
+                    }
                 }
-                else {
-                    $scope.tasks[i].complete = false;
+
+                $scope.pourcent = (($scope.levelmin*100)/$scope.levelmax)
+
+                if(numberOfCompletedTasks == $scope.tasks.length-1) {
+                    console.log("--> last task, next will complete the level");
+                    $scope.setOneTaskPending(true);
                 }
-            }
-
-            $scope.pourcent = (($scope.levelmin*100)/$scope.levelmax)
-
-            if(numberOfCompletedTasks == $scope.tasks.length-1) {
-                $scope.setOneTaskPending(true);
             }
         });
     }
@@ -145,7 +149,22 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
 
         if(el.checked == false && validTask) {
             el.checked = true;
-            $scope.validateTask();
+
+            var data = {};
+            data.groupId = $scope.groupId;
+            if($scope.activeTask.isblogurltask) {
+                data.blogUrl = $('#urlTextInput').val();
+            }
+
+            console.log("--> task is valid, add completed group");
+            gamificationFactory.doPutURL('/task/'+$scope.activeTask._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+
+                if($scope.activeTask.isblogurltask) {
+                    $scope.retrieveGroup();
+                }
+
+                $scope.returnToLevels();
+            });
         }
     };
 
@@ -153,25 +172,6 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
         if($scope.hasBeenSubmitted) {
             $scope.editing = true;
         }
-    };
-
-    $scope.validateTask = function() {
-
-        var data = {};
-        data.groupId = $scope.groupId;
-        if($scope.activeTask.isblogurltask) {
-            data.blogUrl = $('#urlTextInput').val();
-        }
-
-        gamificationFactory.doPutURL('/task/'+$scope.activeTask._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
-
-            if($scope.activeTask.isblogurltask) {
-                $scope.retrieveGroup();
-            }
-
-            $scope.returnToLevels();
-        });
-
     };
 
     $scope.updateCurrentTask = function() {

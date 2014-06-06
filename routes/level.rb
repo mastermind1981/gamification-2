@@ -86,26 +86,32 @@ class Gamification < Sinatra::Application
 
         unless data['label'].nil?
           level.update_attributes(:label => data['label'])
-          level.save
         end
 
         unless data['introduction'].nil?
           level.update_attributes(:introduction => data['introduction'])
-          level.save
         end
 
         unless data['order'].nil?
           level.update_attributes(:order => data['order'])
-          level.save
         end
 
         unless data['locked'].nil?
           level.update_attributes(:locked => data['locked'])
-          level.save
+          level.update_attributes(:unlockedgroups => [])
+
+          if data['locked'] == false then
+            quest = Quest.find(level.quest_id)
+            level.update_attributes(:unlockedgroups => [])
+            quest.assignedgroups.each do |grpid|
+              level.unlockedgroups << grpid
+            end
+          end
         end
 
         status 200
 
+        level.save
         return  level.to_json
       else
         return {"error" => "Level "+params[:id]+" not found"}.to_json
@@ -260,6 +266,7 @@ class Gamification < Sinatra::Application
 
       if level then
        level.update_attributes(:locked => true)
+       level.update_attributes(:unlockedgroups => [])
        level.save
 
        status 200
@@ -289,6 +296,44 @@ class Gamification < Sinatra::Application
 
       if level then
         level.update_attributes(:locked => false)
+        level.update_attributes(:unlockedgroups => [])
+
+        quest = Quest.find(level.quest_id)
+        quest.assignedgroups.each do |grpid|
+          level.unlockedgroups << grpid
+        end
+        level.save
+
+        status 200
+
+        return  level.to_json
+      else
+        return {"error" => "Level "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Unlock a level by id for a group id
+  #
+  # param [String] the level id
+  # param [String] the group id
+  #
+  # body [Object] in JSON. ex: {"label":"<String>" }
+  #
+  # return [Object] level
+  put '/level/:id/unlockfor/:grpid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      level = Level.find(params[:id])
+
+      if level then
+        if level.unlockedgroups.include?(params[:grpid].to_s) == false then
+          level.unlockedgroups << params[:grpid]
+        end
         level.save
 
         status 200

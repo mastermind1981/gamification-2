@@ -248,7 +248,7 @@ ion-view {
 }
 
 .progress-bar > span {
-    background-color: #FF0000;
+    background-color: #000000;
     border-radius: 2px;
 
     display: block;
