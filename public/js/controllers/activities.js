@@ -149,7 +149,7 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
 });
 
 
-gamififcationApp.directive('myQueststat', function() {
+gamififcationApp.directive('myQueststat', function(gamificationUtilities) {
     return {
         restrict: 'AEC',
         transclude: false,
@@ -165,13 +165,16 @@ gamififcationApp.directive('myQueststat', function() {
                 scope.levelmax = "       ";
             }
             else {
-                for(var i=0; i<scope.currentQuest.levels.length; i++) {
-                    if(scope.currentQuest.levels[i].completed != 1) {
-                        scope.levelmax = 'Level '+(parseInt(scope.currentQuest.levels[i].order));
+                scope.directiveSortedlevels = gamificationUtilities.sortArrayByKey(scope.currentQuest.levels, 'order');
 
-                        for(var j=0; j<scope.currentQuest.levels[i].tasks.length; j++) {
-                            if(scope.currentQuest.levels[i].tasks[j].completed == 1) {
-                                scope.pourcent = scope.pourcent + (100/(scope.currentQuest.levels[i].tasks.length));
+                for(var i=0; i<scope.directiveSortedlevels.length; i++) {
+
+                    if(scope.directiveSortedlevels[i].completed != 1) {
+                        scope.levelmax = 'Level '+(parseInt(scope.directiveSortedlevels[i].order));
+
+                        for(var j=0; j<scope.directiveSortedlevels[i].tasks.length; j++) {
+                            if(scope.directiveSortedlevels[i].tasks[j].completed == 1) {
+                                scope.pourcent = scope.pourcent + (100/(scope.directiveSortedlevels[i].tasks.length));
                             }
                         }
                         break;
