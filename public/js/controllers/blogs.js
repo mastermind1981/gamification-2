@@ -4,7 +4,13 @@ gamififcationApp.controller('BlogsCtrl', function($scope, $ionicModal, $ionicPop
 
     $scope.navigateToBlog = function(grp) {
         if(grp.blogUrl != null) {
-            window.open(grp.blogUrl,'_blank');
+
+            if(grp.blogUrl.substr(0, 4) != "http") {
+                window.open("http://"+grp.blogUrl,'_blank');
+            }
+            else {
+                window.open(grp.blogUrl,'_blank');
+            }
         }
 
     };
