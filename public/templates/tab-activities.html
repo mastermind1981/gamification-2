@@ -1,0 +1,16 @@
+<ion-view>
+    <ion-content class="padding">
+        <div style="margin-top: 50px; padding-bottom: 80px">
+            <div class="item item-divider">All Activities</div>
+            <a ng-repeat="message in activities_all" class="item item-avatar item-text-wrap item-icon-right" ng-click="navigateToActivity(message)">
+                <img ng-src="{{getMessageAvatar(message)}}">
+
+                <h2>{{message.ownerName}}</h2>
+                <span>{{getFormattedLabel(message.label)}}</span>
+                <!-- i ng-if="message.label == 'JOINED_GAMIFICATION'" class="icon ion-person-add"></i>
+                <i ng-if="message.label == 'NEW_BADGE'" class="icon ion-ios7-pricetag"></i -->
+                <i ng-if="message.label != 'JOINED_GAMIFICATION' && message.label != 'NEW_BADGE' && message.url != null" class="icon ion-ios7-infinite"></i>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>
