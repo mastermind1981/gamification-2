@@ -83,6 +83,12 @@ class Gamification < Sinatra::Application
           completedobject.save
         end
 
+        if data['isblogurltask'] == true then
+          group = Group.find(completedobject.groupId.to_s)
+          group.update_attributes(:blogUrl => data['text']);
+          group.save
+        end
+
         status 200
 
         return  completedobject.to_json

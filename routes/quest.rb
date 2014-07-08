@@ -274,7 +274,7 @@ class Gamification < Sinatra::Application
 
         status 200
 
-        quest.save
+        quest.save!
         return  quest.to_json
       else
         return {"error" => "Quest "+params[:id]+" not found"}.to_json
@@ -283,6 +283,48 @@ class Gamification < Sinatra::Application
       status 401
     end
   end
+
+  # Reset a quest by id
+  #
+  # param [String] the quest id
+  #
+  # body [Object] in JSON. ex: {"label":"<String>" }
+  #
+  # return [Object] quest
+  put '/resetquest/:id' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      quest = Quest.find(params[:id])
+
+      if quest then
+        quest.update_attributes(:locked => true)
+        quest.update_attributes(:unlockedgroups => [])
+        quest.levels.each do |level|
+          level.update_attributes(:locked => true)
+          level.update_attributes(:unlockedgroups => [])
+          level.save
+        end
+
+
+        #unless data['author'].nil?
+        #  quest.update_attributes(:author => data['author'])
+        #  quest.save
+        #end
+
+        status 200
+
+        quest.save!
+        return  quest.to_json
+      else
+        return {"error" => "Quest "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
 
   # Add a level to a quest by id
   #
