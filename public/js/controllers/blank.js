@@ -1,4 +1,8 @@
-gamififcationApp.controller('BlankCtrl', function($scope, $ionicModal, $ionicPopup, $http, $q, gamificationFactory, gamificationUtilities) {
+gamififcationApp.controller('BlankCtrl', function($scope) {
+    /*
+        First tab loaded, if ther's no userid present, call $scope.initIndexView() in "index.js"
+     */
+
     if ($scope.userId == null) {
         $scope.initIndexView();
     }

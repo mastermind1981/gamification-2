@@ -1,0 +1,19 @@
+<ion-view>
+    <ion-content class="padding">
+        <div style="margin-top: 50px; padding-bottom: 80px">
+            <div class="item item-divider">Write message</div>
+            <p style="margin-top: 10px; margin-bottom: 10px">Something to share?</p>
+            <div class="item item-input-inset">
+                <textarea id="commActivitiesFeedTextarea" style="height: 100px; width: 100%; color: #222222; resize: vertical"></textarea>
+            </div>
+            <div class="item item-input-inset">
+                <label class="item-input-wrapper">
+                    <input id="commActivitiesFeedTextinput" placeholder="url" name="input" type="url" style="width: 100%; height: 35px; color: #222222">
+                </label>
+                <button class="button button-small" style="border-radius: 4px; background-color: #000000; color: #FFFFFF" ng-click="postMessage()">
+                    POST
+                </button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

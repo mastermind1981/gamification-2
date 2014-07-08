@@ -172,7 +172,7 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
             gamificationFactory.doPutURL('/task/'+$scope.activeTask._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
 
                 if($scope.activeTask.isblogurltask) {
-                    $scope.retrieveGroup();
+                    $scope.retrieveGroupURL();
                 }
 
                 $scope.returnToLevels();

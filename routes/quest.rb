@@ -50,7 +50,9 @@ class Gamification < Sinatra::Application
         groupObject['_id'] = group._id;
         groupObject['label'] = group.label;
         groupObject['avatarUrl'] = group.avatarUrl;
+        groupObject['students'] = group.students;
         groupObject['quests'] = [];
+        groupObject['blogUrl'] = group.blogUrl;
 
         badgeauto = 0;
         badgemanu = 0;

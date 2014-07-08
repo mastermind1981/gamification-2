@@ -1,0 +1,26 @@
+<ion-view>
+    <ion-content class="has-header padding">
+        <div class="list" style="margin-top: 50px">
+            <div ng-show="availableGroupsToJoin.length == 0">
+                <div class="card" style="max-width: 300px; margin: 0 auto">
+                    <div class="item item-text-wrap">
+                        There are no groups available yet
+                    </div>
+                </div>
+            </div>
+            <div ng-show="availableGroupsToJoin.length != 0" class="list classroomList" style="max-width: 300px; margin: 0 auto">
+                <h3>Pick a group and press "JOIN"</h3>
+
+                <label class="item item-radio" ng-repeat="group in availableGroupsToJoin" ng-model="groupModel">
+                    <input type="radio" name="group" ng-click="pickGroup(group)">
+                    <div class="item-content">
+                        {{group.label}}
+                    </div>
+                    <i class="radio-icon ion-checkmark"></i>
+                </label>
+
+                <button class="button button-block button-positive" ng-click="joinGroup()">JOIN</button>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

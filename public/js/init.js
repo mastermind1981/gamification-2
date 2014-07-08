@@ -15,7 +15,7 @@ var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'ngCookies']
                 .state('tab.blank', {
                     url: '/blank',
                     views: {
-                        'tab-blogs': {
+                        'tab-activities': {
                             templateUrl: 'templates/tab-blank.html',
                             controller: 'BlankCtrl'
                         }
@@ -105,8 +105,27 @@ var gamififcationApp = angular.module('gamififcationApp', ['ionic', 'ngCookies']
                 .state('tab.userjoin', {
                     url: '/userjoin',
                     views: {
-                        'tab-blogs': {
+                        'tab-activities': {
                             templateUrl: 'templates/tab-userjoin.html'
+                        }
+                    }
+                })
+
+                .state('tab.userjoin2', {
+                    url: '/userjoin2',
+                    views: {
+                        'tab-activities': {
+                            templateUrl: 'templates/tab-userjoin2.html'
+                        }
+                    }
+                })
+
+                .state('tab.comment', {
+                    url: '/comment',
+                    views: {
+                        'tab-activities': {
+                            templateUrl: 'templates/tab-comment.html',
+                            controller: 'CommentCtrl'
                         }
                     }
                 })

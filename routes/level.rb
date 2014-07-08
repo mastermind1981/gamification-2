@@ -217,11 +217,11 @@ class Gamification < Sinatra::Application
         data = JSON.parse request.body.read
 
         unless data.nil? or data['groupId'].nil? then
-          begin
-            group = Group.find(data['groupId'])
-          end
+          #begin
+          #  group = Group.find(data['groupId'])
+          #end
 
-          if group
+          #if group
             #make group does not re-submit a task completion
             retrievedCompletedobject = Completedobject.where(:level_id => params[:id], :groupId => data['groupId']).length
 
@@ -233,10 +233,10 @@ class Gamification < Sinatra::Application
 
             status 200
             return  level.to_json
-          else
-            status 500
-            return {"error" => "Group "+data['groupId']+" not found"}.to_json
-          end
+          #else
+          #  status 500
+          #  return {"error" => "Group "+data['groupId']+" not found"}.to_json
+          #end
 
         else
           status 500
