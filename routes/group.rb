@@ -208,7 +208,6 @@ class Gamification < Sinatra::Application
 
         if badge then
           data = JSON.parse request.body.read
-          puts (group.badges.length).to_s;
 
           lastcount = 0;
 
@@ -216,7 +215,6 @@ class Gamification < Sinatra::Application
             if bad['origin']['_id'].to_s == params[:badgeid] then
               lastcount = bad['count'].to_i;
               group.badges.delete(bad);
-              group.save!
               sleep 2;
               break;
             end
@@ -224,10 +222,10 @@ class Gamification < Sinatra::Application
 
           group.push(:badges, {"count" => lastcount+1, "deliverytype" => data['deliverytype'], "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }});
           #group.badges.push({"count" => lastcount+1, "deliverytype" => data['deliverytype'], "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }});
-          group.save!
           sleep 2;
+          group.with(safe: true).save!
 
-          puts (group.badges.length).to_s;
+
         else
           status 500
           return {"error" => "Badge "+params[:badgeid]+" not found"}.to_json
