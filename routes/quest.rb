@@ -50,7 +50,9 @@ class Gamification < Sinatra::Application
         groupObject['_id'] = group._id;
         groupObject['label'] = group.label;
         groupObject['avatarUrl'] = group.avatarUrl;
+        groupObject['students'] = group.students;
         groupObject['quests'] = [];
+        groupObject['blogUrl'] = group.blogUrl;
 
         badgeauto = 0;
         badgemanu = 0;
@@ -272,7 +274,7 @@ class Gamification < Sinatra::Application
 
         status 200
 
-        quest.save
+        quest.save!
         return  quest.to_json
       else
         return {"error" => "Quest "+params[:id]+" not found"}.to_json
@@ -281,6 +283,55 @@ class Gamification < Sinatra::Application
       status 401
     end
   end
+
+  # Reset a quest by id
+  #
+  # param [String] the quest id
+  #
+  # body [Object] in JSON. ex: {"label":"<String>" }
+  #
+  # return [Object] quest
+  put '/resetquest/:id' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      quest = Quest.find(params[:id])
+
+      if quest then
+        quest.update_attributes(:unlockedgroups => [])
+        if quest.order == 1 then
+          quest.update_attributes(:locked => false)
+          quest.assignedgroups.each do |grpid|
+            quest.unlockedgroups << grpid
+          end
+        else
+          quest.update_attributes(:locked => true)
+        end
+        quest.levels.each do |level|
+          level.update_attributes(:unlockedgroups => [])
+          if level.order == 1 then
+            level.update_attributes(:locked => false)
+            quest.assignedgroups.each do |grpid|
+              level.unlockedgroups << grpid
+            end
+          else
+            level.update_attributes(:locked => true)
+          end
+          level.save
+        end
+
+        status 200
+        quest.save!
+        return  quest.to_json
+      else
+        return {"error" => "Quest "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
 
   # Add a level to a quest by id
   #

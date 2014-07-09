@@ -5,6 +5,7 @@ gamififcationApp.controller('BadgesCtrl', function($scope) {
     }
     else {
         $scope.reinitBadgeReadCounter();
+        $scope.retrieveBadges(true);
     }
 });
 

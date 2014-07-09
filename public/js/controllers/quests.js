@@ -168,11 +168,13 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
                 data.blogUrl = $('#urlTextInput').val();
             }
 
-            console.log("--> task is valid, add completed group");
+            data.text = $('#urlTextInput').val();
+
+            console.log("--> task is valid, add completed group. Text provided: "+data.text);
             gamificationFactory.doPutURL('/task/'+$scope.activeTask._id+'/addcompletedgroup?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
 
                 if($scope.activeTask.isblogurltask) {
-                    $scope.retrieveGroup();
+                    $scope.retrieveGroupURL();
                 }
 
                 $scope.returnToLevels();
@@ -190,12 +192,45 @@ gamififcationApp.controller('Quests2Ctrl', function($scope, gamificationFactory,
         var el = $('#urlTextInput')[0];
 
         if(el.value != "" && $scope.currentCompletedObjectId != null) {
-            var data = {};
-            data.text = el.value;
 
-            gamificationFactory.doPutURL('/completedobject/'+$scope.currentCompletedObjectId+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
-                window.location.href = '#/tab/quests1';
-            });
+            var validTask = true;
+            if($scope.activeTask.isblogurltask) {
+
+                var correctURL = el.value;
+                console.log("--> activity: old url: "+correctURL);
+                if(correctURL.substr(0, 4) != "http") {
+                    correctURL = "http://" + correctURL;
+                    console.log("--> activity: new url: "+correctURL);
+                }
+
+
+                if(gamificationUtilities.checkValidURL(correctURL) && $('#urlTextInput').val() != '') {
+                    validTask = true;
+                }
+                else {
+                    validTask = false;
+                }
+            }
+
+            if(validTask) {
+                var data = {};
+                data.text = el.value;
+                if($scope.activeTask.isblogurltask) {
+                    data.isblogurltask = true;
+                    data.blogUrl = el.value;
+                }
+
+                gamificationFactory.doPutURL('/completedobject/'+$scope.currentCompletedObjectId+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+
+                    if($scope.activeTask.isblogurltask) {
+                        $scope.retrieveGroupURL();
+                    }
+
+                    window.location.href = '#/tab/quests1';
+                });
+            }
+
+
         }
 
     };

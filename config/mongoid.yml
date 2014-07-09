@@ -13,7 +13,8 @@ test:
 development:
   sessions:
     default:
-      database: gamification
+      #database: gamification
+      database: heroku_app22003135
       hosts:
         - localhost
       options:

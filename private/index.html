@@ -37,6 +37,7 @@
     <script src="js/factories.js"></script>
     <script src="js/index.js"></script>
     <script src="js/controllers/activities.js"></script>
+    <script src="js/controllers/comment.js"></script>
     <script src="js/controllers/badges.js"></script>
     <script src="js/controllers/blank.js"></script>
     <script src="js/controllers/blogs.js"></script>
@@ -58,6 +59,7 @@
         </div>
 
         <div ng-if="groupId != null" style="position: absolute; top: 5px; right: 5px; bottom: 5px">
+            <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-edit" ng-click="changeMainTab(5)"></button>
             <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-ios7-infinite" ng-click="navigateToBlog()"></button>
         </div>
     </div>

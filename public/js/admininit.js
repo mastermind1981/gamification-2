@@ -53,6 +53,17 @@ var gamificationAdminApp = angular.module('gamificationAdminApp', ['ionic', 'ngC
                     }
                 })
 
+                // Each tab has its own nav history stack:
+                .state('tab.badges', {
+                    url: '/badges',
+                    views: {
+                        'tab-quests': {
+                            templateUrl: 'templates/admin-badges.html',
+                            controller: 'adminBadgesCtrl'
+                        }
+                    }
+                })
+
             // if none of the above states are matched, use this as the fallback
             $urlRouterProvider.otherwise('/tab/groups');
 

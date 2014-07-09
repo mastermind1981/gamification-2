@@ -69,6 +69,27 @@ class Gamification < Sinatra::Application
     end
   end
 
+
+  # Create a new described activity
+  #
+  # return [Object] activity
+  post '/dactivity' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+      data = JSON.parse request.body.read
+
+      if data then
+        activity = Activity.create(:time => Time.new().to_i, :label => data['label'], :type => data['type'], :classroomId => data['classroomId'], :groupId => data['groupId'], :badgeId => data['badgeId'], :ownerName => data['ownerName'])
+      end
+
+      status 200
+      return  activity.to_json
+    else
+      status 401
+    end
+  end
+
   # Update a activity by id
   #
   # param [String] the activity id

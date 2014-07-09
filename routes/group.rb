@@ -207,24 +207,61 @@ class Gamification < Sinatra::Application
         end
 
         if badge then
+          data = JSON.parse request.body.read
+          puts (group.badges.length).to_s;
+
           lastcount = 0;
 
           group.badges.each do |bad|
-
-            if bad['origin']['_id'].to_s == params[:badgeid]
+            if bad['origin']['_id'].to_s == params[:badgeid] then
               lastcount = bad['count'].to_i;
               group.badges.delete(bad);
+              group.save!
+              sleep 2;
               break;
             end
           end
 
-          data = JSON.parse request.body.read
-          group.badges << {"count" => lastcount+1, "deliverytype" => data['deliverytype'], "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }}
-          group.save
+          group.push(:badges, {"count" => lastcount+1, "deliverytype" => data['deliverytype'], "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }});
+          #group.badges.push({"count" => lastcount+1, "deliverytype" => data['deliverytype'], "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }});
+          group.save!
+          sleep 2;
+
+          puts (group.badges.length).to_s;
         else
           status 500
           return {"error" => "Badge "+params[:badgeid]+" not found"}.to_json
         end
+
+        status 200
+
+        return  group.to_json
+      else
+        return {"error" => "Group "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+
+
+  # Increase completed segment count to a group by id
+  #
+  # param [String] the group id
+  #
+  # return [Object] group
+  put '/group/:id/updatelevelcount' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      group = Group.find(params[:id])
+
+      if group then
+
+        group.update_attributes(:levelcount => (group.levelcount).to_i+1);
+        group.save!
 
         status 200
 
