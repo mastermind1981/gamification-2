@@ -299,22 +299,29 @@ class Gamification < Sinatra::Application
       quest = Quest.find(params[:id])
 
       if quest then
-        quest.update_attributes(:locked => true)
         quest.update_attributes(:unlockedgroups => [])
+        if quest.order == 1 then
+          quest.update_attributes(:locked => false)
+          quest.assignedgroups.each do |grpid|
+            quest.unlockedgroups << grpid
+          end
+        else
+          quest.update_attributes(:locked => true)
+        end
         quest.levels.each do |level|
-          level.update_attributes(:locked => true)
           level.update_attributes(:unlockedgroups => [])
+          if level.order == 1 then
+            level.update_attributes(:locked => false)
+            quest.assignedgroups.each do |grpid|
+              level.unlockedgroups << grpid
+            end
+          else
+            level.update_attributes(:locked => true)
+          end
           level.save
         end
 
-
-        #unless data['author'].nil?
-        #  quest.update_attributes(:author => data['author'])
-        #  quest.save
-        #end
-
         status 200
-
         quest.save!
         return  quest.to_json
       else

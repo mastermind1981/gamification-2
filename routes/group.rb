@@ -245,6 +245,36 @@ class Gamification < Sinatra::Application
   end
 
 
+
+  # Increase completed segment count to a group by id
+  #
+  # param [String] the group id
+  #
+  # return [Object] group
+  put '/group/:id/updatelevelcount' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      group = Group.find(params[:id])
+
+      if group then
+
+        group.update_attributes(:levelcount => (group.levelcount).to_i+1);
+        group.save!
+
+        status 200
+
+        return  group.to_json
+      else
+        return {"error" => "Group "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+
   # Delete a group by id
   #
   # param [String] the group id

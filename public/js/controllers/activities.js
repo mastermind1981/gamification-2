@@ -33,4 +33,7 @@ gamififcationApp.controller('ActivitiesCtrl', function($scope, $ionicModal, $ion
     if ($scope.userId == null) {
         $scope.initIndexView();
     }
+    else {
+        $scope.getAllActivities();
+    }
 });

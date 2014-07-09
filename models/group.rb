@@ -14,4 +14,5 @@ class Group
   field :blogUrl, :type => String
   field :score, :type => Integer, :default => 0
   field :badges, :type => Array, :default => []
+  field :levelcount, :type => Integer, :default => 0
 end
