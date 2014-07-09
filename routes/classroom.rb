@@ -239,6 +239,71 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Add a teacherbadge id to a classroom by id
+  #
+  # param [String] the classroom id
+  #
+  # param [String] the student id
+  #
+  # return [Object] classroom
+  put '/classroom/:id/addteacherbadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      classroom = Classroom.find(params[:id])
+
+      if classroom then
+
+        badge = Badge.find(params[:badgeid])
+
+        if badge && (classroom.teacherbadge.index(badge._id) == nil) then
+          classroom.push(:teacherbadge, badge._id);
+          classroom.save!
+        end
+
+        status 200
+
+        return  classroom.to_json
+      else
+        return {"error" => "Classroom "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
+  # Remove a teacherbadge id to a classroom by id
+  #
+  # param [String] the classroom id
+  #
+  # param [String] the student id
+  #
+  # return [Object] classroom
+  put '/classroom/:id/removeteacherbadge/:badgeid' do
+    if authorized?
+      request.body.rewind  # in case someone already read it
+      content_type :json
+
+      classroom = Classroom.find(params[:id])
+
+      if classroom then
+
+        badge = Badge.find(params[:badgeid])
+        classroom.teacherbadge.delete(badge._id)
+        classroom.save!
+
+        status 200
+
+        return  classroom.to_json
+      else
+        return {"error" => "Classroom "+params[:id]+" not found"}.to_json
+      end
+    else
+      status 401
+    end
+  end
+
 
   # Delete a classroom by id
   #

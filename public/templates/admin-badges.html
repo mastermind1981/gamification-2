@@ -4,16 +4,25 @@
             <a ng-repeat="classroom in classrooms" ng-class="whatClassIsIt(classroom, $index)" ng-click="checkSelectedTab($index)">{{classroom.label}}</a>
         </div>
 
-        <div class="list" style="margin: 10px">
-            <div class="item item-divider">Students: </div>
-
-            <div ng-repeat="student in students" class="item item-avatar">
-                <img ng-src="{{student.avatar}}">
-                <h3>{{student.firstName}} {{student.lastName}} ({{student.facebookId}})</h3>
-                <select ng-model="selectedIndex" ng-change="selectChange(student, selectedIndex)" style="position: absolute; top: 5px; right: 5px; bottom: 5px">
-                    <option value="{{$index}}" ng-selected="getGroupSelectedStatus(student, group)" ng-repeat="group in selectedClassGroups">{{group.label}}</option>
-                </select>
+        <div style="margin-top: 50px; padding-bottom: 80px">
+            <div class="list card">
+                <div ng-repeat="badge in classroombadges" style="margin-bottom: 20px">
+                    <div class="item item-avatar">
+                        <img ng-src="{{badge.avatar}}">
+                        <h2>{{badge.label}}</h2>
+                        <p>{{badge.description}}</p>
+                    </div>
+                    <div class="item item-body" style="min-height: 50px;background-color: #f8f8f8">
+                        <select ng-model="selectedIndex" ng-change="selectChange(selectedIndex, badge._id)" style="top: 5px; left: 5px; right: 5px">
+                            <option value="{{student._id}}" ng-repeat="student in students"> {{student.lastName}} {{student.firstName}}</option>
+                        </select>
+                        <button class="button button-positive" style="position: absolute; right: 5px; top: 10px;" ng-click="deliverBadge(badge)" ng-disabled="!readyForDelivering">
+                            Give badge
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
+
     </ion-content>
 </ion-view>

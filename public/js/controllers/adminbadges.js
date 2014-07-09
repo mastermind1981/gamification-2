@@ -1,9 +1,18 @@
-gamificationAdminApp.controller('adminGroupCtrl', function($scope, $http, $q, gamificationAdminFactory, $location, gamificationAdminUtilities, $cookieStore) {
+gamificationAdminApp.controller('adminBadgesCtrl', function($scope, $http, $q, gamificationAdminFactory, $location, gamificationAdminUtilities, $cookieStore, $ionicPopup, socket) {
 
     $scope.classrooms = [];
+    $scope.allbadges = [];
+    $scope.classroombadges = [];
     $scope.selectedClassGroups = [];
     $scope.students = [];
     $scope.lastKnownIndex = 0;
+    $scope.deliverObject = {};
+    $scope.readyForDelivering = true;
+
+    $scope.notif = function() {
+        socket.emit('notif');
+        socket.emit('badge');
+    };
 
     function sortByProperty(property) {
         'use strict';
@@ -20,13 +29,18 @@ gamificationAdminApp.controller('adminGroupCtrl', function($scope, $http, $q, ga
     };
 
     $scope.initView = function() {
-        console.log('groups initailized');
-        gamificationAdminFactory.doGetURL('/classroom').then(function (response) {
-            $scope.classrooms = response[0];
+        console.log('badge initialized');
 
-            if($scope.classrooms.length > 0) {
-                $scope.changeClassroom($scope.lastKnownIndex);
-            }
+        gamificationAdminFactory.doGetURL('/badge').then(function (response) {
+            $scope.allbadges = response[0];
+
+            gamificationAdminFactory.doGetURL('/classroom').then(function (response) {
+                $scope.classrooms = response[0];
+
+                if($scope.classrooms.length > 0) {
+                    $scope.changeClassroom($scope.lastKnownIndex);
+                }
+            });
         });
     };
 
@@ -38,6 +52,15 @@ gamificationAdminApp.controller('adminGroupCtrl', function($scope, $http, $q, ga
             gamificationAdminFactory.doGetURL('/classroom/'+$scope.classrooms[ind]._id).then(function (response) {
                 $scope.selectedClassGroups = (response[0].groups).sort(sortByProperty('label'));
                 $scope.students = (response[0].students).sort(sortByProperty('lastName'));
+
+                $scope.classroombadges = [];
+                for(var i=0; i < (response[0].teacherbadge).length; i++) {
+                    for(var j=0; j < $scope.allbadges.length; j++) {
+                        if($scope.allbadges[j]._id == (response[0].teacherbadge)[i]) {
+                            $scope.classroombadges.push($scope.allbadges[j]);
+                        }
+                    }
+                }
             });
 
         }
@@ -56,11 +79,45 @@ gamificationAdminApp.controller('adminGroupCtrl', function($scope, $http, $q, ga
        }
     };
 
-    $scope.selectChange = function(student, grpInd) {
-        gamificationAdminFactory.doPutURL('/group/'+$scope.selectedClassGroups[grpInd]._id+'/addstudent/'+student._id).then(function (response) {
-            console.log(response[0]);
-        });
+    $scope.selectChange = function(ind, bid) {
+        if($scope.readyForDelivering) {
+            $scope.deliverObject = {};
+            $scope.deliverObject.uid = ind;
+            $scope.deliverObject.bid = bid;
+        }
+    };
 
+    $scope.deliverBadge = function(badge) {
+        if($scope.deliverObject.bid == badge._id) {
+            $scope.readyForDelivering = false;
+            gamificationAdminFactory.doPutURL('/student/'+$scope.deliverObject.uid+'/addbadge/'+badge._id+'?nocache='+gamificationAdminUtilities.getRandomUUID(), null).then(function (response) {
+                var data = {};
+                data.studentId = response[0].facebookId;
+                data.label = "Badge: "+badge.label;
+                data.type = "STUDENT";
+                data.groupId = response[0].group_id;
+                data.classroomId = response[0].classroom_id;
+
+                gamificationAdminFactory.doPostURL('/activity?nocache='+gamificationAdminUtilities.getRandomUUID()).then(function(postactresponse) {
+
+                    gamificationAdminFactory.doPutURL('/activity/'+postactresponse[0]._id+'?nocache='+gamificationAdminUtilities.getRandomUUID(), data).then(function (response) {
+                        $scope.notif();
+                    });
+                });
+
+                $scope.showMessageOKAlert(response[0].lastName, response[0].firstName);
+            });
+        }
+    };
+
+    $scope.showMessageOKAlert = function(ln, fn) {
+        $ionicPopup.alert({
+            title: 'Badge delivery OK',
+            content: 'The badge has been delivered to '+ln+' '+fn
+        }).then(function(res) {
+            $scope.deliverObject = {};
+            $scope.readyForDelivering = true;
+        });
     };
 
     $scope.checkSelectedTab = function(tabIndex) {
