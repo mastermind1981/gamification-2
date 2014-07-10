@@ -46,26 +46,35 @@
 
 </head>
 <body ng-app="gamififcationApp" animation="slide-left-right-ios7" ng-controller="navigationCtrl">
-
-    <div class="bar bar-header" style="height: 60px; background-color: #f8f8f8" ng-show="userId != null">
-        <div>
-            <div style="float: left">
-                <a href="#"><img ng-src="{{avatarUrl}}" style="width: 40px; height: 40px; border-radius: 4px"/></a>
+    <ion-side-menus>
+        <ion-side-menu-content>
+            <div class="bar bar-header" style="height: 60px; background-color: #f8f8f8" ng-show="userId != null">
+                <div>
+                    <button style="width: 40px; height: 40px;" ng-click="toggleLeftSideMenu()" class="button button-icon icon ion-navicon">
+                    </button>
+                </div>
+                <div class="h1 title">{{ appHeader }}</div>
+                <div ng-if="groupId != null" style="position: absolute; top: 5px; right: 5px; bottom: 5px">
+                    <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-edit" ng-click="changeMainTab(5)"></button>
+                    <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-ios7-infinite" ng-click="navigateToBlog()"></button>
+                </div>
             </div>
-            <div style="float: left; margin-left: 10px">
-                {{username}}<br />
-                <a href="" ng-click="logout()">LOGOUT</a>
+            <ion-nav-view></ion-nav-view>
+            <div class="bar bar-footer" style="height: 60px" ng-show="notReadyToNavigate"></div>
+        </ion-side-menu-content>
+        <ion-side-menu side="left">
+            <div class="list">
+
+                <div class="item item-avatar">
+                    <img ng-src="{{avatarUrl}}" style="width: 40px; height: 40px; border-radius: 4px">
+                    <h2>{{username}}</h2>
+                </div>
+                <div class="item item-icon-left" ng-click="logout()">
+                    <i class="icon ion-ios7-close-outline" style="margin-left: 10px"></i>
+                    <div style="margin-left: 25px">Logout</div>
+                </div>
             </div>
-        </div>
-
-        <div ng-if="groupId != null" style="position: absolute; top: 5px; right: 5px; bottom: 5px">
-            <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-edit" ng-click="changeMainTab(5)"></button>
-            <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-ios7-infinite" ng-click="navigateToBlog()"></button>
-        </div>
-    </div>
-
-    <ion-nav-view></ion-nav-view>
-
-    <div class="bar bar-footer" style="height: 60px" ng-show="notReadyToNavigate"></div>
+        </ion-side-menu>
+    </ion-side-menus>
 </body>
 </html>
