@@ -264,8 +264,11 @@ class Gamification < Sinatra::Application
             completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :finishedOn => Time.now);
             checklistitem.completedobjects << completedobject
             checklistitem.save
+
+            student.update_attributes(:checklistcount => (student.checklistcount).to_i+1);
+            student.save
             status 200
-            return  checklistitem.to_json
+            return  student.to_json
           else
             status 500
             return {"error" => "Group "+data['groupId']+" not found"}.to_json

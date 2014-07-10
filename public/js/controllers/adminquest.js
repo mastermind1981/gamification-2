@@ -23,7 +23,7 @@ gamificationAdminApp.controller('adminMainCtrl', function ($scope, $http, $q) {
 
 });
 
-gamificationAdminApp.controller('adminQuestCtrl', function ($scope, $http, $q, gamificationAdminFactory, gamificationAdminUtilities, $ionicModal) {
+gamificationAdminApp.controller('adminQuestCtrl', function ($scope, $http, $q, gamificationAdminFactory, gamificationAdminUtilities, $ionicModal, $ionicPopup) {
 
     $scope.newQuestObject = null;
     $scope.nextAvailableOrder = 0;
@@ -116,6 +116,22 @@ gamificationAdminApp.controller('adminQuestCtrl', function ($scope, $http, $q, g
         $('#questLabelInput').val(q.label);
         $('#questLockedInput').prop('checked', q.locked);
 
+    };
+
+    $scope.resetQuest = function (q) {
+        gamificationAdminFactory.doPutURL('/resetquest/'+q._id+'?nocache='+gamificationAdminUtilities.getRandomUUID(), null).then(function (putResponse) {
+            $scope.showMessageOKAlert();
+        });
+    };
+
+    $scope.showMessageOKAlert = function() {
+        $ionicPopup.alert({
+            title: 'Quest reset',
+            content: 'The quest has been successfully reset'
+        }).then(function(res) {
+            $scope.deliverObject = {};
+            $scope.readyForDelivering = true;
+        });
     };
 
     $scope.deleteQuest = function () {

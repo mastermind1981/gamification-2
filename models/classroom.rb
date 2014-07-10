@@ -10,4 +10,5 @@ class Classroom
   field :students, :type => Array, :default => []
 
   field :label, :type => String
+  field :teacherbadge, :type => Array, :default => []
 end

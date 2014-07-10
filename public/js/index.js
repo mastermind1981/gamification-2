@@ -580,10 +580,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
             gamificationFactory.doPutURL('/group/'+$scope.groupId+'/addbadge/'+$scope.bArrayLastId+'?nocache='+gamificationUtilities.getRandomUUID(), {deliverytype: 'AUTOMATIC'}).then(function (addBadgeResponse) {
 
-                if($location.$$path != '/tab/badges') {
-                    $scope.badgeBadgeValue = $scope.badgeBadgeValue + 1;
-                }
-
                 $scope.collectedGroupBadges = new Array();
 
                 addBadgeResponse[0].badges.forEach(function(obj) {

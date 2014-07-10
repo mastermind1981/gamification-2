@@ -57,7 +57,7 @@ var gamificationAdminApp = angular.module('gamificationAdminApp', ['ionic', 'ngC
                 .state('tab.badges', {
                     url: '/badges',
                     views: {
-                        'tab-quests': {
+                        'tab-badges': {
                             templateUrl: 'templates/admin-badges.html',
                             controller: 'adminBadgesCtrl'
                         }
