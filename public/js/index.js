@@ -1,4 +1,6 @@
-gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, gamificationUtilities, $location, socket, $cookieStore) {
+gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, gamificationUtilities, $location, socket, $cookieStore, $ionicSideMenuDelegate) {
+
+    $scope.appHeader = "GAMIFICATION";
 
     $scope.username = "";
     $scope.groupId = null;
@@ -48,6 +50,10 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
     $scope.bArrayLastId = null;
     $scope.collectedGroupBadges = [];
+
+    $scope.toggleLeftSideMenu = function() {
+        $ionicSideMenuDelegate.toggleLeft();
+    };
 
     /*
         First method called from "blank.js" if no user found
@@ -646,21 +652,27 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             case 0:
                 $scope.activityBadgeValue = 0;
                 window.location.href = '#/tab/activities';
+                $scope.appHeader = "ACTIVITIES";
                 break;
             case 1:
                 window.location.href = '#/tab/quests';
+                $scope.appHeader = "QUESTS";
                 break;
             case 2:
                 window.location.href = '#/tab/checkins';
+                $scope.appHeader = "CHECKINS";
                 break;
             case 3:
                 window.location.href = '#/tab/badges';
+                $scope.appHeader = "BADGES";
                 break;
             case 4:
                 window.location.href = '#/tab/blogs';
+                $scope.appHeader = "GROUPS";
                 break;
             case 5:
                 window.location.href = '#/tab/comment';
+                $scope.appHeader = "COMMENT";
         }
     };
 
@@ -688,7 +700,6 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
         }
     };
-
 
     /*
         Function to log out the current user (clear current facebook token)
