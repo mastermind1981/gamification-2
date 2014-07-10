@@ -28,10 +28,10 @@ gamificationAdminApp.controller('adminBadgesCtrl', function($scope, $http, $q, g
         };
     };
 
-    $scope.initView = function() {
+    $scope.initBadgeView = function() {
         console.log('badge initialized');
 
-        gamificationAdminFactory.doGetURL('/badge').then(function (response) {
+        gamificationAdminFactory.doGetURL('/teacherbadge').then(function (response) {
             $scope.allbadges = response[0];
 
             gamificationAdminFactory.doGetURL('/classroom').then(function (response) {
@@ -151,5 +151,5 @@ gamificationAdminApp.controller('adminBadgesCtrl', function($scope, $http, $q, g
         }
     };
 
-    $scope.initView();
+    $scope.initBadgeView();
 });

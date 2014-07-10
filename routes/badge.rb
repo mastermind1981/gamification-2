@@ -30,6 +30,63 @@ class Gamification < Sinatra::Application
     end
   end
 
+  # Get all teacherbadges
+  #
+  # return [Array] badge objects
+  get '/teacherbadge' do
+    if authorized?
+      content_type :json
+      @badge = Badge.where(:badgetype => 'TEACHER')
+      status 200
+      return @badge.to_json
+    else
+      status 401
+    end
+  end
+
+  # Get all checkinbadges
+  #
+  # return [Array] badge objects
+  get '/checkinbadge' do
+    if authorized?
+      content_type :json
+      @badge = Badge.where(:badgetype => 'CHECKIN')
+      status 200
+      return @badge.to_json
+    else
+      status 401
+    end
+  end
+
+  # Get all levelbadges
+  #
+  # return [Array] badge objects
+  get '/levelbadge' do
+    if authorized?
+      content_type :json
+      @badge = Badge.where(:badgetype => 'LEVEL')
+      status 200
+      return @badge.to_json
+    else
+      status 401
+    end
+  end
+
+  # Get all questbadges
+  #
+  # return [Array] badge objects
+  get '/questbadge' do
+    if authorized?
+      content_type :json
+      @badge = Badge.where(:badgetype => 'QUEST')
+      status 200
+      return @badge.to_json
+    else
+      status 401
+    end
+  end
+
+
   # Create a new badge
   #
   # return [Object] badge
@@ -75,6 +132,11 @@ class Gamification < Sinatra::Application
 
         unless data['avatar'].nil?
           badge.update_attributes(:avatar => data['avatar'])
+          badge.save
+        end
+
+        unless data['badgetype'].nil?
+          badge.update_attributes(:badgetype => data['badgetype'])
           badge.save
         end
 
