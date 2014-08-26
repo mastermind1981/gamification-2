@@ -8,6 +8,7 @@ gamificationAdminApp.controller('adminBadgesCtrl', function($scope, $http, $q, g
     $scope.lastKnownIndex = 0;
     $scope.deliverObject = {};
     $scope.readyForDelivering = true;
+    $scope.badgeIndexMenuModel = 0;
 
     $scope.notif = function() {
         socket.emit('notif');
@@ -46,28 +47,33 @@ gamificationAdminApp.controller('adminBadgesCtrl', function($scope, $http, $q, g
 
     $scope.changeClassroom = function(ind) {
 
-        if(ind == $scope.lastKnownIndex) {
-            $scope.classrooms[ind].active = true;
+        //if(ind != $scope.lastKnownIndex) {
+        $scope.lastKnownIndex = ind;
 
-            gamificationAdminFactory.doGetURL('/classroom/'+$scope.classrooms[ind]._id).then(function (response) {
-                $scope.selectedClassGroups = (response[0].groups).sort(sortByProperty('label'));
-                $scope.students = (response[0].students).sort(sortByProperty('lastName'));
+        for(var j=0; j<$scope.classrooms.length; j++) {
+            $scope.classrooms[j].active = false;
+        }
 
-                $scope.classroombadges = [];
-                for(var i=0; i < (response[0].teacherbadge).length; i++) {
-                    for(var j=0; j < $scope.allbadges.length; j++) {
-                        if($scope.allbadges[j]._id == (response[0].teacherbadge)[i]) {
-                            $scope.classroombadges.push($scope.allbadges[j]);
-                        }
+        $scope.classrooms[ind].active = true;
+
+        gamificationAdminFactory.doGetURL('/classroom/'+$scope.classrooms[ind]._id).then(function (response) {
+            $scope.selectedClassGroups = (response[0].groups).sort(sortByProperty('label'));
+            $scope.students = (response[0].students).sort(sortByProperty('lastName'));
+
+            $scope.classroombadges = [];
+            for(var i=0; i < (response[0].teacherbadge).length; i++) {
+                for(var j=0; j < $scope.allbadges.length; j++) {
+                    if($scope.allbadges[j]._id == (response[0].teacherbadge)[i]) {
+                        $scope.classroombadges.push($scope.allbadges[j]);
                     }
                 }
-            });
+            }
+        });
 
-        }
+        /*}
         else {
-            $scope.lastKnownIndex = ind;
-            $scope.initView();
-        }
+            //$scope.initView();
+        }    */
     };
 
     $scope.getGroupSelectedStatus = function(student, group) {
@@ -121,6 +127,7 @@ gamificationAdminApp.controller('adminBadgesCtrl', function($scope, $http, $q, g
     };
 
     $scope.checkSelectedTab = function(tabIndex) {
+        $scope.badgeIndexMenuModel = Number(tabIndex);
         $scope.changeClassroom(tabIndex);
     };
 
@@ -142,14 +149,14 @@ gamificationAdminApp.controller('adminBadgesCtrl', function($scope, $http, $q, g
         });
     };
 
-    $scope.whatClassIsIt = function(cls, ind) {
+    /*$scope.whatClassIsIt = function(cls, ind) {
         if(ind == $scope.lastKnownIndex) {
             return "button active";
         }
         else {
             return "button";
         }
-    };
+    };     */
 
     $scope.initBadgeView();
 });

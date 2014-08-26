@@ -517,19 +517,30 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                     console.log("--> completed levels: "+updatelevelcountResponse[0].levelcount);
 
                     switch(updatelevelcountResponse[0].levelcount) {
+                        case 1:
+                            console.log("--> 1 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            addcompletedgroupResponse[0].badges.push("53fc2d3cea9dd81ba100000f");
+                            console.log("--> 1 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            break;
                         case 5:
                             console.log("--> 5 completed levels: "+addcompletedgroupResponse[0].badges.length);
-                            addcompletedgroupResponse[0].badges.push("53bc06ff9c9505e39200000c");
+                            addcompletedgroupResponse[0].badges.push("53fc2d5cea9dd888f7000010");
                             console.log("--> 5 completed levels: "+addcompletedgroupResponse[0].badges.length);
                             break;
                         case 10:
-
+                            console.log("--> 10 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            addcompletedgroupResponse[0].badges.push("53fc2d7aea9dd85f83000011");
+                            console.log("--> 10 completed levels: "+addcompletedgroupResponse[0].badges.length);
                             break;
                         case 15:
-
+                            console.log("--> 15 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            addcompletedgroupResponse[0].badges.push("53fc2d98ea9dd8a52f000012");
+                            console.log("--> 15 completed levels: "+addcompletedgroupResponse[0].badges.length);
                             break;
                         case 20:
-
+                            console.log("--> 20 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            addcompletedgroupResponse[0].badges.push("53fc2db7ea9dd874eb000013");
+                            console.log("--> 20 completed levels: "+addcompletedgroupResponse[0].badges.length);
                             break;
                     };
 

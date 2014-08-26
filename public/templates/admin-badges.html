@@ -1,7 +1,7 @@
 <ion-view>
     <ion-content class="has-header padding">
         <div class="button-bar">
-            <a ng-repeat="classroom in classrooms" ng-class="whatClassIsIt(classroom, $index)" ng-click="checkSelectedTab($index)">{{classroom.label}}</a>
+            <a ng-repeat="classroom in classrooms" class="button" ng-class="{'adminBadgeButtonSelected': badgeIndexMenuModel==$index, 'adminBadgeButtonReleased': badgeIndexMenuModel!=$index}" ng-click="checkSelectedTab($index)">{{classroom.label}}</a>
         </div>
 
         <div style="margin-top: 50px; padding-bottom: 80px">

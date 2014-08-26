@@ -257,9 +257,12 @@ class Gamification < Sinatra::Application
 
         badge = Badge.find(params[:badgeid])
 
-        if badge && (classroom.teacherbadge.index(badge._id) == nil) then
-          classroom.push(:teacherbadge, badge._id);
-          classroom.save!
+        if badge then
+          if classroom.teacherbadge.index(badge._id) == nil then
+            #classroom.push(:teacherbadge, badge._id);
+            classroom.teacherbadge.push(badge._id);
+            classroom.save!
+          end
         end
 
         status 200
