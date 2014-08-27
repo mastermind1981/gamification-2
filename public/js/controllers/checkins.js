@@ -97,6 +97,8 @@ gamififcationApp.controller('Checkins1Ctrl', function($scope, $ionicModal, $ioni
 
         gamificationFactory.doPutURL('/student/'+uid+'/addbadge/'+bid+'?nocache='+gamificationUtilities.getRandomUUID(), null).then(function (response) {
 
+            $scope.showRecentBadge(bid);
+
             var data = {};
             data.studentId = response[0].facebookId;
 
@@ -114,6 +116,8 @@ gamififcationApp.controller('Checkins1Ctrl', function($scope, $ionicModal, $ioni
             gamificationFactory.doPostURL('/activity?nocache='+gamificationUtilities.getRandomUUID()).then(function(postactresponse) {
 
                 gamificationFactory.doPutURL('/activity/'+postactresponse[0]._id+'?nocache='+gamificationUtilities.getRandomUUID(), data).then(function (response) {
+
+
                     $scope.notif();
                     $scope.notifyBadges();
                 });

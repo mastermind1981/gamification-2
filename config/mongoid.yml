@@ -18,7 +18,8 @@ development:
       hosts:
         - localhost
       options:
-        consistency: :strong
+        skip_version_check: true
+        safe: true
   options:
     identity_map_enabled: false
     raise_not_found_error: false

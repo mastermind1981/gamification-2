@@ -1,4 +1,4 @@
-gamififcationApp.controller('BadgesCtrl', function($scope, gamificationFactory, gamificationUtilities) {
+gamififcationApp.controller('BadgesCtrl', function($scope, gamificationFactory, gamificationUtilities, socket) {
 
     $scope.p1show = false;
     $scope.p2show = false;
@@ -15,12 +15,6 @@ gamififcationApp.controller('BadgesCtrl', function($scope, gamificationFactory, 
     $scope.p13show = false;
     $scope.p14show = false;
 
-    $scope.badge1Count = 0;
-    $scope.badge2Count = 0;
-    $scope.badge3Count = 0;
-    $scope.badge4Count = 0;
-    $scope.badge5Count = 0;
-    $scope.badge6Count = 0;
     $scope.badge7Count = 0;
     $scope.badge8Count = 0;
     $scope.badge9Count = 0;
@@ -42,8 +36,6 @@ gamififcationApp.controller('BadgesCtrl', function($scope, gamificationFactory, 
     $scope.g10show = false;
     $scope.g11show = false;
     $scope.g12show = false;
-    $scope.g13show = false;
-    $scope.g14show = false;
 
     var p1 = "53fc27c9ea9dd81153000001";
     var p2 = "53fc2884ea9dd86bfd000002";
@@ -75,6 +67,16 @@ gamififcationApp.controller('BadgesCtrl', function($scope, gamificationFactory, 
     var g11 = "53fc3897ea9dd8fc47000018";
     var g12 = "53fc38aeea9dd85ab1000019";
 
+    socket.on('notify', function (data) {
+        switch(data.message) {
+            case "GAMIFICATION_BADGE":
+                console.log("--> updating badges");
+                $scope.scanbadges();
+                break;
+        }
+
+    });
+
 
     $scope.scanbadges = function() {
         console.log('--> scanning badges ... ');
@@ -94,8 +96,144 @@ gamififcationApp.controller('BadgesCtrl', function($scope, gamificationFactory, 
             }
 
             console.log('--> update from server received ... ');
+
+            toggleBadges($scope.badgesGroup, $scope.badgesStudent);
         });
     };
+
+    function toggleBadges(gBadges, sBadges) {
+
+        for(var i=0; i<gBadges.length; i++) {
+
+            console.log('--> group badge: '+gBadges[i]);
+
+            switch(gBadges[i].origin._id) {
+
+                case g1:
+                    $scope.g1show = true;
+                    break;
+
+                case g2:
+                    $scope.g2show = true;
+                    break;
+
+                case g3:
+                    $scope.g3show = true;
+                    break;
+
+                case g4:
+                    $scope.g4show = true;
+                    break;
+
+                case g5:
+                    $scope.g5show = true;
+                    break;
+
+                case g6:
+                    $scope.g6show = true;
+                    break;
+
+                case g7:
+                    $scope.g7show = true;
+                    break;
+
+                case g8:
+                    $scope.g8show = true;
+                    break;
+
+                case g9:
+                    $scope.g9show = true;
+                    break;
+
+                case g10:
+                    $scope.g10show = true;
+                    break;
+
+                case g11:
+                    $scope.g11show = true;
+                    break;
+
+                case g12:
+                    $scope.g12show = true;
+                    break;
+            }
+
+        }
+
+        for(var j=0; j<sBadges.length; j++) {
+
+            console.log('--> student badge: '+sBadges[j]);
+
+            switch(sBadges[j].origin._id) {
+
+                case p1:
+                    $scope.p1show = true;
+                    break;
+
+                case p2:
+                    $scope.p2show = true;
+                    break;
+
+                case p3:
+                    $scope.p3show = true;
+                    break;
+
+                case p4:
+                    $scope.p4show = true;
+                    break;
+
+                case p5:
+                    $scope.p5show = true;
+                    break;
+
+                case p6:
+                    $scope.p6show = true;
+                    break;
+
+                case p7:
+                    $scope.p7show = true;
+                    $scope.badge7Count = sBadges[j].count;
+                    break;
+
+                case p8:
+                    $scope.p8show = true;
+                    $scope.badge8Count = sBadges[j].count;
+                    break;
+
+                case p9:
+                    $scope.p9show = true;
+                    $scope.badge9Count = sBadges[j].count;
+                    break;
+
+                case p10:
+                    $scope.p10show = true;
+                    $scope.badge10Count = sBadges[j].count;
+                    break;
+
+                case p11:
+                    $scope.p11show = true;
+                    $scope.badge11Count = sBadges[j].count;
+                    break;
+
+                case p12:
+                    $scope.p12show = true;
+                    $scope.badge12Count = sBadges[j].count;
+                    break;
+
+                case p13:
+                    $scope.p13show = true;
+                    $scope.badge13Count = sBadges[j].count;
+                    break;
+
+                case p14:
+                    $scope.p14show = true;
+                    $scope.badge14Count = sBadges[j].count;
+                    break;
+            }
+        }
+
+
+    }
 
 
     if ($scope.userId == null) {

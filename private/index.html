@@ -55,12 +55,31 @@
                 </div>
                 <div class="h1 title" style="color: #3EBCa4;">{{ appHeader }}</div>
                 <div ng-if="groupId != null" style="position: absolute; top: 5px; right: 5px; bottom: 5px">
+                    <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-edit" ng-click="openModal()"></button>
                     <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-edit" ng-click="changeMainTab(5)"></button>
                     <button style="width: 40px; height: 40px; border-radius: 4px" class="button icon ion-ios7-infinite" ng-click="navigateToBlog()"></button>
                 </div>
             </div>
             <ion-nav-view></ion-nav-view>
             <div class="bar bar-footer" style="height: 60px" ng-show="notReadyToNavigate"></div>
+            <script id="my-modal.html" type="text/ng-template">
+                <div class="modal" style="background: none">
+                    <ion-content style="margin: 60px 40px">
+                        <div style="width: 100%; height: 100%; background-color: #FFFFFF; text-align: center">
+                            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 60px; background-color: #3EBCa4; color: #FFFFFF; ">
+                                <div style="margin: 0 auto; padding-top: 10px; font-size: 20px; font-weight: bold">CONGRATULATIONS</div>
+                                <div style="margin: 0 auto">You received a badge</div>
+                            </div>
+                            <img ng-src="{{ lastBadgeImgUrl }}" width="60%" style="margin-top: 100px; margin-bottom: 20px">
+                            <div style="width: 100%; height: 40px; float: left; font-size: 20px; font-weight: bold">{{ lastBadgeTitle }}</div>
+                            <div style="width: 80%; max-width: 80%; margin: 0 auto; min-height: 100px; text-align: justify">{{ lastBadgeLabel }}</div>
+                            <div style="width: 100%; height: 100px;">
+                                <button class="button" style="width: 80%; max-width: 80%; height: 60px; margin: 20px;" ng-click="closeModal()">CONTINUE</button>
+                            </div>
+                        </div>
+                    </ion-content>
+                 </div>
+            </script>
         </ion-side-menu-content>
         <ion-side-menu side="left">
             <div class="list">
