@@ -1,4 +1,4 @@
-gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, gamificationUtilities, $location, socket, $cookieStore, $ionicSideMenuDelegate) {
+gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamificationFactory, gamificationUtilities, $location, socket, $cookieStore, $ionicSideMenuDelegate, $ionicModal) {
 
     $scope.appHeader = "GAMIFICATION";
 
@@ -50,6 +50,12 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
 
     $scope.bArrayLastId = null;
     $scope.collectedGroupBadges = [];
+
+
+    $scope.lastBadgeImgUrl = "";
+    $scope.lastBadgeLabel = "";
+    $scope.lastBadgeTitle = "";
+
 
     $scope.toggleLeftSideMenu = function() {
         $ionicSideMenuDelegate.toggleLeft();
@@ -517,19 +523,30 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                     console.log("--> completed levels: "+updatelevelcountResponse[0].levelcount);
 
                     switch(updatelevelcountResponse[0].levelcount) {
+                        case 1:
+                            console.log("--> 1 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            addcompletedgroupResponse[0].badges.push("53fc2d3cea9dd81ba100000f");
+                            console.log("--> 1 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            break;
                         case 5:
                             console.log("--> 5 completed levels: "+addcompletedgroupResponse[0].badges.length);
-                            addcompletedgroupResponse[0].badges.push("53bc06ff9c9505e39200000c");
+                            addcompletedgroupResponse[0].badges.push("53fc2d5cea9dd888f7000010");
                             console.log("--> 5 completed levels: "+addcompletedgroupResponse[0].badges.length);
                             break;
                         case 10:
-
+                            console.log("--> 10 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            addcompletedgroupResponse[0].badges.push("53fc2d7aea9dd85f83000011");
+                            console.log("--> 10 completed levels: "+addcompletedgroupResponse[0].badges.length);
                             break;
                         case 15:
-
+                            console.log("--> 15 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            addcompletedgroupResponse[0].badges.push("53fc2d98ea9dd8a52f000012");
+                            console.log("--> 15 completed levels: "+addcompletedgroupResponse[0].badges.length);
                             break;
                         case 20:
-
+                            console.log("--> 20 completed levels: "+addcompletedgroupResponse[0].badges.length);
+                            addcompletedgroupResponse[0].badges.push("53fc2db7ea9dd874eb000013");
+                            console.log("--> 20 completed levels: "+addcompletedgroupResponse[0].badges.length);
                             break;
                     };
 
@@ -602,6 +619,10 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 var data = {};
 
                 data.label = $scope.collectedGroupBadges[$scope.bArrayLastId];
+
+                $scope.showRecentBadge($scope.bArrayLastId);
+
+
                 data.type = "GROUP";
                 data.groupId = $scope.groupId;
                 data.badgeId = $scope.bArrayLastId;
@@ -609,6 +630,8 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 data.ownerName = "Group: "+addBadgeResponse[0].label;
 
                 gamificationFactory.doPostURL('/dactivity?nocache='+gamificationUtilities.getRandomUUID(), data).then(function(postActivityResponse) {
+
+
                     $scope.notif();
                 });
 
@@ -707,4 +730,192 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.logout = function() {
         gamificationFactory.doLogOut();
     };
+
+
+
+    $scope.showRecentBadge = function(bId) {
+        gamificationFactory.doGetURL('/badge/'+bId+'?nocache='+gamificationUtilities.getRandomUUID()).then(function (response) {
+
+            $scope.lastBadgeImgUrl = getBadgeURL(response[0]._id);
+            $scope.lastBadgeLabel = response[0].description;
+            $scope.lastBadgeTitle = response[0].label;
+
+            $scope.openModal();
+
+        });
+    };
+
+    $ionicModal.fromTemplateUrl('my-modal.html', {
+        scope: $scope,
+        animation: 'slide-in-up',
+        backdropClickToClose: true
+    }).then(function(modal) {
+        $scope.modal = modal;
+    });
+    $scope.openModal = function() {
+        $scope.modal.show();
+    };
+    $scope.closeModal = function() {
+        $scope.modal.hide();
+    };
+    //Cleanup the modal when we're done with it!
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+    });
+    // Execute action on hide modal
+    $scope.$on('modal.hidden', function() {
+        // Execute action
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+        // Execute action
+    });
+
+    function getBadgeURL(tagid) {
+
+        var p1 = "53fc27c9ea9dd81153000001";
+        var p2 = "53fc2884ea9dd86bfd000002";
+        var p3 = "53fc28b0ea9dd854d7000003";
+        var p4 = "53fc28d2ea9dd850f8000004";
+        var p5 = "53fc28f9ea9dd87a31000005";
+        var p6 = "53fc2979ea9dd85f26000006";
+
+        var p7 = "53fc2a62ea9dd80ab2000007";
+        var p8 = "53fc2a92ea9dd8ccd4000008";
+        var p9 = "53fc2ad4ea9dd8a288000009";
+        var p10 = "53fc2b01ea9dd8ed2500000a";
+        var p11 = "53fc2b3bea9dd8ef1e00000b";
+        var p12 = "53fc2b73ea9dd8624600000c";
+        var p13 = "53fc2badea9dd818d900000d";
+        var p14 = "53fc2bdbea9dd829cd00000e";
+
+        var g1 = "53fc2d3cea9dd81ba100000f";
+        var g2 = "53fc2d5cea9dd888f7000010";
+        var g3 = "53fc2d7aea9dd85f83000011";
+        var g4 = "53fc2d98ea9dd8a52f000012";
+        var g5 = "53fc2db7ea9dd874eb000013";
+
+        var g6 = "53fc381dea9dd8ba24000014";
+        var g7 = "53fc3842ea9dd8e1eb000015";
+        var g8 = "53fc385aea9dd839b8000016";
+        var g9 = "53fc38c9ea9dd8780900001a";
+        var g10 = "53fc387fea9dd85825000017";
+        var g11 = "53fc3897ea9dd8fc47000018";
+        var g12 = "53fc38aeea9dd85ab1000019";
+
+        switch(tagid) {
+
+            case p1:
+                return "img/badges/p1.png";
+                break;
+
+            case p2:
+                return "img/badges/p2.png";
+                break;
+
+            case p3:
+                return "img/badges/p3.png";
+                break;
+
+            case p4:
+                return "img/badges/p4.png";
+                break;
+
+            case p5:
+                return "img/badges/p5.png";
+                break;
+
+            case p6:
+                return "img/badges/p6.png";
+                break;
+
+            case p7:
+                return "img/badges/p7.png";
+                break;
+
+            case p8:
+                return "img/badges/p8.png";
+                break;
+
+            case p9:
+                return "img/badges/p9.png";
+                break;
+
+            case p10:
+                return "img/badges/p10.png";
+                break;
+
+            case p11:
+                return "img/badges/p11.png";
+                break;
+
+            case p12:
+                return "img/badges/p12.png";
+                break;
+
+            case p13:
+                return "img/badges/p13.png";
+                break;
+
+            case p14:
+                return "img/badges/p14.png";
+                break;
+
+            case g1:
+                return "img/badges/g1.png";
+                break;
+
+            case g2:
+                return "img/badges/g2.png";
+                break;
+
+            case g3:
+                return "img/badges/g3.png";
+                break;
+
+            case g4:
+                return "img/badges/g4.png";
+                break;
+
+            case g5:
+                return "img/badges/g5.png";
+                break;
+
+            case g6:
+                return "img/badges/g6.png";
+                break;
+
+            case g7:
+                return "img/badges/g7.png";
+                break;
+
+            case g8:
+                return "img/badges/g8.png";
+                break;
+
+            case g9:
+                return "img/badges/g9.png";
+                break;
+
+            case g10:
+                return "img/badges/g10.png";
+                break;
+
+            case g11:
+                return "img/badges/g11.png";
+                break;
+
+            case g12:
+                return "img/badges/g12.png";
+                break;
+
+            default :
+                return "";
+            break;
+
+        }
+
+
+    };
+
 });

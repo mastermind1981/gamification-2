@@ -85,6 +85,7 @@ a img {
 
 ion-view {
     margin-top: 15px;
+    background-color: #f5f5f5;
 }
 
 .allActivitiesFeedBlocksDivider {
@@ -233,8 +234,12 @@ ion-view {
 }
 
 .tabs .tab-item .badge {
-    background-color: #4A87EE;
+    background-color: #FF0000;
     color: #FFFFFF;
+}
+
+.tab-item.tab-item-active {
+    color: #3EBCa4;
 }
 
 .progress-bar {
@@ -255,9 +260,12 @@ ion-view {
     text-indent: -9999px;
 }
 
-.activityButtonSelected {
-    background-color: #FFFFFF;
-    border-bottom: none;
+.adminBadgeButtonSelected {
+    background-color: #e5e5e5;
+}
+
+.adminBadgeButtonReleased {
+    background-color: #f8f8f8;
 }
 
 .item-divider {
@@ -325,4 +333,30 @@ progress::-webkit-progress-value {
 /* Polyfill */
 progress[aria-valuenow]:before  {
     background: black;
+}
+
+.badgeCol {
+    border: none;
+}
+
+.badgeContainer {
+    position: relative;
+    min-width: 125px;
+    width: 125px;
+    margin: 0 auto;
+    height: 100px;
+    text-align: center;
+}
+
+.badgeImage {
+    width: 80px;
+}
+
+.badgeText {
+    vertical-align: bottom;
+    width: 120px;
+}
+
+.row {
+    padding-bottom: 30px;
 }

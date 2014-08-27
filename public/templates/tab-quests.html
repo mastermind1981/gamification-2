@@ -1,10 +1,10 @@
 <ion-view>
-    <ion-content class="padding" ng-show="groupId == null">
+    <ion-content class="padding" ng-show="groupId == null" style="background-color: #f5f5f5;">
         <div class="list" style="margin-top: 50px">
             No group assigned to you yet
         </div>
     </ion-content>
-    <ion-content class="padding" ng-show="groupId != null">
+    <ion-content class="padding" ng-show="groupId != null" style="background-color: #f5f5f5;">
         <div class="list" style="margin-top: 50px; margin-bottom: 80px">
             <a ng-repeat="quest in quests" class="item item-icon-right item-text-wrap" ng-click="navigateToQuest(quest)">
                 <div style="min-width: 40px; width: 40px; height: 40px; border-radius: 4px; background-color: #000000; color: #FFFFFF; display: table-cell; text-align:center; vertical-align: middle;">{{quest.order}}</div>

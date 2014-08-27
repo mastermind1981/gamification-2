@@ -217,9 +217,9 @@ class Gamification < Sinatra::Application
         data = JSON.parse request.body.read
 
         unless data.nil? or data['groupId'].nil? then
-          #begin
-          #  group = Group.find(data['groupId'])
-          #end
+          begin
+            group = Group.find(data['groupId'])
+          end
 
           #if group
             #make group does not re-submit a task completion
@@ -229,6 +229,8 @@ class Gamification < Sinatra::Application
               completedobject = Completedobject.create(:text => data['text'], :userId => data['userId'], :groupId => data['groupId'], :finishedOn => Time.new().to_i);
               level.completedobjects << completedobject
               level.save
+
+              group
             end
 
             status 200

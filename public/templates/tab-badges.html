@@ -1,10 +1,12 @@
 <ion-view>
-    <ion-content class="padding">
+    <ion-content class="padding" style="background-color: #f5f5f5;">
         <div class="list" style="margin-top: 50px; padding-bottom: 80px">
+            <!--
             <div class="item item-divider item-icon-left" style="vertical-align: middle;"><i class="icon ion-ios7-people"></i> Group badges</div>
             <div ng-repeat="badge in badgesGroup" class="item" style="max-height: 90px">
                 <div class="badgeCounter">{{badge.count}}</div>
                 <div class="badgeLabel" style="left: 87px">
+                    <span class="badge">10</span>
                     <img ng-src="{{badge.origin.avatar}}">
                     <div class="badgeLabel" style="left: 70px">
                         <h2>{{badge.origin.label}}</h2>
@@ -24,6 +26,227 @@
                     </div>
                 </div>
             </div>
+            -->
+
+            <div style="min-height: 500px">
+                <h5 style="width: 100%; text-align: center; color: #3EBCa4;">PERSONAL</h5>
+                <div class="row">
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p1.png" class="badgeImage" ng-show="p1show" />
+                            <img src="../img/badges/p1-black.png" class="badgeImage" ng-show="!p1show" />
+                            <div class="badgeText" style="">DEBUTANT</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p2.png" class="badgeImage" ng-show="p2show" />
+                            <img src="../img/badges/p2-black.png" class="badgeImage" ng-show="!p2show" />
+                            <div class="badgeText" style="">AMATEUR</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p3.png" class="badgeImage" ng-show="p3show" />
+                            <img src="../img/badges/p3-black.png" class="badgeImage" ng-show="!p3show" />
+                            <div class="badgeText" style="">ADEPTE</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p4.png" class="badgeImage" ng-show="p4show" />
+                            <img src="../img/badges/p4-black.png" class="badgeImage" ng-show="!p4show" />
+                            <div class="badgeText" style="">PASSIONNÉ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p5.png" class="badgeImage" ng-show="p5show" />
+                            <img src="../img/badges/p5-black.png" class="badgeImage" ng-show="!p5show" />
+                            <div class="badgeText" style="">ACCRO</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p6.png" class="badgeImage" ng-show="p6show" />
+                            <img src="../img/badges/p6-black.png" class="badgeImage" ng-show="!p6show" />
+                            <div class="badgeText" style="">ALIEN</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p7.png" class="badgeImage" ng-show="p7show" />
+                            <img src="../img/badges/p7-black.png" class="badgeImage" ng-show="!p7show" />
+                            <div class="badgeText" style="">ECRIVAIN</div>
+                            <span class="badge badge-calm" style="position: absolute; top: 0; right: 0" ng-show="badge7Count > 1">{{ badge7Count }}</span>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p8.png" class="badgeImage" ng-show="p8show" />
+                            <img src="../img/badges/p8-black.png" class="badgeImage" ng-show="!p8show" />
+                            <div class="badgeText" style="">COMMENTATEUR</div>
+                            <span class="badge badge-calm" style="position: absolute; top: 0; right: 0" ng-show="badge8Count > 1">{{ badge8Count }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p9.png" class="badgeImage" ng-show="p9show" />
+                            <img src="../img/badges/p9-black.png" class="badgeImage" ng-show="!p9show" />
+                            <div class="badgeText" style="">PIPLETTE</div>
+                            <span class="badge badge-calm" style="position: absolute; top: 0; right: 0" ng-show="badge9Count > 1">{{ badge9Count }}</span>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p10.png" class="badgeImage" ng-show="p10show" />
+                            <img src="../img/badges/p10-black.png" class="badgeImage" ng-show="!p10show" />
+                            <div class="badgeText" style="">DICTIONNAIRE</div>
+                            <span class="badge badge-calm" style="position: absolute; top: 0; right: 0" ng-show="badge10Count > 1">{{ badge10Count }}</span>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p11.png" class="badgeImage" ng-show="p11show" />
+                            <img src="../img/badges/p11-black.png" class="badgeImage" ng-show="!p11show" />
+                            <div class="badgeText" style="">PHOTO</div>
+                            <span class="badge badge-calm" style="position: absolute; top: 0; right: 0" ng-show="badge11Count > 1">{{ badge11Count }}</span>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p12.png" class="badgeImage" ng-show="p12show" />
+                            <img src="../img/badges/p12-black.png" class="badgeImage" ng-show="!p12show" />
+                            <div class="badgeText" style="">RÉALISATEUR</div>
+                            <span class="badge badge-calm" style="position: absolute; top: 0; right: 0" ng-show="badge12Count > 1">{{ badge12Count }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col badgeCol"></div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p13.png" class="badgeImage" ng-show="p13show" />
+                            <img src="../img/badges/p13-black.png" class="badgeImage" ng-show="!p13show" />
+                            <div class="badgeText" style="">COMPAGNON</div>
+                            <span class="badge badge-calm" style="position: absolute; top: 0; right: 0" ng-show="badge13Count > 1">{{ badge13Count }}</span>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/p14.png" class="badgeImage" ng-show="p14show" />
+                            <img src="../img/badges/p14-black.png" class="badgeImage" ng-show="!p14show" />
+                            <div class="badgeText">QUIZ MASTER</div>
+                            <span class="badge badge-calm" style="position: absolute; top: 0; right: 0" ng-show="badge14Count > 1">{{ badge14Count }}</span>
+                        </div>
+                    </div>
+                    <div class="col badgeCol"></div>
+                </div>
+            </div>
+
+
+
+
+            <div style="min-height: 500px; padding-top: 50px">
+                <h5 style="width: 100%; text-align: center; color: #3EBCa4;">GROUP</h5>
+                <div class="row">
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g1.png" class="badgeImage" ng-show="g1show" />
+                            <img src="../img/badges/g1-black.png" class="badgeImage" ng-show="!g1show" />
+                            <div class="badgeText" style="">C'EST PARTI</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g2.png" class="badgeImage" ng-show="g2show" />
+                            <img src="../img/badges/g2-black.png" class="badgeImage" ng-show="!g2show" />
+                            <div class="badgeText" style="">SUR LA VOIE</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g3.png" class="badgeImage" ng-show="g3show" />
+                            <img src="../img/badges/g3-black.png" class="badgeImage" ng-show="!g3show" />
+                            <div class="badgeText" style="">IMPRESSIONANT</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g4.png" class="badgeImage" ng-show="g4show" />
+                            <img src="../img/badges/g4-black.png" class="badgeImage" ng-show="!g4show" />
+                            <div class="badgeText" style="">INCROYABLE</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g5.png" class="badgeImage" ng-show="g5show" />
+                            <img src="../img/badges/g5-black.png" class="badgeImage" ng-show="!g5show" />
+                            <div class="badgeText" style="">COMPLETISTE</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g6.png" class="badgeImage" ng-show="g6show" />
+                            <img src="../img/badges/g6-black.png" class="badgeImage" ng-show="!g6show" />
+                            <div class="badgeText" style="">QUÊTE 1</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g7.png" class="badgeImage" ng-show="g7show" />
+                            <img src="../img/badges/g7-black.png" class="badgeImage" ng-show="!g7show" />
+                            <div class="badgeText" style="">QUÊTE 2</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g8.png" class="badgeImage" ng-show="g8show" />
+                            <img src="../img/badges/g8-black.png" class="badgeImage" ng-show="!g8show" />
+                            <div class="badgeText" style="">QUÊTE 3</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g9.png" class="badgeImage" ng-show="g9show" />
+                            <img src="../img/badges/g9-black.png" class="badgeImage" ng-show="!g9show" />
+                            <div class="badgeText" style="">QUÊTE 4</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g10.png" class="badgeImage" ng-show="g10show" />
+                            <img src="../img/badges/g10-black.png" class="badgeImage" ng-show="!g10show" />
+                            <div class="badgeText" style="">QUÊTE 5</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g11.png" class="badgeImage" ng-show="g11show" />
+                            <img src="../img/badges/g11-black.png" class="badgeImage" ng-show="!g11show" />
+                            <div class="badgeText" style="">QUÊTE 6</div>
+                        </div>
+                    </div>
+                    <div class="col badgeCol">
+                        <div class="badgeContainer">
+                            <img src="../img/badges/g12.png" class="badgeImage" ng-show="g12show" />
+                            <img src="../img/badges/g12-black.png" class="badgeImage" ng-show="!g12show" />
+                            <div class="badgeText" style="">QUÊTE 7</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
         </div>
     </ion-content>
 </ion-view>

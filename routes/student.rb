@@ -167,7 +167,7 @@ class Gamification < Sinatra::Application
           end
 
           student.badges << {"count" => lastcount+1, "origin" => {"_id" => badge._id, "avatar" => badge.avatar, "time" => badge.time, "label" => badge.label, "description" => badge.description }}
-          student.save
+          student.save!
         else
           status 500
           return {"error" => "Badge "+params[:badgeid]+" not found"}.to_json
