@@ -10,8 +10,8 @@ gamififcationApp.controller('CommentCtrl', function($scope, $ionicModal, $ionicP
         else {
             formValid = false;
             $ionicPopup.alert({
-                title: 'No text provided',
-                content: 'Please provide a valid text for your message'
+                title: 'Pas de texte présent',
+                content: "Veuillez écrire un message avant d'envoyer"
             });
         }
 
@@ -31,7 +31,7 @@ gamififcationApp.controller('CommentCtrl', function($scope, $ionicModal, $ionicP
                 formValid = false;
                 $ionicPopup.alert({
                     title: 'URL Format Error',
-                    content: 'Please check the format of your URL before submitting'
+                    content: "Veuillez entrer une URL valide avant d'envoyer"
                 });
             }
 
@@ -61,7 +61,7 @@ gamififcationApp.controller('CommentCtrl', function($scope, $ionicModal, $ionicP
     $scope.showMessageOKAlert = function() {
         $ionicPopup.alert({
             title: 'Message OK',
-            content: 'Your message has been delivered to your class.'
+            content: 'Votre message a été envoyé à votre class.'
         }).then(function(res) {
             $('#commActivitiesFeedTextarea').val('');
             $('#commActivitiesFeedTextinput').val('');

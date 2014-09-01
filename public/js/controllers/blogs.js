@@ -20,7 +20,7 @@ gamififcationApp.controller('BlogsCtrl', function($scope, $ionicModal, $ionicPop
         studentList = "";
 
         for(var i in students){
-            studentList = studentList + students[i].firstName + " | ";
+            studentList = studentList + students[i].firstName + " / ";
         }
 
         return studentList.substr(0, studentList.length-3);
@@ -90,7 +90,7 @@ gamififcationApp.directive('myQueststat', function(gamificationUtilities) {
                 for(var i=0; i<scope.directiveSortedlevels.length; i++) {
 
                     if(scope.directiveSortedlevels[i].completed != 1) {
-                        scope.levelmax = 'Level '+(parseInt(scope.directiveSortedlevels[i].order));
+                        scope.levelmax = (parseInt(scope.directiveSortedlevels[i].order));
 
                         for(var j=0; j<scope.directiveSortedlevels[i].tasks.length; j++) {
                             if(scope.directiveSortedlevels[i].tasks[j].completed == 1) {

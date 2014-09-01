@@ -3,29 +3,34 @@
         <div class="list" style="margin-top: 50px; padding-bottom: 80px">
             <div class="statGroupDiv" ng-repeat="group in groupStats">
                 <!-- span style="font-size: 16px; font-weight: bold; padding-top: 8px; padding-bottom: 8px"></span -->
-                <div class="item item-divider item-text-wrap item-avatar item-button-right" style="background-color: #666666; color: #FFFFFF; height: 70px">
+                <div class="item item-divider item-text-wrap item-avatar item-button-right" style="height: 70px; background-color: #FFFFFF; margin-left: 0px; margin-right: 0px; border-left: none; border-top: none; border-right: none">
                     <img ng-show="group.avatarUrl!=null" ng-src="{{group.avatarUrl}}">
-                    {{ group.label }}
-                    <p style="color: #333333">
+                    <span style="color: #3EBCa4; font-family: MontserratBold; font-size: 13px">{{ group.label }}</span>
+                    <p style="color: #666666; font-family: MontserratReg; font-size: 11px">
                         {{ getStudentList(group.students) }}
                     </p>
-
-                    <button class="button" disabled style="margin-top: 10px" ng-show="group.blogUrl==null">
-                        <i class="icon ion-ios7-help-outline"></i>
-                    </button>
-                    <button class="button" style="margin-top: 10px" ng-show="group.blogUrl!=null" ng-click="navigateToBlog(group)">
-                        <i class="icon ion-ios7-infinite"></i>
-                    </button>
+                    <a style="width: 20px; height: 20px;" class="button button-icon icon ion-ios7-help-outline" ng-show="group.blogUrl==null"></a>
+                    <a style="width: 20px; height: 20px;" class="button button-icon icon ion-ios7-infinite" ng-show="group.blogUrl!=null" ng-click="navigateToBlog(group)"></a>
                 </div>
                 <ion-list>
-                    <ion-item class="questItems" style="border-bottom: none; border-top: none" ng-repeat="quest in group.quests">
+                    <ion-item class="questItems" style="border: none;" ng-repeat="quest in group.quests">
                         <div my-queststat item="quest"></div>
                     </ion-item>
                 </ion-list>
                 <div class="statQuestFooter row">
-                    <div class="col" style="border-left: none;"><span class="rnd">{{ group.deliverytype.automatic }}</span> Progress</div>
-                    <div class="col" style="border-right: none;"><span class="rnd">{{ group.deliverytype.manual }}</span> Teacher</div>
-                    <!-- div class="col"><span class="rnd">{{ group.deliverytype.special }}</span> Gold</div -->
+                    <div style="padding-left: 20px; padding-top: 5px">
+                        <div style="float: left; color: #3EBCa4; font-family: MontserratBold; font-size: 13px">
+                            BADGES
+                        </div>
+                        <div style="float: left; padding-left: 20px">
+                            <span class="rnd"><span style="color: #3EBCa4; font-family: MontserratBold; font-size: 13px">{{ group.deliverytype.automatic }}</span></span>
+                            <span style="color: #666666; font-family: MontserratReg; font-size: 11px">Progress</span>
+                        </div>
+                        <!-- div style="float: left; padding-left: 20px">
+                            <span class="rnd"><span style="color: #3EBCa4; font-family: MontserratBold; font-size: 13px">{{ group.deliverytype.manual }}</span></span>
+                            <span style="color: #666666; font-family: MontserratReg; font-size: 11px">Teacher</span>
+                        </div -->
+                    </div>
                 </div>
             </div>
         </div>
