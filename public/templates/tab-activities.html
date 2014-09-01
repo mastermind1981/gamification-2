@@ -4,8 +4,8 @@
             <a ng-repeat="message in activities_all" class="item item-avatar item-text-wrap item-icon-right" ng-click="navigateToActivity(message)">
                 <img ng-src="{{getMessageAvatar(message)}}">
 
-                <h2>{{message.ownerName}}</h2>
-                <span>{{getFormattedLabel(message.label)}}</span>
+                <h2 style="font-family: MontserratBold; font-size: 13px; color: #3EBCa4">{{message.ownerName}}</h2>
+                <p style="font-family: MontserratReg; font-size: 13px; color: #666666; line-height: 100% !important; padding-bottom: 5px">{{getFormattedLabel(message.label)}}</p>
                 <!-- i ng-if="message.label == 'JOINED_GAMIFICATION'" class="icon ion-person-add"></i>
                 <i ng-if="message.label == 'NEW_BADGE'" class="icon ion-ios7-pricetag"></i -->
                 <i ng-if="message.label != 'JOINED_GAMIFICATION' && message.label != 'NEW_BADGE' && message.url != null" class="icon ion-ios7-infinite"></i>

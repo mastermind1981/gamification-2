@@ -52,9 +52,9 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
     $scope.collectedGroupBadges = [];
 
 
-    $scope.lastBadgeImgUrl = "";
-    $scope.lastBadgeLabel = "";
-    $scope.lastBadgeTitle = "";
+    $scope.lastBadgeImgUrl = "img/badges/p1.png";
+    $scope.lastBadgeLabel = "This is very well done!";
+    $scope.lastBadgeTitle = "Level 1 completed";
 
 
     $scope.toggleLeftSideMenu = function() {
@@ -675,15 +675,15 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
             case 0:
                 $scope.activityBadgeValue = 0;
                 window.location.href = '#/tab/activities';
-                $scope.appHeader = "ACTIVITIES";
+                $scope.appHeader = "ACTIVITÉS";
                 break;
             case 1:
                 window.location.href = '#/tab/quests';
-                $scope.appHeader = "QUESTS";
+                $scope.appHeader = "QUÊTES";
                 break;
             case 2:
                 window.location.href = '#/tab/checkins';
-                $scope.appHeader = "CHECKINS";
+                $scope.appHeader = "CHECK' INS";
                 break;
             case 3:
                 window.location.href = '#/tab/badges';
@@ -691,11 +691,11 @@ gamififcationApp.controller('navigationCtrl', function($scope, $http, $q, gamifi
                 break;
             case 4:
                 window.location.href = '#/tab/blogs';
-                $scope.appHeader = "GROUPS";
+                $scope.appHeader = "GROUPES";
                 break;
             case 5:
                 window.location.href = '#/tab/comment';
-                $scope.appHeader = "COMMENT";
+                $scope.appHeader = "MESSAGE";
         }
     };
 

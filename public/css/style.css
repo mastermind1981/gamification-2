@@ -1,3 +1,13 @@
+@font-face {
+    font-family: MontserratBold;
+    src: url(../fonts/Montserrat-Bold.ttf);
+}
+
+@font-face {
+    font-family: MontserratReg;
+    src: url(../fonts/Montserrat-Regular.ttf);
+}
+
 html {
     min-height:100%;
     overflow-x:hidden;
@@ -37,6 +47,7 @@ a img {
 
 .range {
     width: 100%;
+    height: 30px;
 }
 
 #logo a {
@@ -145,7 +156,7 @@ ion-view {
 .taskIconCounter {
     width: 40px;
     min-width: 40px;
-    height: 40px;
+    height: 30px;
     background-color: #000000;
     display: table-cell;
     text-align:center;
@@ -156,7 +167,7 @@ ion-view {
 
 .taskIconLabel {
     padding-left: 20px;
-    height: 40px;
+    height: 30px;
     display: table-cell;
     vertical-align: middle;
 }
@@ -187,29 +198,33 @@ ion-view {
     width: 80px;
     min-width: 80px;
     padding-left: 20px;
-    height: 50px;
+    height: 30px;
     /*background-color: #555555;    */
     display: table-cell;
     vertical-align: middle;
     text-align: left;
-    color: #000000;
+    color: #3EBCa4;
+    font-family: MontserratBold;
+    font-size: 13px;
 }
 
 .statQuestProgress {
     width: 100%;
-    height: 50px;
+    height: 30px;
     display: table-cell;
     vertical-align: middle;
     /* background-color: #555555; */
 }
 
 .statQuestFooter {
+    margin-top: -1px;
     width: 100%;
     text-align: center;
     color: #000000;
     border-width: 1px;
-    border: #cccccc solid thin;
-    border-top: none;
+    border-top: #dddddd solid thin;
+    height: 35px;
+    background-color: #FFFFFF;
 }
 
 .statGroupDiv .list {
@@ -233,6 +248,11 @@ ion-view {
     max-height: 57px;
 }
 
+.tab-title {
+    font-family: MontserratBold;
+    font-size: 9px !important;
+}
+
 .tabs .tab-item .badge {
     background-color: #FF0000;
     color: #FFFFFF;
@@ -253,7 +273,7 @@ ion-view {
 }
 
 .progress-bar > span {
-    background-color: #000000;
+    background-color: #3EBCa4;
     border-radius: 2px;
 
     display: block;
@@ -269,8 +289,7 @@ ion-view {
 }
 
 .item-divider {
-    border: none;
-    text-align: center;
+
 }
 
 .row {
@@ -285,7 +304,7 @@ ion-view {
 }
 
 span.rnd {
-    background: #FFFFFF;
+    background: #EEEEEE;
     border-radius: 0.8em;
     -moz-border-radius: 0.8em;
     -webkit-border-radius: 0.8em;
@@ -303,6 +322,7 @@ span.rnd {
     vertical-align: middle;
     margin: 0;
     padding: 0;
+    height: 30px;
 }
 
 progress,                          /* Firefox  */
@@ -317,22 +337,22 @@ progress::-webkit-progress-bar {
 
 /* IE10 */
 progress {
-    color: black;
+    color: #3EBCa4;
 }
 
 /* Firefox */
 progress::-moz-progress-bar {
-    background: black;
+    background: #3EBCa4;
 }
 
 /* Chrome */
 progress::-webkit-progress-value {
-    background: black;
+    background: #3EBCa4;
 }
 
 /* Polyfill */
 progress[aria-valuenow]:before  {
-    background: black;
+    background: #3EBCa4;
 }
 
 .badgeCol {
@@ -341,20 +361,23 @@ progress[aria-valuenow]:before  {
 
 .badgeContainer {
     position: relative;
-    min-width: 125px;
-    width: 125px;
+    max-width: 125px;
     margin: 0 auto;
     height: 100px;
     text-align: center;
 }
 
 .badgeImage {
-    width: 80px;
+    min-width: 20px;
+    max-width: 80px;
 }
 
 .badgeText {
     vertical-align: bottom;
-    width: 120px;
+    width: 100%;
+    font-family: MontserratReg;
+    font-size: 11px;
+    word-break: normal;
 }
 
 .row {
